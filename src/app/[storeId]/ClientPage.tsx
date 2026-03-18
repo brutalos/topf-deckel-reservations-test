@@ -10,8 +10,7 @@ import { ShoppingBag } from 'lucide-react';
 import { CustomMenuGrid } from './components/MenuGrid';
 import { CartSidebar } from './components/CartSidebar';
 import { isPeakHourCheckoutBlocked } from '@/lib/orderingWindows';
-export default function StorefrontPage({ params, menuData }: { params: Promise<{ storeId: string }>, menuData: any[] }) {
-    const { storeId } = use(params);
+export default function StorefrontPage({ storeId, menuData }: { storeId: string, menuData: any[] }) {
     const store = stores.find((s) => s.id === storeId);
     if (!store) return notFound();
 

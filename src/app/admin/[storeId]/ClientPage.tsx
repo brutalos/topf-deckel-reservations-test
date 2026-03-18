@@ -39,8 +39,7 @@ interface Order {
     canCancel?: boolean;
 }
 
-export default function AdminDashboard({ params, menuData }: { params: Promise<{ storeId: string }>, menuData: any[] }) {
-    const { storeId } = use(params);
+export default function AdminDashboard({ storeId, menuData }: { storeId: string, menuData: any[] }) {
     const store = stores.find((s) => s.id === storeId);
     const [orders, setOrders] = useState<Order[]>([]);
     const [isDispatching, setIsDispatching] = useState<string | null>(null);
