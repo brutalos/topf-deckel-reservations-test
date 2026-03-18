@@ -7,6 +7,5 @@ if (!process.env.STRIPE_SECRET_KEY && process.env.NODE_ENV !== 'development') {
 }
 
 export const stripe = new Stripe(key, {
-    apiVersion: '2026-02-25.clover',
     httpClient: Stripe.createFetchHttpClient(), // required for Cloudflare Workers
 });
