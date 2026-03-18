@@ -1,10 +1,10 @@
 'use client';
 
+
 import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Plus, XCircle } from 'lucide-react';
 import { KomboModal } from './KomboModal';
-
 export function CustomMenuGrid({
     items,
     onAdd,

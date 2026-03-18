@@ -1,12 +1,12 @@
 'use client';
 
+
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { MapPin, Search } from 'lucide-react';
 import { stores, getHaversineDistance, StoreConfig } from '@/config/stores';
 import { Button } from '@/components/ui/button';
-
 interface StoreWithDistance extends StoreConfig {
   distanceKm: number;
 }

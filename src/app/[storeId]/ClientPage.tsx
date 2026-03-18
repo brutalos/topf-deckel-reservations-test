@@ -1,15 +1,15 @@
 'use client';
 
+
+
 import { useState, useMemo, use, useEffect } from 'react';
 import { notFound } from 'next/navigation';
 import { stores } from '@/config/stores';
-
 import Image from 'next/image';
 import { ShoppingBag } from 'lucide-react';
 import { CustomMenuGrid } from './components/MenuGrid';
 import { CartSidebar } from './components/CartSidebar';
 import { isPeakHourCheckoutBlocked } from '@/lib/orderingWindows';
-
 export default function StorefrontPage({ params, menuData }: { params: Promise<{ storeId: string }>, menuData: any[] }) {
     const { storeId } = use(params);
     const store = stores.find((s) => s.id === storeId);

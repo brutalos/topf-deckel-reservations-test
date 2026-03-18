@@ -1,8 +1,8 @@
 'use client';
 
+
 import { useState } from 'react';
 import { X, Check, ChevronRight, ChevronLeft, ShoppingBag } from 'lucide-react';
-
 interface MenuItem {
     id: string;
     name: string;

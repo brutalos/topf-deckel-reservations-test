@@ -1,15 +1,11 @@
+'use client'
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { StoreConfig } from '@/config/stores';
 import { ShoppingBag, Trash2, ArrowRight, X, Clock, AlertTriangle, CheckCircle } from 'lucide-react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import {
-    canOrderASAP,
-    asapBlockReason,
-    isValidPreorderSlot,
-    getPreorderConstraints,
-} from '@/lib/orderingWindows';
+import { canOrderASAP, asapBlockReason, isValidPreorderSlot, getPreorderConstraints } from '@/lib/orderingWindows';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
 
