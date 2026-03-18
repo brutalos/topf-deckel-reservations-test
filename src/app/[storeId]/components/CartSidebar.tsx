@@ -214,7 +214,8 @@ export function CartSidebar({ cart, setCart, store, isOpen, onClose }: { cart: a
                 return;
             }
 
-            setDeliveryFee(data.delivery_fee || 0);
+            // Split the Wolt delivery fee 50/50 with the customer automatically
+            setDeliveryFee(data.delivery_fee ? Math.round(data.delivery_fee / 2) : 0);
             setDeliveryEta(data.eta_minutes ? `${data.eta_minutes} Min.` : 'Geplant');
             if (data.id) setPromiseId(data.id);
         } catch (error) {

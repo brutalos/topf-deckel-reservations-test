@@ -3,6 +3,7 @@ export interface StoreConfig {
     name: string;
     address: string;
     woltVenueId: string;
+    stripeAccountId?: string;
     lat: number;
     lon: number;
     openTime: number; // e.g. 11 for 11:00 AM
@@ -24,6 +25,7 @@ export const stores: StoreConfig[] = [
         name: 'Topf & Deckel - Judengasse',
         address: 'Judengasse 1, 1010 Wien',
         woltVenueId: venueId('VX_JUDENGASSE'),
+        stripeAccountId: 'acct_1TCJiPRRO3MQisvB', // Sandbox connected account for testing
         lat: 48.211117,
         lon: 16.373054,
         openTime: 11,
@@ -34,6 +36,7 @@ export const stores: StoreConfig[] = [
         name: 'Topf & Deckel - Schottengasse',
         address: 'Schottengasse 3, 1010 Wien',
         woltVenueId: venueId('VX_Schottengasse'),
+        stripeAccountId: 'acct_1TCJiPRRO3MQisvB',
         lat: 48.213257,
         lon: 16.363952,
         openTime: 11,
@@ -44,6 +47,7 @@ export const stores: StoreConfig[] = [
         name: 'Topf & Deckel - Wipplingerstraße',
         address: 'Wipplingerstraße 22, 1010 Wien',
         woltVenueId: venueId('VX_Wipplingerstraße'),
+        stripeAccountId: 'acct_1TCJiPRRO3MQisvB',
         lat: 48.21345,
         lon: 16.36873,
         openTime: 11,
@@ -54,6 +58,7 @@ export const stores: StoreConfig[] = [
         name: 'Topf & Deckel - Vorgartenstraße',
         address: 'Vorgartenstraße 206B, 1020 Wien',
         woltVenueId: venueId('VX_VORGARTEN'),
+        stripeAccountId: 'acct_1TCJiPRRO3MQisvB',
         lat: 48.22301,
         lon: 16.40223,
         openTime: 11,
@@ -64,6 +69,7 @@ export const stores: StoreConfig[] = [
         name: 'Topf & Deckel - Esterházygasse (Gumpendorfer)',
         address: 'Gumpendorfer Straße 66, 1060 Wien',
         woltVenueId: venueId('VX_Esterhazygasse'),
+        stripeAccountId: 'acct_1TCJiPRRO3MQisvB',
         lat: 48.19702,
         lon: 16.35339,
         openTime: 11,

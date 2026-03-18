@@ -24,11 +24,9 @@ export async function POST(req: Request) {
             amountInCents += deliveryInfo.deliveryFeeInCents;
         }
 
-        // Create a PaymentIntent with the order amount and currency
-        const paymentIntent = await stripe.paymentIntents.create({
+        const paymentIntentPayload: any = {
             amount: amountInCents,
             currency: 'eur',
-            // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
             automatic_payment_methods: {
                 enabled: true,
             },
@@ -55,7 +53,22 @@ export async function POST(req: Request) {
                 noContact: deliveryInfo?.noContact ? 'true' : 'false',
                 deliveryNote: (deliveryInfo?.note || '').slice(0, 500),
             },
-        });
+        };
+
+        // Inject the Stripe Connect routing dynamically if this store is franchised
+        if (store.stripeAccountId) {
+            paymentIntentPayload.transfer_data = {
+                destination: store.stripeAccountId,
+            };
+            // Platform keeps 100% of the actual Wolt delivery fee to pay the invoice! 
+            // Since the customer UI is now hard-locked to 50% (deliveryFeeInCents), we multiply by 2 
+            // so the remaining 50% is safely taken out of the franchisee's food profit margin instead.
+            if (deliveryInfo?.mode === 'delivery' && deliveryInfo.deliveryFeeInCents) {
+                paymentIntentPayload.application_fee_amount = deliveryInfo.deliveryFeeInCents * 2;
+            }
+        }
+
+        const paymentIntent = await stripe.paymentIntents.create(paymentIntentPayload);
 
         return NextResponse.json({
             clientSecret: paymentIntent.client_secret,
