@@ -28,6 +28,7 @@ If credentials are missing, `opencode_generate` will fail and tell you to collec
 **MUST ASK the user BEFORE building:**
 1. **Support email** — e.g. "What email should customers see for order support?" → store as `STORE_SUPPORT_EMAIL` in `.env.local`
 2. **Support phone** (optional) — e.g. "What phone number for delivery support? (E.164 format like +43...)" → store as `STORE_SUPPORT_PHONE` in `.env.local`
+3. **Wolt API Credentials** — If not already available in the environment, ask for `WOLT_DRIVE_API_KEY`, `WOLT_DRIVE_VENUE_ID` (for venueful), and/or `WOLT_DRIVE_MERCHANT_ID` (for venueless).
 
 These are passed to Wolt in every `createDelivery()` call via `customer_support`. Wolt returns 422 if `customer_support` is missing.
 
@@ -582,7 +583,12 @@ interface WoltDelivery {
   price: { amount: number; currency: string };
 }
 
-// --- Shipment Promise ---
+interface VenuelessDeliveryFee {
+  fee: { amount: number; currency: string };
+  time_estimate_minutes: number;
+}
+
+// --- Shipment Promise (Venueful) ---
 // IMPORTANT: Request body uses FLAT top-level fields (street, city, post_code),
 // NOT a nested dropoff.location object.
 
@@ -621,7 +627,42 @@ export async function getShipmentPromise(params: {
   return response.json();
 }
 
-// --- Create Delivery ---
+// --- Delivery Fee (Venueless) ---
+
+export async function getVenuelessDeliveryFee(params: {
+  pickup: { location: { formatted_address: string; coordinates: { lat: number; lon: number } } };
+  dropoff: { location: { formatted_address: string; coordinates: { lat: number; lon: number } } };
+  scheduled_dropoff_time?: string;
+  contents: Array<{
+    count: number;
+    dimensions?: { weight_gram?: number };
+    price?: { amount: number; currency: string };
+  }>;
+}): Promise<VenuelessDeliveryFee> {
+  if (!WOLT_DRIVE_API_KEY) throw new Error('WOLT_DRIVE_API_KEY is missing');
+  if (!WOLT_DRIVE_MERCHANT_ID) throw new Error('WOLT_DRIVE_MERCHANT_ID is missing');
+
+  const response = await fetch(
+    `${BASE_URL}/merchants/${WOLT_DRIVE_MERCHANT_ID}/delivery-fee`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${WOLT_DRIVE_API_KEY}`,
+      },
+      body: JSON.stringify(params),
+    }
+  );
+
+  if (!response.ok) {
+    const err = await response.text();
+    throw new Error(`Wolt Venueless Fee error ${response.status}: ${err}`);
+  }
+
+  return response.json();
+}
+
+// --- Create Delivery (Venueful) ---
 // Uses the promise ID + COORDINATES from the promise response.
 // The Wolt API expects dropoff.location.coordinates as {lat, lon} — NOT address strings.
 
@@ -667,6 +708,57 @@ export async function createDelivery(params: {
   if (!response.ok) {
     const err = await response.text();
     throw new Error(`Wolt Delivery error ${response.status}: ${err}`);
+  }
+
+  return response.json();
+}
+
+// --- Create Venueless Delivery ---
+
+export async function createVenuelessDelivery(params: {
+  pickup: {
+    location: { formatted_address: string; coordinates: { lat: number; lon: number } };
+    comment?: string;
+    contact_details: { name: string; phone_number: string; send_tracking_link_sms?: boolean };
+    display_name?: string;
+  };
+  dropoff: {
+    location: { formatted_address: string; coordinates: { lat: number; lon: number } };
+    comment?: string;
+    contact_details: { name: string; phone_number: string; send_tracking_link_sms?: boolean };
+  };
+  customer_support: { email: string; phone_number?: string; url?: string };
+  is_no_contact?: boolean;
+  merchant_order_reference_id: string;
+  contents: Array<{
+    count: number;
+    description?: string;
+    identifier?: string;
+    tags?: string[];
+    price?: { amount: number; currency: string };
+    dimensions?: { weight_gram?: number };
+  }>;
+  min_preparation_time_minutes?: number;
+  order_number?: string;
+}): Promise<WoltDelivery> {
+  if (!WOLT_DRIVE_API_KEY) throw new Error('WOLT_DRIVE_API_KEY is missing');
+  if (!WOLT_DRIVE_MERCHANT_ID) throw new Error('WOLT_DRIVE_MERCHANT_ID is missing');
+
+  const response = await fetch(
+    `${BASE_URL}/merchants/${WOLT_DRIVE_MERCHANT_ID}/delivery-order`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${WOLT_DRIVE_API_KEY}`,
+      },
+      body: JSON.stringify(params),
+    }
+  );
+
+  if (!response.ok) {
+    const err = await response.text();
+    throw new Error(`Wolt Venueless Delivery error ${response.status}: ${err}`);
   }
 
   return response.json();
@@ -738,34 +830,38 @@ export async function POST(req: NextRequest) {
 }
 ```
 
-**Frontend usage:**
+### 3.2.2 API Route — Get Venueless Shipping Cost (`app/api/wolt/venueless-fee/route.ts`)
+
 ```typescript
-const res = await fetch('/api/wolt/promise', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    street: 'Stephansplatz 1',
-    city: 'Wien',
-    post_code: '1010',
-  }),
-});
-const promise = await res.json();
+// app/api/wolt/venueless-fee/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { getVenuelessDeliveryFee } from '@/lib/wolt';
 
-if (!promise.is_binding) {
-  // Address too vague — show "Delivery not available for this address"
-  return;
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const { pickup, dropoff, contents } = body;
+
+    if (!pickup || !dropoff || !contents) {
+      return NextResponse.json({ error: 'pickup, dropoff, and contents are required' }, { status: 400 });
+    }
+
+    const fee = await getVenuelessDeliveryFee({
+      pickup,
+      dropoff,
+      contents,
+    });
+
+    return NextResponse.json(fee);
+  } catch (error: any) {
+    console.error('Wolt Venueless Fee Error:', error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 }
-
-// Display: "Delivery by Wolt: €4.90, ~25 min"
-const priceEur = (promise.price.amount / 100).toFixed(2);
-const etaMin = promise.dropoff.eta_minutes;
-
-// SAVE promise.id AND promise.dropoff.location.coordinates for creating the delivery later.
-// The delivery request needs coordinates (NOT address strings) in dropoff.location.
-// Also save address fields (street, city, post_code) in the order DB for display purposes.
 ```
 
-### 3.2.1 Checkout UX Flow (MANDATORY)
+### 3.2.3 Checkout UX Flow (MANDATORY)
+
 
 The user MUST see the Wolt delivery fee BEFORE they can pay. Follow this exact pattern:
 
@@ -1625,7 +1721,8 @@ components/
   DispatchButton.tsx               # Admin dispatch button
 app/api/
   wolt/
-    promise/route.ts               # Get shipping cost (checkout)
+    promise/route.ts               # Get shipping cost (venueful checkout)
+    venueless-fee/route.ts         # Get shipping cost (venueless checkout)
     webhook/route.ts               # Receive status updates (JWT)
   admin/
     dispatch-wolt/route.ts         # Dispatch courier (admin panel)

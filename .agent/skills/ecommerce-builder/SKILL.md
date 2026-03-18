@@ -29,7 +29,14 @@ Before creating any product data, you MUST extract REAL products from the actual
 - **If no products found**: Ask the user to provide their product catalog. Do NOT proceed with dummy data — STOP and ask.
 - **Seed the database**: Use the extracted real products to seed the SQLite database via Prisma.
 
-### 2. Architecture & Stack
+### 2. Environment & Credentials Setup
+Before building, check for required credentials in `.env`:
+- **Stripe (if using payments)**: `STRIPE_SECRET_KEY`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET`
+- **Wolt Drive (if using delivery)**: `WOLT_DRIVE_API_KEY`, `WOLT_DRIVE_VENUE_ID`, `WOLT_DRIVE_MERCHANT_ID`, `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`
+
+If any required credentials are missing, ASK THE USER to provide them before proceeding. Do not proceed with placeholder values or dummy credentials.
+
+### 3. Architecture & Stack
 Always use the following stack:
 - **Framework**: Next.js 16 (App Router).
 - **Database**: SQLite via Prisma (zero-config). The `.env` already has the correct `DATABASE_URL` — do NOT change it.
@@ -38,7 +45,7 @@ Always use the following stack:
 - **State**: React 19 `useActionState` and `useOptimistic` for cart and checkout.
 - **Database**: ALWAYS SQLite via Prisma. NEVER switch to PostgreSQL.
 
-### 3. Strict Coding Rules (Anti-Break Protocol)
+### 4. Strict Coding Rules (Anti-Break Protocol)
 To ensure the site is always buildable and high-quality:
 - **Global Layout**: Define exactly ONE `components/Navbar.tsx` and ONE `components/Footer.tsx`. Import both in `app/layout.tsx`.
 - **Cart Icon (MANDATORY)**: The Navbar MUST have a clearly visible shopping cart icon (use `ShoppingCart` from `lucide-react`) that links to `/cart`. The icon must be high-contrast — white or accent color on dark backgrounds, dark on light backgrounds. Include an item count badge next to the icon. The badge must always be rendered in the DOM (use CSS `hidden`/`block` toggle, NOT conditional rendering like `{count > 0 && ...}`) to avoid hydration mismatch.
@@ -57,7 +64,7 @@ To ensure the site is always buildable and high-quality:
   ```
   This applies to: cart item count badges, "items in cart" text, auth-dependent UI, any value from React context or localStorage.
 
-### 4. Database Schema
+### 5. Database Schema
 Create `prisma/schema.prisma` with SQLite provider:
 ```prisma
 datasource db {
@@ -137,7 +144,7 @@ export async function POST(req: NextRequest) {
   // id is guaranteed to exist in DB — no FK violation possible
   ```
 
-### 5. Scope Control (CRITICAL — DO NOT CREATE EXTRA PAGES)
+### 6. Scope Control (CRITICAL — DO NOT CREATE EXTRA PAGES)
 **Create ONLY the core shopping pages. NOTHING ELSE.**
 - **Core (ONLY these)**: `/` = Product Listing (PLP), `/products/[id]` = Product Detail (PDP), `/cart` = Cart, `/checkout` = Checkout.
 - **FORBIDDEN unless user explicitly asks**: Home page (separate from shop), "About Us", "About", "FAQ", "Contact", "Terms of Service", "Blog", "Story", or ANY other non-shop page. Do NOT create these. Do NOT add nav links to them.
@@ -145,7 +152,7 @@ export async function POST(req: NextRequest) {
 - **Nav Links**: ONLY link to pages that exist: Shop, Cart. Nothing else unless the user asked for it.
 - **If in doubt, DON'T create it.** The user will ask for additional pages if they want them.
 
-### 6. Conditional Features
+### 7. Conditional Features
 Only implement the following if explicitly requested by the user:
 - **Stripe Integration**: Load the `stripe-integration` skill for full reference. The `stripe`, `@stripe/stripe-js`, and `@stripe/react-stripe-js` packages are already in `package.json`. Use **Stripe Checkout (redirect)** for simple shops or **Stripe Elements (embedded PaymentElement)** for custom checkout UIs. MUST follow the skill's CRITICAL rules — do NOT create fake placeholder card input divs.
 - **Wolt Drive Delivery**: Load the `wolt-drive-integration` skill for full API reference. **CRITICAL: Delivery dispatch is ALWAYS manual via an admin dashboard (`/admin/orders`). The merchant clicks "Dispatch Wolt Courier" on each order. NEVER auto-dispatch from checkout, payment webhooks, or order creation. The checkout only collects the address and shows the delivery fee.**
@@ -153,10 +160,11 @@ Only implement the following if explicitly requested by the user:
 
 ## Implementation Steps
 1. Create project with `create_project(project_type="website", website_mode="multipage")`.
-2. Create `prisma/schema.prisma` with SQLite provider and e-commerce models.
-3. Run `npx prisma db push` and `npx prisma generate`.
-4. Create `prisma/seed.ts` with real product data, run `npx prisma db seed`.
-5. Scaffold core components (Navbar, Footer, Layout).
+2. Check `.env` for required credentials (Stripe, Wolt Drive). Ask user for any missing credentials.
+3. Create `prisma/schema.prisma` with SQLite provider and e-commerce models.
+4. Run `npx prisma db push` and `npx prisma generate`.
+5. Create `prisma/seed.ts` with real product data, run `npx prisma db seed`.
+6. Scaffold core components (Navbar, Footer, Layout).
 6. Build Product Listing Page (PLP) and Product Detail Page (PDP) with Prisma queries.
 7. Implement Shopping Cart (localStorage-based via client component).
 8. Verify build with `screenshot_website`.

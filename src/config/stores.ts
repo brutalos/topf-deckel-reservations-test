@@ -25,7 +25,7 @@ export const stores: StoreConfig[] = [
         name: 'Topf & Deckel - Judengasse',
         address: 'Judengasse 1, 1010 Wien',
         woltVenueId: venueId('VX_JUDENGASSE'),
-        stripeAccountId: 'acct_1TCJiPRRO3MQisvB', // Sandbox connected account for testing
+        stripeAccountId: 'acct_1TCJiPRRO3MQisvB',
         lat: 48.211117,
         lon: 16.373054,
         openTime: 11,
