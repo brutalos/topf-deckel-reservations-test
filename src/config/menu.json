@@ -1,0 +1,607 @@
+[
+  {
+    "id": "kombo-light-8e0f3690-ab12-43b8-959c-d5e33bbe9c3c",
+    "category": "Tageskarte",
+    "name": "Light Lunch Kombo",
+    "description": "Wähle eine Kombination & spare bis zu 25%!",
+    "tags": [],
+    "prices": {
+      "S": 9.5
+    },
+    "weights": {
+      "S": 700
+    },
+    "savings": "25%",
+    "komboOptions": [
+      {
+        "label": "Salat/Suppe klein + Main Dish klein"
+      },
+      {
+        "label": "Main Dish klein + Dessert"
+      }
+    ]
+  },
+  {
+    "id": "kombo-big-f972e936-d877-46ea-802c-6a17c3019340",
+    "category": "Tageskarte",
+    "name": "Big Lunch Kombo",
+    "description": "Wähle eine Kombination & spare bis zu 20%!",
+    "tags": [],
+    "prices": {
+      "S": 13.9
+    },
+    "weights": {
+      "S": 900
+    },
+    "savings": "20%",
+    "komboOptions": [
+      {
+        "label": "Salat/Suppe klein + Main Dish groß"
+      },
+      {
+        "label": "Main Dish groß + Dessert"
+      }
+    ]
+  },
+  {
+    "id": "monday-starters-6c18ca82-31d7-44c3-94c5-a39637b3da86",
+    "category": "Montag (2026-03-16)",
+    "name": "Kürbiscremesuppe",
+    "description": "",
+    "tags": [
+      "vg",
+      "lf"
+    ],
+    "prices": {
+      "S": 4.9,
+      "L": 6.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "monday-salad-f5758880-263a-471b-868c-653c24c39122",
+    "category": "Montag (2026-03-16)",
+    "name": "Haussalat",
+    "description": "",
+    "tags": [
+      "vg"
+    ],
+    "prices": {
+      "S": 7.5,
+      "L": 10.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "monday-meatMains-0f0e287f-292f-44a0-9900-1c1bff7b0518",
+    "category": "Montag (2026-03-16)",
+    "name": "Bœuf Bourguignon",
+    "description": "mit Spätzle",
+    "tags": [],
+    "prices": {
+      "S": 7.5,
+      "L": 11.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "monday-meatMains-7427ca6c-cd97-4e78-a37b-0d07610d4594",
+    "category": "Montag (2026-03-16)",
+    "name": "Indisches Tandoori Chicken",
+    "description": "in cremiger Gewürzsauce mit Basmatireis",
+    "tags": [
+      "gf"
+    ],
+    "prices": {
+      "S": 7.5,
+      "L": 11.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "monday-vegetarianMains-2ae03598-87bd-4973-81e0-13924219a379",
+    "category": "Montag (2026-03-16)",
+    "name": "Kürbis-Feta Gratin",
+    "description": "mit Spinat & überbackenem Käse",
+    "tags": [
+      "veg"
+    ],
+    "prices": {
+      "S": 7.5,
+      "L": 11.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "monday-vegetarianMains-3e74a238-29c8-4c46-a04f-20e19e784547",
+    "category": "Montag (2026-03-16)",
+    "name": "Käsespätzle aus dem Ofen",
+    "description": "mit geriebenem Bergkäse & grünem Salat",
+    "tags": [
+      "veg"
+    ],
+    "prices": {
+      "S": 7.5,
+      "L": 11.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "monday-dessert-fd4ce398-8a4b-4ee3-b28c-d1f68414359a",
+    "category": "Montag (2026-03-16)",
+    "name": "Erdbeer-Joghurt Schnitte",
+    "description": "",
+    "tags": [
+      "veg"
+    ],
+    "prices": {
+      "S": 4.5
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "tuesday-starters-a6a8f856-f1cd-49ca-a6dd-58a96a92b642",
+    "category": "Dienstag (2026-03-17)",
+    "name": "Erdäpfelcremsuppe",
+    "description": "",
+    "tags": [
+      "veg"
+    ],
+    "prices": {
+      "S": 4.9,
+      "L": 6.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "tuesday-salad-9600b09f-2453-4ab6-8e2f-a195606d0a8e",
+    "category": "Dienstag (2026-03-17)",
+    "name": "Haussalat",
+    "description": "",
+    "tags": [
+      "vg"
+    ],
+    "prices": {
+      "S": 7.5,
+      "L": 10.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "tuesday-meatMains-b3318b1b-cc2e-4ef7-967f-1f17921c6ca6",
+    "category": "Dienstag (2026-03-17)",
+    "name": "Schupfnudeln mit Hühnerstreifen",
+    "description": "in Kirschtomatensauce & grünem Salat",
+    "tags": [],
+    "prices": {
+      "S": 7.5,
+      "L": 11.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "tuesday-meatMains-affd5fc5-1963-4db8-8ef0-13a6af1613aa",
+    "category": "Dienstag (2026-03-17)",
+    "name": "Zartes Kalbsrahmgulasch",
+    "description": "in Paprika-Oberssauce mit Sauerrahm Dip & Semmelknödel",
+    "tags": [],
+    "prices": {
+      "S": 7.5,
+      "L": 11.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "tuesday-vegetarianMains-7fdc5a64-fc77-499c-bd1b-4db4d20f7510",
+    "category": "Dienstag (2026-03-17)",
+    "name": "Erdäpfel-Walnuss Gratin",
+    "description": "mit Mozzarella, Spinat & grünem Salat",
+    "tags": [
+      "veg"
+    ],
+    "prices": {
+      "S": 7.5,
+      "L": 11.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "tuesday-vegetarianMains-66902ff3-3f02-4be4-81a3-7717d46e7ce6",
+    "category": "Dienstag (2026-03-17)",
+    "name": "Tomaten Mozzarella Lasagne",
+    "description": "mit Bechamelsauce & grünem Salat",
+    "tags": [
+      "veg"
+    ],
+    "prices": {
+      "S": 7.5,
+      "L": 11.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "tuesday-dessert-75f39d28-3d21-4c4f-afd7-571bb8a63936",
+    "category": "Dienstag (2026-03-17)",
+    "name": "Erdbeer-Joghurt Schnitte",
+    "description": "",
+    "tags": [
+      "veg"
+    ],
+    "prices": {
+      "S": 4.5
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "wednesday-starters-64c42430-dcfc-4530-a846-ebfdf69864ad",
+    "category": "Mittwoch (2026-03-18)",
+    "name": "Karottencremesuppe",
+    "description": "",
+    "tags": [
+      "veg"
+    ],
+    "prices": {
+      "S": 4.9,
+      "L": 6.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "wednesday-salad-b99a3014-633c-485e-861a-f37a8462bbdd",
+    "category": "Mittwoch (2026-03-18)",
+    "name": "Haussalat",
+    "description": "",
+    "tags": [
+      "vg"
+    ],
+    "prices": {
+      "S": 7.5,
+      "L": 10.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "wednesday-meatMains-84c9cc21-c647-44d0-a190-7ed78e34f2d7",
+    "category": "Mittwoch (2026-03-18)",
+    "name": "Lasagne Bolognese",
+    "description": "mit Fleischragout, Bechamelsauce & grünem Salat",
+    "tags": [],
+    "prices": {
+      "S": 7.5,
+      "L": 11.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "wednesday-meatMains-1015cee2-67f0-41b9-8b37-839927dad2b3",
+    "category": "Mittwoch (2026-03-18)",
+    "name": "Paprikahühnchen",
+    "description": "in cremiger Rahmsauce mit Sauerrahm Dip & Spätzle",
+    "tags": [],
+    "prices": {
+      "S": 7.5,
+      "L": 11.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "wednesday-vegetarianMains-d633c923-305b-4e30-bc93-41b9e02072de",
+    "category": "Mittwoch (2026-03-18)",
+    "name": "Balsamico Linsen",
+    "description": "mit Sauerrahm Dip & Semmelknödel",
+    "tags": [
+      "veg"
+    ],
+    "prices": {
+      "S": 7.5,
+      "L": 11.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "wednesday-vegetarianMains-9b44bf60-2996-4bda-92d5-14206f12bbb8",
+    "category": "Mittwoch (2026-03-18)",
+    "name": "Griechisches Veggie Moussaka",
+    "description": "mit mediterranem Gemüse & grünem Salat",
+    "tags": [
+      "veg"
+    ],
+    "prices": {
+      "S": 7.5,
+      "L": 11.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "wednesday-dessert-3c64ef7b-d330-4ca5-9265-46d22be0eaed",
+    "category": "Mittwoch (2026-03-18)",
+    "name": "Erdbeer-Joghurt Schnitte",
+    "description": "",
+    "tags": [
+      "veg"
+    ],
+    "prices": {
+      "S": 4.5
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "thursday-starters-ee5c47a3-295e-42c5-a779-7c43c1c368df",
+    "category": "Donnerstag (2026-03-19)",
+    "name": "Paprika-Zucchinisuppe",
+    "description": "",
+    "tags": [
+      "vg",
+      "lf"
+    ],
+    "prices": {
+      "S": 4.9,
+      "L": 6.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "thursday-salad-0cd911eb-4f6d-4692-8c56-765096f9e64d",
+    "category": "Donnerstag (2026-03-19)",
+    "name": "Haussalat",
+    "description": "",
+    "tags": [
+      "vg"
+    ],
+    "prices": {
+      "S": 7.5,
+      "L": 10.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "thursday-meatMains-5ede8c9b-5114-4570-afa0-6674df9360e5",
+    "category": "Donnerstag (2026-03-19)",
+    "name": "Chicken-Stroganoff",
+    "description": "in Senf-Rahmsauce mit Waldpilzen, Sauerrahm Dip & Langkornreis",
+    "tags": [],
+    "prices": {
+      "S": 7.5,
+      "L": 11.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "thursday-meatMains-aea2e56a-550c-4cc4-b225-4103f3316af5",
+    "category": "Donnerstag (2026-03-19)",
+    "name": "Burritos Chili Con Carne",
+    "description": "mit Avocado-Guacamole, überbackenem Käse & grünem Salat",
+    "tags": [],
+    "prices": {
+      "S": 7.5,
+      "L": 11.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "thursday-vegetarianMains-2dad689d-8e3e-42fd-9453-23062451af1a",
+    "category": "Donnerstag (2026-03-19)",
+    "name": "Rote Rüben-Erdäpfel Gratin",
+    "description": "mit Feta, Walnüssen & grünem Salat",
+    "tags": [
+      "veg"
+    ],
+    "prices": {
+      "S": 7.5,
+      "L": 11.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "thursday-vegetarianMains-0a65db83-da56-4a44-abd3-094bf182f7ba",
+    "category": "Donnerstag (2026-03-19)",
+    "name": "Steinpilz Gnocchi",
+    "description": "in Parmesansauce mit Ruccola & grünem Salat",
+    "tags": [
+      "veg"
+    ],
+    "prices": {
+      "S": 7.5,
+      "L": 11.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "thursday-dessert-addd9db1-f19b-4322-9ef8-424a61fd5f53",
+    "category": "Donnerstag (2026-03-19)",
+    "name": "Erdbeer-Joghurt Schnitte",
+    "description": "",
+    "tags": [
+      "veg"
+    ],
+    "prices": {
+      "S": 4.5
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "friday-starters-c64f1bff-44ae-4174-8345-69242eb428f1",
+    "category": "Freitag (2026-03-20)",
+    "name": "Süßkartoffel-Ingwercremesuppe",
+    "description": "",
+    "tags": [
+      "vg",
+      "lf"
+    ],
+    "prices": {
+      "S": 4.9,
+      "L": 6.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "friday-salad-4747fee4-8a73-482f-887c-472f29728f61",
+    "category": "Freitag (2026-03-20)",
+    "name": "Haussalat",
+    "description": "",
+    "tags": [
+      "vg"
+    ],
+    "prices": {
+      "S": 7.5,
+      "L": 10.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "friday-meatMains-063b247d-70a6-40b5-87d0-8faf5efdb8e7",
+    "category": "Freitag (2026-03-20)",
+    "name": "Alt Wiener Schinkenfleckerl",
+    "description": "mit grünem Salat & Sauerrahm Dip",
+    "tags": [],
+    "prices": {
+      "S": 7.5,
+      "L": 11.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "friday-vegetarianMains-2495ac6d-4f53-460c-9d15-befd721a1cd9",
+    "category": "Freitag (2026-03-20)",
+    "name": "Lasagne Kürbis-Ricotta",
+    "description": "mit grünem Salat",
+    "tags": [
+      "veg"
+    ],
+    "prices": {
+      "S": 7.5,
+      "L": 11.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "friday-vegetarianMains-24a2cc95-c22d-4cd0-b704-58d7e96b08dc",
+    "category": "Freitag (2026-03-20)",
+    "name": "Grünes Curry mit Süßkartoffeln",
+    "description": "in Kokossauce mit Basmatireis",
+    "tags": [
+      "vg",
+      "lf"
+    ],
+    "prices": {
+      "S": 7.5,
+      "L": 11.9
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  },
+  {
+    "id": "friday-dessert-dc3cca09-8513-44d7-805b-79b26f8f7692",
+    "category": "Freitag (2026-03-20)",
+    "name": "Erdbeer-Joghurt Schnitte",
+    "description": "",
+    "tags": [
+      "veg"
+    ],
+    "prices": {
+      "S": 4.5
+    },
+    "weights": {
+      "S": 0
+    },
+    "savings": null
+  }
+]

@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Order {
+  id                   String  @id
+  storeId              String
+  wolt_delivery_id     String?
+  wolt_tracking_id     String?
+  status               String
+  order_number         String
+  customerName         String
+  customerPhone        String
+  customerAddress      String
+  deliveryTime         String
+  deliveryNote         String?
+  noContact            Boolean
+  amount               Float
+  orderDetails         String   // Stored as JSON string
+  promiseId            String
+  eta                  Int?
+  eta_iso              String?
+  pickup_eta           Int?
+  pickup_eta_iso       String?
+  tracking_url         String?
+  canCancel            Boolean  @default(true)
+  stripePaymentId      String   @unique
+  scheduledDropoffTime String?
+  createdAt            String   // Stored as ISO string
+}
+
+model Meta {
+  id    String @id @default("singleton")
+  count Int    @default(999)
+}
