@@ -3,23 +3,29 @@ import { ArrowRight, CheckCircle2 } from 'lucide-react';
 
 export default function FranchisePage() {
   return (
-    <main className="min-h-screen pt-24 bg-background font-body pb-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Intro Section */}
-        <div className="text-center mb-16 max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-sans font-extrabold text-foreground mb-6 leading-tight">
+    <main className="min-h-screen pt-12 bg-background font-body pb-20">
+      {/* Hero Video Section */}
+      <section className="relative h-[60vh] min-h-[400px] w-full flex flex-col items-center justify-center mb-16">
+        <div className="absolute inset-0 z-0">
+          <video src="/video/jobs-franchise.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-black/60"></div>
+        </div>
+        <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 max-w-4xl mx-auto">
+          <h1 className="text-white text-4xl sm:text-5xl md:text-[72px] font-sans font-extrabold mb-6 tracking-tight drop-shadow-md leading-[1.1]">
             Warum sich Franchise mit uns auszahlt?
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground mb-8">
+          <p className="text-white/90 text-lg md:text-xl font-medium drop-shadow max-w-3xl mx-auto">
             Unser System funktioniert – du startest mit erprobtem Rezept. Keine komplexen Geräte, keine Raketenwissenschaft. Dein Team ist schnell startklar. Du brauchst kein Riesenbudget, um loszulegen – wir halten das Risiko klein.
           </p>
-          <img
-            src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/281a1a67-e67e-4318-aac0-9dce5d62314c/281A6724-2.jpg?format=2500w"
-            alt="Franchise"
-            className="w-full h-[400px] object-cover rounded-3xl shadow-xl mb-8"
-          />
         </div>
+      </section>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <img
+          src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/281a1a67-e67e-4318-aac0-9dce5d62314c/281A6724-2.jpg?format=2500w"
+          alt="Franchise"
+          className="w-full h-[400px] object-cover rounded-3xl shadow-xl mb-8"
+        />
 
         {/* Benefits */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center mb-24">
@@ -65,7 +71,7 @@ export default function FranchisePage() {
         {/* Steps */}
         <div className="mb-24">
           <h2 className="text-3xl font-sans font-bold text-center mb-12">In 5 Schritten zur eigenen Filiale</h2>
-          
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <img

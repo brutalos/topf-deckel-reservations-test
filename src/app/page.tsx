@@ -2,25 +2,28 @@ import Link from 'next/link';
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen pt-[168px] font-sans">
-      
+    <main className="min-h-screen font-sans">
+
       {/* 1. Hero Section */}
-      <section className="relative h-[600px] w-full flex flex-col items-center justify-center">
+      <section className="relative h-[80vh] min-h-[500px] w-full flex flex-col items-center justify-center">
         <div className="absolute inset-0 z-0">
-          <img
-            src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/3bd45dd5-d2f2-42c3-82aa-69c042029545/281A6327.jpg?format=2500w"
-            alt="Hero Background"
+          <video
+            src="/video/home.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/40"></div>
         </div>
-        <div className="relative z-10 flex flex-col items-center justify-center text-center px-4">
-          <h1 className="text-white text-[3.5rem] md:text-[5rem] font-extrabold tracking-tight leading-tight mb-8 drop-shadow-lg">
-            Bei uns schmeckt<br/>jeder Tag anders.
+        <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 md:px-8 max-w-5xl mx-auto">
+          <h1 className="text-white text-[3rem] sm:text-[4rem] md:text-[72px] font-extrabold tracking-tight leading-[1.05] mb-10 drop-shadow-lg">
+            Bei uns schmeckt<br />jeder Tag anders.
           </h1>
-          <Link 
-            href="/standorte" 
-            className="bg-white text-black font-bold text-sm tracking-widest uppercase px-8 py-4 rounded-sm hover:bg-gray-100 transition-colors"
+          <Link
+            href="/standorte"
+            className="bg-white text-black font-bold text-sm tracking-[0.2em] uppercase px-10 py-5 rounded-sm hover:bg-gray-100 transition-colors"
           >
             Unsere Standorte
           </Link>
@@ -28,11 +31,11 @@ export default function HomePage() {
       </section>
 
       {/* 2. Tageskarte Preview */}
-      <section className="py-24 bg-white px-4">
-        <div className="max-w-[66.666667%] mx-auto max-md:max-w-full">
-          <div className="text-center mb-12">
-            <h2 className="text-[#6CB78E] text-[2.5rem] md:text-[3rem] font-extrabold tracking-tight mb-4 leading-tight">Was heute auf den Teller kommt</h2>
-            <p className="text-black font-medium text-lg">Donnerstag, 19. März 2026</p>
+      <section id="tageskarte" className="py-20 md:py-32 bg-white px-4 md:px-8">
+        <div className="max-w-[1200px] mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-[#6CB78E] text-[2.5rem] md:text-[3.5rem] font-extrabold tracking-tight mb-4 leading-[1.1]">Was heute<br className="md:hidden" />auf den Teller kommt</h2>
+            <p className="text-black font-medium text-lg md:text-xl">Donnerstag, 19. März 2026</p>
           </div>
 
           {/* Promo Cards */}
@@ -50,7 +53,7 @@ export default function HomePage() {
                   <p className="text-[1rem] font-bold text-black m-0 max-md:text-[0.9rem] max-md:leading-[1.3]">Main Dish klein + Dessert</p>
                 </div>
                 <div className="bg-[#f3e5e9] text-black w-[94px] h-[90px] flex flex-col justify-center items-center text-center relative flex-shrink-0 ml-4 py-6 px-2 max-md:ml-0 max-md:w-[75px] max-md:h-[75px] max-md:py-4 max-md:px-1 max-md:self-center"
-                     style={{ clipPath: 'polygon(100% 50%, 88.6% 59.6%, 96.6% 70.7%, 83.1% 75.5%, 85.4% 88.6%, 70.7% 88.6%, 67.1% 100%, 55.6% 91.9%, 50% 100%, 44.4% 91.9%, 32.9% 100%, 29.3% 88.6%, 14.6% 88.6%, 16.9% 75.5%, 3.4% 70.7%, 11.4% 59.6%, 0% 50%, 11.4% 40.4%, 3.4% 29.3%, 16.9% 24.5%, 14.6% 11.4%, 29.3% 11.4%, 32.9% 0%, 44.4% 8.1%, 50% 0%, 55.6% 8.1%, 67.1% 0%, 70.7% 11.4%, 85.4% 11.4%, 83.1% 24.5%, 96.6% 29.3%, 88.6% 40.4%)' }}>
+                  style={{ clipPath: 'polygon(100% 50%, 88.6% 59.6%, 96.6% 70.7%, 83.1% 75.5%, 85.4% 88.6%, 70.7% 88.6%, 67.1% 100%, 55.6% 91.9%, 50% 100%, 44.4% 91.9%, 32.9% 100%, 29.3% 88.6%, 14.6% 88.6%, 16.9% 75.5%, 3.4% 70.7%, 11.4% 59.6%, 0% 50%, 11.4% 40.4%, 3.4% 29.3%, 16.9% 24.5%, 14.6% 11.4%, 29.3% 11.4%, 32.9% 0%, 44.4% 8.1%, 50% 0%, 55.6% 8.1%, 67.1% 0%, 70.7% 11.4%, 85.4% 11.4%, 83.1% 24.5%, 96.6% 29.3%, 88.6% 40.4%)' }}>
                   <span className="text-[0.85rem] font-black uppercase leading-none mb-0.5 max-md:text-[0.6rem]">SPARE</span>
                   <span className="text-[0.75rem] font-black uppercase leading-none mb-0.5 max-md:text-[0.5rem]">bis zu</span>
                   <span className="text-[1.1rem] font-black max-md:text-[0.95rem]">25%</span>
@@ -71,7 +74,7 @@ export default function HomePage() {
                   <p className="text-[1rem] font-bold text-black m-0 max-md:text-[0.9rem] max-md:leading-[1.3]">Main Dish groß + Dessert</p>
                 </div>
                 <div className="bg-[#f3e5e9] text-black w-[94px] h-[90px] flex flex-col justify-center items-center text-center relative flex-shrink-0 ml-4 py-6 px-2 max-md:ml-0 max-md:w-[75px] max-md:h-[75px] max-md:py-4 max-md:px-1 max-md:self-center"
-                     style={{ clipPath: 'polygon(100% 50%, 88.6% 59.6%, 96.6% 70.7%, 83.1% 75.5%, 85.4% 88.6%, 70.7% 88.6%, 67.1% 100%, 55.6% 91.9%, 50% 100%, 44.4% 91.9%, 32.9% 100%, 29.3% 88.6%, 14.6% 88.6%, 16.9% 75.5%, 3.4% 70.7%, 11.4% 59.6%, 0% 50%, 11.4% 40.4%, 3.4% 29.3%, 16.9% 24.5%, 14.6% 11.4%, 29.3% 11.4%, 32.9% 0%, 44.4% 8.1%, 50% 0%, 55.6% 8.1%, 67.1% 0%, 70.7% 11.4%, 85.4% 11.4%, 83.1% 24.5%, 96.6% 29.3%, 88.6% 40.4%)' }}>
+                  style={{ clipPath: 'polygon(100% 50%, 88.6% 59.6%, 96.6% 70.7%, 83.1% 75.5%, 85.4% 88.6%, 70.7% 88.6%, 67.1% 100%, 55.6% 91.9%, 50% 100%, 44.4% 91.9%, 32.9% 100%, 29.3% 88.6%, 14.6% 88.6%, 16.9% 75.5%, 3.4% 70.7%, 11.4% 59.6%, 0% 50%, 11.4% 40.4%, 3.4% 29.3%, 16.9% 24.5%, 14.6% 11.4%, 29.3% 11.4%, 32.9% 0%, 44.4% 8.1%, 50% 0%, 55.6% 8.1%, 67.1% 0%, 70.7% 11.4%, 85.4% 11.4%, 83.1% 24.5%, 96.6% 29.3%, 88.6% 40.4%)' }}>
                   <span className="text-[0.85rem] font-black uppercase leading-none mb-0.5 max-md:text-[0.6rem]">SPARE</span>
                   <span className="text-[0.75rem] font-black uppercase leading-none mb-0.5 max-md:text-[0.5rem]">bis zu</span>
                   <span className="text-[1.1rem] font-black max-md:text-[0.95rem]">20%</span>
@@ -93,17 +96,19 @@ export default function HomePage() {
                   <h5 className="text-lg font-bold text-black mb-1">Paprika-Zucchinisuppe <span className="inline-block px-2 py-0.5 bg-[#059669] text-white text-[10px] font-bold rounded-full align-middle ml-2">VEGGIE</span></h5>
                   <p className="text-gray-600 text-sm">L, M, O</p>
                 </div>
-                <div>
-                  <h5 className="text-lg font-bold text-black mb-1">Haussalat <span className="inline-block px-2 py-0.5 bg-[#059669] text-white text-[10px] font-bold rounded-full align-middle ml-2">VEGGIE</span></h5>
-                </div>
               </div>
             </div>
-            
+
             {/* Saladbowl */}
             <div>
               <div className="flex justify-between items-baseline border-b border-gray-200 pb-2 mb-4">
                 <h4 className="text-xl font-bold text-black m-0">Saladbowl</h4>
                 <div className="text-sm">KLEIN <strong>€7.50</strong> / GROSS <strong>€10.90</strong></div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <h5 className="text-lg font-bold text-black mb-1">Haussalat <span className="inline-block px-2 py-0.5 bg-[#059669] text-white text-[10px] font-bold rounded-full align-middle ml-2">VEGGIE</span></h5>
+                </div>
               </div>
             </div>
 
@@ -149,19 +154,19 @@ export default function HomePage() {
       </section>
 
       {/* 3. Bei uns ist gutes Essen Alltag */}
-      <section className="py-24 bg-[#6CB78E] px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-white text-[2.5rem] md:text-[3.5rem] font-extrabold tracking-tight mb-16 leading-tight">Bei uns ist gutes Essen Alltag</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <section className="py-20 md:py-32 bg-[#6CB78E] px-4 md:px-8">
+        <div className="max-w-[1200px] mx-auto text-center">
+          <h2 className="text-white text-[2.5rem] sm:text-[3rem] md:text-[4rem] font-extrabold tracking-tight mb-16 leading-[1.1]">Bei uns ist<br className="md:hidden" />gutes Essen Alltag</h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 md:gap-8">
             <div className="flex flex-col items-center">
-              <div className="w-[180px] h-[180px] rounded-full overflow-hidden mb-6 border-4 border-transparent hover:scale-105 transition-transform duration-300">
+              <div className="w-[160px] h-[160px] md:w-[200px] md:h-[200px] rounded-full overflow-hidden mb-8 border-4 border-transparent hover:scale-105 transition-transform duration-300 shadow-xl">
                 <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/b89191cf-0265-43b0-a6c1-3ca17e419e53/events-and-parties_03.jpg?format=500w" alt="Täglich andere Gerichte" className="w-full h-full object-cover" />
               </div>
-              <h3 className="text-white text-xl font-bold mb-3">Täglich andere Gerichte</h3>
-              <p className="text-white/90 text-sm leading-relaxed px-4">Abwechslungsreich, ausgewogen – für jeden etwas dabei.</p>
+              <h3 className="text-white text-[1.35rem] font-bold mb-3 md:mb-4 px-2">Täglich andere Gerichte</h3>
+              <p className="text-white/95 text-[15px] leading-relaxed px-4 md:px-2">Abwechslungsreich, ausgewogen – für jeden etwas dabei.</p>
             </div>
-            
+
             <div className="flex flex-col items-center">
               <div className="w-[180px] h-[180px] rounded-full overflow-hidden mb-6 border-4 border-transparent hover:scale-105 transition-transform duration-300">
                 <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/b9feb942-8959-4a0e-ab86-f7e736d0edc6/06_seasonal_vegetable_soup.jpeg?format=500w" alt="Frisch & selbst gekocht" className="w-full h-full object-cover" />
@@ -190,14 +195,14 @@ export default function HomePage() {
       </section>
 
       {/* 4. Catering */}
-      <section className="py-24 bg-white px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-[#6CB78E] text-[2.5rem] md:text-[3.5rem] font-extrabold tracking-tight mb-6 leading-tight">Übrigens: Wir können auch Catering</h2>
-          <p className="text-black font-medium text-lg max-w-2xl mx-auto mb-16 leading-relaxed">
+      <section className="py-20 md:py-32 bg-white px-4 md:px-8">
+        <div className="max-w-[1200px] mx-auto text-center">
+          <h2 className="text-[#6CB78E] text-[2.5rem] sm:text-[3rem] md:text-[4rem] font-extrabold tracking-tight mb-8 leading-[1.1]">Übrigens: Wir können<br className="md:hidden" />auch Catering</h2>
+          <p className="text-black font-medium text-[1.1rem] md:text-[1.25rem] max-w-[800px] mx-auto mb-16 leading-relaxed px-4">
             Ob Office-Lunch, Meeting oder Feier: Unser Essen bringt Geschmack, Frische und ein gutes Gefühl auf den Tisch. Unkompliziert. Flexibel. Und richtig gut.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 mb-16 px-4 md:px-0">
             <Link href="/events-partys" className="group block relative rounded-3xl overflow-hidden h-[300px] shadow-lg">
               <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/eb20c8fe-1779-442b-8b7b-668b5acc254f/Events+%26+Partys?format=1000w" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Events & Partys" />
               <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
@@ -219,15 +224,23 @@ export default function HomePage() {
       </section>
 
       {/* 5. Vorgartenstraße */}
-      <section className="py-24 bg-[#E4F1EA] px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-black text-[2.5rem] md:text-[3.5rem] font-extrabold tracking-tight mb-6 leading-tight">Vorgartenstraße, wir sind da!</h2>
-          <p className="text-black text-lg max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
+      <section className="py-20 md:py-32 bg-[#E4F1EA] px-4 md:px-8">
+        <div className="max-w-[1000px] mx-auto text-center">
+          <h2 className="text-black text-[2.5rem] sm:text-[3rem] md:text-[4rem] font-extrabold tracking-tight mb-12 leading-[1.1]">Vorgartenstraße,<br className="md:hidden" />wir sind da!</h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
+            <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1c7012bf-2e63-4c9d-b748-fa7b44477007/vorgartenstrasse_02.jpg?format=1000w" className="w-full h-48 md:h-64 object-cover rounded-2xl shadow-lg" alt="Vorgartenstraße Store" />
+            <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/ad073d4a-2f7a-49f6-a4a8-84b27a57c643/vorgartenstrasse_01.jpg?format=1000w" className="w-full h-48 md:h-64 object-cover rounded-2xl shadow-lg" alt="Vorgartenstraße Interior" />
+            <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/3bd45dd5-d2f2-42c3-82aa-69c042029545/281A6327.jpg?format=1000w" className="w-full h-48 md:h-64 object-cover rounded-2xl shadow-lg" alt="Vorgartenstraße Food" />
+          </div>
+
+          <p className="text-black text-[1.1rem] md:text-[1.25rem] max-w-[700px] mx-auto mb-12 leading-relaxed font-medium px-4">
             Unser jüngster Standort serviert ab sofort täglich frisch im Herzen Wiens. Vorbeikommen, Lunch schnappen und sich willkommen fühlen.
           </p>
-          <Link 
-            href="/standorte" 
-            className="inline-block bg-black text-white font-bold text-sm tracking-widest uppercase px-8 py-4 rounded-sm hover:bg-gray-800 transition-colors"
+
+          <Link
+            href="/standorte"
+            className="inline-block bg-black text-white font-bold text-sm tracking-[0.2em] uppercase px-10 py-5 rounded-sm hover:bg-gray-800 transition-colors"
           >
             ALLE STANDORTE ENTDECKEN
           </Link>
@@ -235,10 +248,10 @@ export default function HomePage() {
       </section>
 
       {/* 6. Instagram */}
-      <section className="py-24 bg-[#6CB78E] px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-white text-[2.5rem] md:text-[3.5rem] font-extrabold tracking-tight mb-6 leading-tight">Von der Küche direkt in deinen Feed.</h2>
-          <p className="text-white text-lg max-w-2xl mx-auto mb-16 leading-relaxed">
+      <section className="py-20 md:py-32 bg-[#6CB78E] px-4 md:px-8">
+        <div className="max-w-[1200px] mx-auto text-center">
+          <h2 className="text-white text-[2.5rem] sm:text-[3rem] md:text-[4rem] font-extrabold tracking-tight mb-8 leading-[1.1]">Von der Küche<br className="md:hidden" />direkt in deinen Feed.</h2>
+          <p className="text-white text-[1.1rem] md:text-[1.25rem] max-w-[800px] mx-auto mb-16 leading-relaxed font-medium px-4">
             Eindrücke aus unserem Alltag – Gerichte, Lieblingsmomente und alles, was gesundes Essen besonders macht.
           </p>
 

@@ -10,12 +10,21 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
 
+  // Hide the global Navbar on the /store page as requested.
+  // Also hiding on individual shop pages (e.g. /[storeId]) to restore their isolated look
+  if (
+    pathname === '/store' ||
+    (pathname.match(/^\/[a-zA-Z0-9-]+$/) && !['/tageskarte', '/wochenmenu', '/standorte', '/office-catering', '/events-partys', '/unsere-geschichte', '/franchise', '/jobs', '/kontakt'].includes(pathname))
+  ) {
+    return null;
+  }
+
   return (
-    <nav className="fixed top-0 w-full z-50 bg-white border-b border-gray-100 transition-all duration-300">
+    <nav className="relative top-0 w-full z-40 bg-white border-b border-gray-100 transition-all duration-300">
       <div className="max-w-[1500px] mx-auto px-4 sm:px-8">
-        
+
         <div className="flex flex-col items-center justify-center pt-6 pb-4 relative">
-          
+
           {/* Mobile Layout (flex-row) */}
           <div className="md:hidden flex w-full justify-between items-center h-16">
             <button className="p-2 text-black">
@@ -25,7 +34,7 @@ export default function Navbar() {
               <img
                 src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/dc8d1fa4-c438-415b-9193-ec3ecbfcd796/topf-deckel-stadtkantine.png?format=1500w"
                 alt="Topf & Deckel Logo"
-                className="h-12 w-auto object-contain"
+                className="h-[80px] w-auto object-contain"
               />
             </Link>
             <Link href="/store" className="p-2 text-black hover:text-[#6CB78E] transition-colors relative group">
@@ -37,17 +46,17 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Layout */}
-          
+
           {/* Top Row: Centered Logo + Cart on right */}
           <div className="hidden md:flex w-full justify-center relative mb-4">
             <Link href="/">
               <img
                 src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/dc8d1fa4-c438-415b-9193-ec3ecbfcd796/topf-deckel-stadtkantine.png?format=1500w"
                 alt="Topf & Deckel Logo"
-                className="h-[120px] w-auto object-contain"
+                className="h-[220px] w-auto object-contain"
               />
             </Link>
-            
+
             <div className="absolute right-0 bottom-0 flex items-center">
               <Link href="/store" className="p-2 text-black hover:text-[#6CB78E] transition-colors relative group flex items-center">
                 <ShoppingCart className="h-6 w-6" />
@@ -61,18 +70,18 @@ export default function Navbar() {
           {/* Bottom Row: Navigation Links */}
           <div className="hidden md:flex items-center space-x-10">
             {/* Menü Dropdown */}
-            <div 
+            <div
               className="relative"
               onMouseEnter={() => setIsMenuOpen(true)}
               onMouseLeave={() => setIsMenuOpen(false)}
             >
-              <button className="flex items-center text-black hover:text-gray-600 font-sans text-[13px] font-semibold tracking-wide transition-colors py-2">
-                Menü <ChevronDown className={`ml-1 h-4 w-4 transition-transform ${isMenuOpen ? 'rotate-180' : ''}`} />
+              <button className="flex items-center text-black hover:text-gray-600 font-sans text-[18px] font-semibold tracking-wide transition-colors py-2">
+                Menü <ChevronDown className={`ml-1 h-5 w-5 transition-transform ${isMenuOpen ? 'rotate-180' : ''}`} />
               </button>
-              
+
               {isMenuOpen && (
                 <div className="absolute top-full left-1/2 -translate-x-1/2 w-48 bg-white shadow-xl py-2 flex flex-col z-50">
-                  <Link href="/tageskarte" className="px-6 py-3 text-sm text-black hover:text-gray-500 transition-colors font-sans font-medium text-center">
+                  <Link href="/#tageskarte" className="px-6 py-3 text-[15px] xl:text-sm text-black hover:text-gray-500 transition-colors font-sans font-medium text-center">
                     Tageskarte
                   </Link>
                   <Link href="/wochenmenu" className="px-6 py-3 text-sm text-black hover:text-gray-500 transition-colors font-sans font-medium text-center">
@@ -82,26 +91,26 @@ export default function Navbar() {
               )}
             </div>
 
-            <Link href="/standorte" className="text-black hover:text-gray-600 font-sans text-[13px] font-semibold tracking-wide transition-colors py-2">
+            <Link href="/standorte" className="text-black hover:text-gray-600 font-sans text-[18px] font-semibold tracking-wide transition-colors py-2">
               Standorte
             </Link>
-            <Link href="/office-catering" className="text-black hover:text-gray-600 font-sans text-[13px] font-semibold tracking-wide transition-colors py-2">
+            <Link href="/office-catering" className="text-black hover:text-gray-600 font-sans text-[18px] font-semibold tracking-wide transition-colors py-2">
               Office Catering
             </Link>
-            <Link href="/events-partys" className="text-black hover:text-gray-600 font-sans text-[13px] font-semibold tracking-wide transition-colors py-2">
+            <Link href="/events-partys" className="text-black hover:text-gray-600 font-sans text-[18px] font-semibold tracking-wide transition-colors py-2">
               Events & Partys
             </Link>
-            
+
             {/* Mehr Dropdown */}
-            <div 
+            <div
               className="relative"
               onMouseEnter={() => setIsMehrOpen(true)}
               onMouseLeave={() => setIsMehrOpen(false)}
             >
-              <button className="flex items-center text-black hover:text-gray-600 font-sans text-[13px] font-semibold tracking-wide transition-colors py-2">
-                Mehr <ChevronDown className={`ml-1 h-4 w-4 transition-transform ${isMehrOpen ? 'rotate-180' : ''}`} />
+              <button className="flex items-center text-black hover:text-gray-600 font-sans text-[18px] font-semibold tracking-wide transition-colors py-2">
+                Mehr <ChevronDown className={`ml-1 h-5 w-5 transition-transform ${isMehrOpen ? 'rotate-180' : ''}`} />
               </button>
-              
+
               {isMehrOpen && (
                 <div className="absolute top-full left-1/2 -translate-x-1/2 w-48 bg-white shadow-xl py-2 flex flex-col z-50">
                   <Link href="/unsere-geschichte" className="px-6 py-3 text-sm text-black hover:text-gray-500 transition-colors font-sans font-medium text-center">

@@ -1,86 +1,308 @@
-import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+'use client';
+
+import { useState } from 'react';
+
+const accordionItems = [
+  {
+    title: 'Corporate',
+    content: 'Business Lunch, Teamfeier oder Office-Eröffnung – wir liefern unkompliziert, pünktlich und mit Stil.',
+    image: 'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/00c81532-dd48-4732-8291-09f753044669/dish_01.jpg?format=750w',
+  },
+  {
+    title: 'Veranstaltungen und Feiern',
+    content: 'Wir sind bestrebt, Ihre Erwartungen zu übertreffen, indem wir für jeden Anlass hochwertige, frische und gesunde Speisen anbieten. Sie können darauf vertrauen, dass Ihre Veranstaltung in zuverlässigen Händen ist.',
+    image: 'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884101489-ULY41VQVSJ3W6KTYMUKS/pexels-abie-zerosix-441402-1748865.jpg?format=750w',
+  },
+  {
+    title: 'Ganztagsevents',
+    content: 'Von Brunch bis Dinner - ganztägiges Catering, das den Tag rund macht. Und die Gäste glücklich.',
+    image: 'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/00c81532-dd48-4732-8291-09f753044669/dish_01.jpg?format=750w',
+  },
+];
+
+const testimonials = [
+  {
+    quote: '\u201eDer Geburtstag meiner Tochter war ein Traum. Das Essen war ein Highlight – wunderschön angerichtet und richtig lecker.\u201c',
+    name: 'Maria Gruber',
+    image: 'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/2e0680c7-b85a-40b5-87e8-8764db4e49b8/pexels-rdne-8384330.jpg?format=500w',
+    align: 'left' as const,
+  },
+  {
+    quote: 'Unsere Hochzeit war perfekt! Das Essen war fantastisch, die Präsentation wunderschön – unsere Gäste reden heute noch darüber.',
+    name: 'Dominik and Anna',
+    image: 'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884101489-ULY41VQVSJ3W6KTYMUKS/pexels-abie-zerosix-441402-1748865.jpg?format=500w',
+    align: 'right' as const,
+  },
+  {
+    quote: '\u201eUnser Familienfest war ein voller Erfolg. Topf & Deckel hat alle Ernährungswünsche berücksichtigt – Service und Essen waren top!\u201c',
+    name: 'Johanna Bauer',
+    image: 'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884101513-YA9G989BP5EU4G38LD8J/unsplash-image-L8kMx3rzt7s.jpg?format=500w',
+    align: 'left' as const,
+  },
+];
+
+const galleryImages = [
+  'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884094283-EHBVF808MHOR0JDSOI9W/pexels-navada-ra-628779-1703272.jpg?format=750w',
+  'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/45c79e90-9a9b-4e2f-bbb9-72182bcaee6e/pexels-alesiakozik-6632286.jpg?format=750w',
+  'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884094300-YF4ILTUWQ30H18BEG76L/pexels-ella-olsson-572949-3026801.jpg?format=750w',
+  'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884094308-I9TFPMV6JSK1M4HK40W6/pexels-alesiakozik-6544378.jpg?format=750w',
+  'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884094316-55GI81S6YTQKTYUFPCZ3/pexels-sydney-troxell-223521-718742.jpg?format=750w',
+  'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884094322-6F2RKF5Y0WMC7W3KIMYG/pexels-roman-odintsov-5150558.jpg?format=750w',
+];
+
+const foodGallery = [
+  'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/31116196-502d-4cd8-bca0-85f5e92f6d99/events-and-parties_03.jpg?format=750w',
+  'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1762352009897-CWFBJN9BF7K35OKPBKNH/events-and-parties_01.jpg?format=750w',
+  'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/8b5e16ee-fae6-43cf-9e8d-f0994d7c25f7/events-and-parties_04.jpg?format=750w',
+  'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/9b8daee5-7f19-4751-97fb-54d896468eb9/events-and-parties_02.jpg?format=750w',
+];
 
 export default function EventsPartysPage() {
-  return (
-    <main className="min-h-screen pt-24 bg-background font-body pb-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center mb-24">
-          <div>
-            <h1 className="text-4xl md:text-5xl font-sans font-extrabold text-foreground mb-6 leading-tight">
-              Catering, das Eindruck hinterlässt. Und schmeckt.
-            </h1>
-            <p className="text-lg text-muted-foreground mb-6">
-              Von bunten Bowls bis zu vollwertigen Hauptgerichten: Unser Catering bringt Geschmack, Freude und Leichtigkeit in jedes Event.
-            </p>
-            <p className="text-lg text-muted-foreground mb-8">
-              Business Lunch, Teamfeier oder Office-Eröffnung – wir liefern unkompliziert, pünktlich und mit Stil.
-            </p>
-            <Link
-              href="/kontakt"
-              className="inline-flex items-center px-8 py-4 bg-primary text-primary-foreground hover:bg-primary/90 rounded-full font-sans font-bold text-lg transition-colors shadow-lg hover:shadow-xl"
-            >
-              Jetzt anfragen
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 gap-4">
-            <img
-              src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/00c81532-dd48-4732-8291-09f753044669/dish_01.jpg?format=1500w"
-              alt="Catering"
-              className="w-full h-[300px] object-cover rounded-2xl shadow-xl"
-            />
-            <img
-              src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884101489-ULY41VQVSJ3W6KTYMUKS/pexels-abie-zerosix-441402-1748865.jpg?format=1500w"
-              alt="Party Catering"
-              className="w-full h-[200px] object-cover rounded-2xl shadow-xl"
-            />
-          </div>
-        </div>
+  const [openAccordion, setOpenAccordion] = useState<number>(-1);
 
-        <div className="mb-24 text-center max-w-4xl mx-auto">
-          <p className="text-xl md:text-2xl font-sans font-bold text-foreground leading-relaxed">
-            Wir sind bestrebt, Ihre Erwartungen zu übertreffen, indem wir für jeden Anlass hochwertige, frische und gesunde Speisen anbieten. Sie können darauf vertrauen, dass Ihre Veranstaltung in zuverlässigen Händen ist.
+  return (
+    <main className="min-h-screen bg-white font-body">
+
+      {/* ═══ HERO ═══ */}
+      <section className="relative h-[45vh] min-h-[280px] w-full flex flex-col items-center justify-center">
+        <div className="absolute inset-0 z-0">
+          <video src="/video/catering-events.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-black/40"></div>
+        </div>
+        <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 max-w-4xl mx-auto">
+          <h1 className="text-white text-4xl sm:text-5xl md:text-[56px] font-sans font-extrabold tracking-tight drop-shadow-md leading-[1.15]">
+            Catering, das Eindruck hinterlässt. Und schmeckt.
+          </h1>
+        </div>
+      </section>
+
+      {/* ═══ INTRO ═══ */}
+      <section className="py-20 px-4">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-3xl md:text-[40px] font-sans font-bold text-[#6CB78E] mb-6 leading-tight">
+            Individuelles Event-Catering – frisch, flexibel, besonders.
+          </h2>
+          <p className="text-lg md:text-xl text-[#2C2C2C] leading-relaxed">
+            Von bunten Bowls bis zu vollwertigen Hauptgerichten: Unser Catering bringt Geschmack, Freude und Leichtigkeit in jedes Event.
           </p>
         </div>
+      </section>
 
-        {/* Testimonials */}
-        <div className="bg-secondary/30 rounded-3xl p-8 md:p-12 mb-24">
-          <h2 className="text-3xl font-sans font-bold text-center mb-12">Das sagen unsere Kunden</h2>
+      {/* ═══ 3-COLUMN ACCORDION ═══ */}
+      <section className="py-16 px-4">
+        <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-card p-8 rounded-2xl shadow-md border border-border">
-              <div className="h-12 w-12 rounded-full overflow-hidden mb-6 mx-auto">
-                <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/2e0680c7-b85a-40b5-87e8-8764db4e49b8/pexels-rdne-8384330.jpg?format=300w" alt="Maria Gruber" className="w-full h-full object-cover" />
+            {accordionItems.map((item, i) => (
+              <div key={i} className="flex flex-col">
+                <div className="relative overflow-hidden rounded-sm mb-4" style={{ height: '400px' }}>
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="border-t border-b border-[#2C2C2C]">
+                  <button
+                    onClick={() => setOpenAccordion(openAccordion === i ? -1 : i)}
+                    className="w-full flex items-center justify-between py-4 text-left"
+                  >
+                    <span className="text-lg font-sans font-bold text-[#2C2C2C]">
+                      {item.title}
+                    </span>
+                    <span className="text-2xl text-[#2C2C2C] font-light leading-none">
+                      {openAccordion === i ? '−' : '+'}
+                    </span>
+                  </button>
+                  <div
+                    className={`overflow-hidden transition-all duration-300 ${openAccordion === i ? 'max-h-40 pb-4' : 'max-h-0'}`}
+                  >
+                    <p className="text-[#555] text-base leading-relaxed">
+                      {item.content}
+                    </p>
+                  </div>
+                </div>
               </div>
-              <p className="italic text-muted-foreground mb-6">“Der Geburtstag meiner Tochter war ein Traum. Das Essen war ein Highlight – wunderschön angerichtet und richtig lecker.”</p>
-              <p className="font-bold text-center">- Maria Gruber</p>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ CTA SECTION ═══ */}
+      <section className="py-16 px-4">
+        <div className="max-w-3xl mx-auto text-center">
+          <p className="text-lg md:text-xl text-[#2C2C2C] leading-relaxed mb-8">
+            Ob kleines Fest oder große Feier. Wir schaffen kulinarische Erlebnisse, die im Gedächtnis bleiben – damit du selbst Gast auf deinem eigenen Event sein kannst.
+          </p>
+          <a
+            href="#events-partys-form"
+            className="inline-block bg-[#2C2C2C] hover:bg-[#444] text-white font-sans font-bold text-sm uppercase tracking-widest px-10 py-4 transition-colors duration-300"
+          >
+            Anfrage Senden
+          </a>
+        </div>
+      </section>
+
+      {/* ═══ TESTIMONIALS ═══ */}
+      <section className="py-24 px-4 bg-[#e4ede8]">
+        <div className="max-w-5xl mx-auto space-y-20">
+          {testimonials.map((t, i) => (
+            <div
+              key={i}
+              className={`flex flex-col md:flex-row items-center gap-8 md:gap-16 ${t.align === 'left' ? 'md:flex-row' : 'md:flex-row-reverse'}`}
+            >
+              <img
+                src={t.image}
+                alt={t.name}
+                className="w-28 h-28 rounded-full object-cover flex-shrink-0"
+              />
+              <div>
+                <blockquote className="text-[#2C2C2C] text-2xl md:text-3xl font-sans font-bold leading-snug mb-4">
+                  {t.quote}
+                </blockquote>
+                <p className="text-[#555] text-base">
+                  {t.name}
+                </p>
+              </div>
             </div>
-            <div className="bg-card p-8 rounded-2xl shadow-md border border-border">
-              <div className="h-12 w-12 rounded-full overflow-hidden mb-6 mx-auto">
-                <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884101509-SY2NASRVNKZL4VTM4PAQ/unsplash-image-ABgnuktbi8s.jpg?format=300w" alt="Dominik und Anna" className="w-full h-full object-cover" />
-              </div>
-              <p className="italic text-muted-foreground mb-6">"Unsere Hochzeit war perfekt! Das Essen war fantastisch, die Präsentation wunderschön – unsere Gäste reden heute noch darüber."</p>
-              <p className="font-bold text-center">- Dominik und Anna</p>
+          ))}
+        </div>
+      </section>
+
+      {/* ═══ FOOD GALLERY ═══ */}
+      <section className="py-16 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="aspect-square overflow-hidden">
+              <img src={foodGallery[0]} alt="Food spread 1" className="w-full h-full object-cover" />
             </div>
-            <div className="bg-card p-8 rounded-2xl shadow-md border border-border">
-              <div className="h-12 w-12 rounded-full overflow-hidden mb-6 mx-auto">
-                <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884101513-YA9G989BP5EU4G38LD8J/unsplash-image-L8kMx3rzt7s.jpg?format=300w" alt="Johanna Bauer" className="w-full h-full object-cover" />
+            <div className="space-y-6">
+              <div className="aspect-[4/3] overflow-hidden">
+                <img src={foodGallery[1]} alt="Food spread 2" className="w-full h-full object-cover" />
               </div>
-              <p className="italic text-muted-foreground mb-6">“Unser Familienfest war ein voller Erfolg. Topf & Deckel hat alle Ernährungswünsche berücksichtigt – Service und Essen waren top!”</p>
-              <p className="font-bold text-center">- Johanna Bauer</p>
+              <div className="aspect-[4/3] overflow-hidden">
+                <img src={foodGallery[3]} alt="Food spread 4" className="w-full h-full object-cover" />
+              </div>
+            </div>
+            <div className="aspect-square overflow-hidden">
+              <img src={foodGallery[2]} alt="Food spread 3" className="w-full h-full object-cover" />
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Gallery */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-24">
-          <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/31116196-502d-4cd8-bca0-85f5e92f6d99/events-and-parties_03.jpg?format=500w" className="w-full h-64 object-cover rounded-xl" alt="Event" />
-          <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1762352009897-CWFBJN9BF7K35OKPBKNH/events-and-parties_01.jpg?format=500w" className="w-full h-64 object-cover rounded-xl" alt="Event" />
-          <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/8b5e16ee-fae6-43cf-9e8d-f0994d7c25f7/events-and-parties_04.jpg?format=500w" className="w-full h-64 object-cover rounded-xl" alt="Event" />
-          <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/9b8daee5-7f19-4751-97fb-54d896468eb9/events-and-parties_02.jpg?format=500w" className="w-full h-64 object-cover rounded-xl" alt="Event" />
+      {/* ═══ CONTACT FORM ═══ */}
+      <section id="events-partys-form" className="py-20 px-4">
+        <div className="max-w-2xl mx-auto">
+          <h2 className="text-3xl md:text-[40px] font-accent font-bold italic text-center text-[#6CB78E] mb-4 leading-tight">
+            Lust auf gutes Catering?
+          </h2>
+          <p className="text-center text-[#2C2C2C] text-lg mb-10">
+            Sag uns, was du planst – wir melden uns in Kürze mit einem individuellen Vorschlag zurück.
+          </p>
+          <div className="bg-[#e8f0ec] rounded-2xl p-8 md:p-10">
+            <form
+              className="space-y-6"
+              onSubmit={(e) => {
+                e.preventDefault();
+                const formData = new FormData(e.currentTarget);
+                const subject = encodeURIComponent('Events & Partys Anfrage');
+                const body = encodeURIComponent(
+                  `Name: ${formData.get('firstName')} ${formData.get('lastName')}\nE-Mail: ${formData.get('email')}\nAnzahl Gäste: ${formData.get('guests')}\n\nNachricht:\n${formData.get('message')}`
+                );
+                window.location.href = `mailto:info@topfdeckel.at?subject=${subject}&body=${body}`;
+              }}
+            >
+              {/* Namen */}
+              <div>
+                <p className="text-sm font-sans font-bold text-[#2C2C2C] mb-3">Namen</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm text-[#555] mb-1">Vorname <span className="text-[#999]">(erforderlich)</span></label>
+                    <input
+                      name="firstName"
+                      type="text"
+                      required
+                      className="w-full border-0 border-b-2 border-[#ccc] bg-[#f5f9f7] px-3 py-2.5 text-base focus:outline-none focus:border-[#6CB78E] transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm text-[#555] mb-1">Nachname <span className="text-[#999]">(erforderlich)</span></label>
+                    <input
+                      name="lastName"
+                      type="text"
+                      required
+                      className="w-full border-0 border-b-2 border-[#ccc] bg-[#f5f9f7] px-3 py-2.5 text-base focus:outline-none focus:border-[#6CB78E] transition-colors"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Email */}
+              <div>
+                <label className="block text-sm font-sans font-bold text-[#2C2C2C] mb-1">Email <span className="text-[#999] font-normal">(erforderlich)</span></label>
+                <input
+                  name="email"
+                  type="email"
+                  required
+                  className="w-full border-0 border-b-2 border-[#ccc] bg-[#f5f9f7] px-3 py-2.5 text-base focus:outline-none focus:border-[#6CB78E] transition-colors"
+                />
+              </div>
+
+              {/* Wie viele Gäste? */}
+              <div>
+                <label className="block text-sm font-sans font-bold text-[#2C2C2C] mb-1">Wie viele Gäste? <span className="text-[#999] font-normal">(erforderlich)</span></label>
+                <select
+                  name="guests"
+                  required
+                  className="w-full border-0 border-b-2 border-[#ccc] bg-[#f5f9f7] px-3 py-2.5 text-base focus:outline-none focus:border-[#6CB78E] transition-colors appearance-none"
+                  defaultValue=""
+                >
+                  <option value="" disabled>Auswählen</option>
+                  <option value="10-25">10–25 Personen</option>
+                  <option value="25-50">25–50 Personen</option>
+                  <option value="50-100">50–100 Personen</option>
+                  <option value="100-200">100–200 Personen</option>
+                  <option value="200+">200+ Personen</option>
+                </select>
+              </div>
+
+              {/* Nachricht */}
+              <div>
+                <label className="block text-sm font-sans font-bold text-[#2C2C2C] mb-1">Nachricht</label>
+                <textarea
+                  name="message"
+                  rows={4}
+                  placeholder="Sag' uns was du brauchst oder stell' uns eine Frage..."
+                  className="w-full border-0 border-b-2 border-[#ccc] bg-[#f5f9f7] px-3 py-2.5 text-base focus:outline-none focus:border-[#6CB78E] transition-colors resize-none"
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-[#2C2C2C] hover:bg-[#6CB78E] text-white font-sans font-bold text-sm uppercase tracking-widest py-4 transition-colors duration-300"
+              >
+                Anfrage abschicken
+              </button>
+            </form>
+          </div>
         </div>
+      </section>
 
-      </div>
+      {/* ═══ INSTAGRAM GRID ═══ */}
+      <section className="w-full">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+          {galleryImages.map((src, i) => (
+            <div key={i} className="aspect-square overflow-hidden">
+              <img
+                src={src}
+                alt={`Food ${i + 1}`}
+                className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+              />
+            </div>
+          ))}
+        </div>
+      </section>
+
     </main>
   );
 }

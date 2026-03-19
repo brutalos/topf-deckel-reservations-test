@@ -42,6 +42,39 @@ const PRICING: Record<string, any> = {
     dessert: { prices: { S: 4.50 }, weights: { S: 0 } }
 };
 
+export async function getRawWeeklyMenu(): Promise<Record<string, any>> {
+    try {
+        const response = await fetch(MENU_URL, { next: { revalidate: 3600 } });
+        if (!response.ok) return {};
+        const scriptText = await response.text();
+        const extractMenu = new Function(`${scriptText}; return typeof weeklyMenu !== 'undefined' ? weeklyMenu : null;`);
+        const rawMenu = extractMenu() || {};
+
+        // Fix salad miscategorization directly in the raw data
+        for (const dayKey of Object.keys(rawMenu)) {
+            const dayData = rawMenu[dayKey];
+            if (dayData && Array.isArray(dayData.starters)) {
+                const actualStarters = [];
+                for (const item of dayData.starters) {
+                    if (item && item.name && item.name.toLowerCase().includes('salat') && !item.name.toLowerCase().includes('haussalat')) {
+                        // Move this item to the salad property
+                        if (!dayData.salad || !dayData.salad.name) {
+                            dayData.salad = item;
+                        }
+                    } else {
+                        actualStarters.push(item);
+                    }
+                }
+                dayData.starters = actualStarters;
+            }
+        }
+
+        return rawMenu;
+    } catch {
+        return {};
+    }
+}
+
 export async function getDynamicMenu(): Promise<any[]> {
     try {
         // next: { revalidate: 3600 } caches the result for 1 hour on the server
@@ -107,7 +140,7 @@ export async function getDynamicMenu(): Promise<any[]> {
                 if (!item || !item.name || item.name.trim() === '') return;
 
                 let actualType = type;
-                if (type === 'starters' && item.name.toLowerCase().includes('salat')) {
+                if (type === 'starters' && item.name.toLowerCase().includes('salat') && !item.name.toLowerCase().includes('haussalat')) {
                     actualType = 'salad';
                 }
 

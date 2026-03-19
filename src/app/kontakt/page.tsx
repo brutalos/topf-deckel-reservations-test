@@ -3,9 +3,9 @@ import { Send } from 'lucide-react';
 
 export default function KontaktPage() {
   return (
-    <main className="min-h-screen pt-24 bg-background font-body pb-20">
+    <main className="min-h-screen pt-12 bg-background font-body pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-sans font-extrabold text-foreground mb-6 leading-tight">
             Hast du Fragen?
@@ -27,7 +27,7 @@ export default function KontaktPage() {
                 <input type="text" className="w-full p-4 border border-border rounded-xl bg-background focus:ring-2 focus:ring-primary outline-none transition-all" required />
               </div>
             </div>
-            
+
             <div className="space-y-2">
               <label className="text-sm font-bold text-foreground">E-Mail Adresse *</label>
               <input type="email" className="w-full p-4 border border-border rounded-xl bg-background focus:ring-2 focus:ring-primary outline-none transition-all" required />

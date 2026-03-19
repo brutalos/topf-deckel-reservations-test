@@ -3,17 +3,24 @@ import { ArrowRight, CheckCircle2 } from 'lucide-react';
 
 export default function JobsPage() {
   return (
-    <main className="min-h-screen pt-24 bg-background font-body pb-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-sans font-extrabold text-foreground mb-6 leading-tight">
+    <main className="min-h-screen pt-12 bg-background font-body pb-20">
+      {/* Hero Video Section */}
+      <section className="relative h-[60vh] min-h-[400px] w-full flex flex-col items-center justify-center mb-16">
+        <div className="absolute inset-0 z-0">
+          <video src="/video/jobs-franchise.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-black/50"></div>
+        </div>
+        <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 max-w-4xl mx-auto">
+          <h1 className="text-white text-4xl sm:text-5xl md:text-[72px] font-sans font-extrabold mb-6 tracking-tight drop-shadow-md leading-[1.1]">
             We’re hiring – komm in unser Team!
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-white/90 text-lg md:text-xl font-medium drop-shadow">
             Ob Berufseinsteiger:in oder Gastro-Profi: Bei Topf & Deckel lernst du dazu, findest Freunde – und sorgst mit gutem Essen dafür, dass die Stadt weiterläuft.
           </p>
         </div>
+      </section>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Mission */}
         <div className="mb-24">
