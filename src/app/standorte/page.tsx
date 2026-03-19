@@ -1,0 +1,136 @@
+import Link from 'next/link';
+
+export default function StandortePage() {
+  return (
+    <main className="min-h-screen pt-24 bg-background font-body pb-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-5xl font-sans font-extrabold text-foreground mb-4">
+            Hier isst die Stadt
+          </h1>
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+            Lunch-Spots, die hängenbleiben. Bereits 5 Mal in Wien.
+          </p>
+        </div>
+
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-sans font-bold text-foreground mb-4">
+            Mittags gut essen. Ohne Umwege.
+          </h2>
+        </div>
+
+        <div className="space-y-24">
+          {/* Gumpendorfer */}
+          <section id="gumpendorfer" className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div className="order-2 md:order-1">
+              <img
+                src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/f215cea4-c02a-4a0b-baf5-b0424741478b/Store+Gumpendorfer.png?format=1000w"
+                alt="Store Gumpendorfer"
+                className="w-full max-w-sm mb-6"
+              />
+              <p className="text-lg text-muted-foreground mb-6">
+                Unser Standort im 6. Bezirk – urban, gemütlich, mit täglich frischer Auswahl.
+              </p>
+              <div className="bg-secondary/30 p-6 rounded-2xl border border-border">
+                <p className="font-bold text-foreground text-lg mb-2">Gumpendorfer Straße 66, 1060 Wien</p>
+                <p className="text-muted-foreground">Geöffnet: Mo.–Fr. 11:00–15:00 Uhr</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4 h-[400px] order-1 md:order-2">
+              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/9ca288dd-6414-4089-ba9c-94a4ec0fa637/281A6248.jpg?format=1000w" className="w-full h-full object-cover rounded-xl" alt="Location" />
+              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/0efecb50-37c3-4f1f-a28a-006d6c02425c/gumpendorfer.jpg?format=1000w" className="w-full h-full object-cover rounded-xl" alt="Location" />
+            </div>
+          </section>
+
+          {/* Schottengasse */}
+          <section id="schottengasse" className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div className="grid grid-cols-2 gap-4 h-[400px]">
+              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/547d7e94-c0b9-46bb-954f-bedb59cc9a1a/281A6996.jpg?format=1000w" className="w-full h-full object-cover rounded-xl" alt="Location" />
+              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/2e41cf0d-0625-4ecf-bbee-40867f2da3b0/281A7025.jpg?format=1000w" className="w-full h-full object-cover rounded-xl" alt="Location" />
+            </div>
+            <div>
+              <img
+                src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884087645-EQNMXVA34S9MQ8FDD2XI/Store+Schottengasse.png?format=1000w"
+                alt="Store Schottengasse"
+                className="w-full max-w-sm mb-6"
+              />
+              <p className="text-lg text-muted-foreground mb-6">
+                Hier hat alles begonnen – klassisch, charmant, immer gut besucht.
+              </p>
+              <div className="bg-secondary/30 p-6 rounded-2xl border border-border">
+                <p className="font-bold text-foreground text-lg mb-2">Schottengasse 3, 1010 Wien</p>
+                <p className="text-muted-foreground">Geöffnet: Mo.–Fr. 11:00–15:00 Uhr</p>
+              </div>
+            </div>
+          </section>
+
+          {/* Judengasse */}
+          <section id="judengasse" className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div className="order-2 md:order-1">
+              <img
+                src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884087668-9PW5KLLF3RW4344VNV2M/Store+Judengasse.png?format=1000w"
+                alt="Store Judengasse"
+                className="w-full max-w-sm mb-6"
+              />
+              <p className="text-lg text-muted-foreground mb-6">
+                Unweit vom Schwedenplatz – klein, schnell und voller Geschmack.
+              </p>
+              <div className="bg-secondary/30 p-6 rounded-2xl border border-border">
+                <p className="font-bold text-foreground text-lg mb-2">Judengasse 1, 1010 Wien</p>
+                <p className="text-muted-foreground">Geöffnet: Mo.–Fr. 11:00–15:00 Uhr</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4 h-[400px] order-1 md:order-2">
+              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/9137a0d1-35da-4f17-bc66-166643c41e8d/281A7254.jpg?format=1000w" className="w-full h-full object-cover rounded-xl" alt="Location" />
+              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/d12e9087-34d4-4f21-a675-3708c45a1c73/judengasse.jpg?format=1000w" className="w-full h-full object-cover rounded-xl" alt="Location" />
+            </div>
+          </section>
+
+          {/* Wipplingerstraße */}
+          <section id="wipplingerstrae" className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div className="grid grid-cols-2 gap-4 h-[400px]">
+              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/28ce4056-40bf-43cd-9ce9-5e88e8beedeb/281A7224-2.jpg?format=1000w" className="w-full h-full object-cover rounded-xl" alt="Location" />
+              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/091d161a-40cb-4294-b814-40ddcdb70355/wipplinger.jpg?format=1000w" className="w-full h-full object-cover rounded-xl" alt="Location" />
+            </div>
+            <div>
+              <img
+                src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884087682-OLTBURFRJY85KN47IEFD/Store+Wipplingerstra%C3%9Fe.png?format=1000w"
+                alt="Store Wipplingerstraße"
+                className="w-full max-w-sm mb-6"
+              />
+              <p className="text-lg text-muted-foreground mb-6">
+                Mitten im ersten Bezirk – stylisch, zentral, perfekt für dein Office-Lunch.
+              </p>
+              <div className="bg-secondary/30 p-6 rounded-2xl border border-border">
+                <p className="font-bold text-foreground text-lg mb-2">Wipplingerstraße 22, 1010 Wien</p>
+                <p className="text-muted-foreground">Geöffnet: Mo.–Fr. 11:00–15:00 Uhr</p>
+              </div>
+            </div>
+          </section>
+
+          {/* Vorgartenstraße */}
+          <section id="vorgartenstrae" className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div className="order-2 md:order-1">
+              <img
+                src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/0b3b90a6-4a21-4b65-a7c4-18610d7b93da/Store+Vorgartenstrasse.png?format=1000w"
+                alt="Store Vorgartenstraße"
+                className="w-full max-w-sm mb-6"
+              />
+              <p className="text-lg text-muted-foreground mb-6">
+                Mitten im BIZ ZWEI, direkt am Wasser – urbaner geht’s kaum, entspannter auch nicht.
+              </p>
+              <div className="bg-secondary/30 p-6 rounded-2xl border border-border">
+                <p className="font-bold text-foreground text-lg mb-2">Vorgartenstraße 206B, 1020 Wien</p>
+                <p className="text-muted-foreground">Geöffnet: Mo.–Fr. 11:00–15:00 Uhr</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4 h-[400px] order-1 md:order-2">
+              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1c7012bf-2e63-4c9d-b748-fa7b44477007/vorgartenstrasse_02.jpg?format=1000w" className="w-full h-full object-cover rounded-xl" alt="Location" />
+              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/ad073d4a-2f7a-49f6-a4a8-84b27a57c643/vorgartenstrasse_01.jpg?format=1000w" className="w-full h-full object-cover rounded-xl" alt="Location" />
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+  );
+}

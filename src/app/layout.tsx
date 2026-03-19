@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { Public_Sans, Cabin, Epilogue } from 'next/font/google';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import './globals.css';
 
 const publicSans = Public_Sans({
@@ -41,7 +43,9 @@ export default function RootLayout({
       <body
         className={`${publicSans.variable} ${cabin.variable} ${epilogue.variable} font-sans antialiased bg-[#FFFFFF] text-[#2C2C2C]`}
       >
+        <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );
