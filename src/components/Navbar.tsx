@@ -17,6 +17,8 @@ export default function Navbar() {
   // Also hiding on individual shop pages (e.g. /[storeId]) to restore their isolated look
   if (
     pathname === '/store' ||
+    pathname.includes('/track') ||
+    pathname.includes('/admin') ||
     (pathname.match(/^\/[a-zA-Z0-9-]+$/) && !['/tageskarte', '/wochenmenu', '/standorte', '/office-catering', '/events-partys', '/unsere-geschichte', '/franchise', '/jobs', '/kontakt'].includes(pathname))
   ) {
     return null;

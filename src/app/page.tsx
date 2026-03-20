@@ -1,6 +1,44 @@
 import Link from 'next/link';
+import { getRawWeeklyMenu } from '@/lib/menuFetcher';
 
-export default function HomePage() {
+export const revalidate = 3600;
+
+export default async function HomePage() {
+  const weeklyMenu = await getRawWeeklyMenu();
+
+  const now = new Date();
+  const daysOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+  let dayKey = daysOfWeek[now.getDay()];
+  if (dayKey === 'saturday' || dayKey === 'sunday' || !weeklyMenu[dayKey]) {
+    dayKey = 'monday'; // default fallback if weekend or day missing
+  }
+
+  const currentMenu = weeklyMenu[dayKey] || {};
+
+  const renderBadge = (dietary: string[]) => {
+    if (!dietary) return null;
+    if (dietary.includes('veg')) return <span className="inline-block px-2 py-0.5 bg-[#059669] text-white text-[10px] font-bold rounded-full align-middle ml-2">VEGGIE</span>;
+    if (dietary.includes('vg')) return <span className="inline-block px-2 py-0.5 bg-[#0d9488] text-white text-[10px] font-bold rounded-full align-middle ml-2">VEG</span>;
+    if (dietary.includes('gf')) return <span className="inline-block px-2 py-0.5 bg-[#fbbf24] text-black text-[10px] font-bold rounded-full align-middle ml-2">GF</span>;
+    if (dietary.includes('lf')) return <span className="inline-block px-2 py-0.5 bg-[#7dd3fc] text-black text-[10px] font-bold rounded-full align-middle ml-2">LF</span>;
+    return null;
+  };
+
+  const renderItemSimple = (item: any) => {
+    if (!item || !item.name) return null;
+    return (
+      <div key={item.id || item.name}>
+        <h5 className="text-lg font-bold text-black mb-1 leading-tight">
+          {item.name} {renderBadge(item.dietary)}
+        </h5>
+        {item.description && <p className="text-gray-600 text-sm">{item.description}</p>}
+      </div>
+    );
+  };
+
+  const dateOptions: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  const dateString = now.toLocaleDateString('de-AT', dateOptions);
+
   return (
     <main className="min-h-screen font-sans">
 
@@ -35,7 +73,7 @@ export default function HomePage() {
         <div className="max-w-[1200px] mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-[#6CB78E] text-[2.5rem] md:text-[3.5rem] font-extrabold tracking-tight mb-4 leading-[1.1]">Was heute<br className="md:hidden" />auf den Teller kommt</h2>
-            <p className="text-black font-medium text-lg md:text-xl">Donnerstag, 19. März 2026</p>
+            <p className="text-black font-medium text-lg md:text-xl">{dateString}</p>
           </div>
 
           {/* Promo Cards */}
@@ -84,72 +122,60 @@ export default function HomePage() {
           </div>
 
           {/* Menu Items Preview */}
-          <div className="flex flex-col gap-10">
-            {/* Starters */}
-            <div>
-              <div className="flex justify-between items-baseline border-b border-gray-200 pb-2 mb-4">
-                <h4 className="text-xl font-bold text-black m-0">Starters</h4>
-                <div className="text-sm">KLEIN <strong>€4.90</strong> / GROSS <strong>€6.90</strong></div>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <h5 className="text-lg font-bold text-black mb-1">Paprika-Zucchinisuppe <span className="inline-block px-2 py-0.5 bg-[#059669] text-white text-[10px] font-bold rounded-full align-middle ml-2">VEGGIE</span></h5>
-                  <p className="text-gray-600 text-sm">L, M, O</p>
-                </div>
-              </div>
+          {!currentMenu.starters ? (
+            <div className="text-center font-bold text-black py-12 mb-10">
+              Aktuell kein Menü für heute verfügbar.
             </div>
-
-            {/* Saladbowl */}
-            <div>
-              <div className="flex justify-between items-baseline border-b border-gray-200 pb-2 mb-4">
-                <h4 className="text-xl font-bold text-black m-0">Saladbowl</h4>
-                <div className="text-sm">KLEIN <strong>€7.50</strong> / GROSS <strong>€10.90</strong></div>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <h5 className="text-lg font-bold text-black mb-1">Haussalat <span className="inline-block px-2 py-0.5 bg-[#059669] text-white text-[10px] font-bold rounded-full align-middle ml-2">VEGGIE</span></h5>
-                </div>
-              </div>
-            </div>
-
-            {/* Main Dish */}
-            <div>
-              <div className="flex justify-between items-baseline border-b border-gray-200 pb-2 mb-4">
-                <h4 className="text-xl font-bold text-black m-0">Main Dish</h4>
-                <div className="text-sm">KLEIN <strong>€7.50</strong> / GROSS <strong>€11.90</strong></div>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-                <div>
-                  <h5 className="text-lg font-bold text-black mb-1 leading-tight">Chicken-Stroganoff in Senf-Rahmsauce mit Waldpilzen & Sauerrahm Dip</h5>
-                  <p className="text-black text-sm">mit Lankornreis (G, L, M, O)</p>
-                </div>
-                <div>
-                  <h5 className="text-lg font-bold text-black mb-1 leading-tight">Burritos Chili Con Carne mit Avocado-Guacamole, überbackenem Käse & grünem Salat</h5>
-                  <p className="text-black text-sm">(A, C, G, L, M, O)</p>
-                </div>
-                <div>
-                  <h5 className="text-lg font-bold text-black mb-1 leading-tight">Rote Rüben-Erdäpfel Gratin mit Feta, Walnüssen & grünem Salat <span className="inline-block px-2 py-0.5 bg-[#059669] text-white text-[10px] font-bold rounded-full align-middle ml-2">VEGGIE</span></h5>
-                  <p className="text-black text-sm">(G, L, M, O)</p>
-                </div>
-                <div>
-                  <h5 className="text-lg font-bold text-black mb-1 leading-tight">Steinpilz Gnocchi in Parmesansauce mit Ruccola & grünem Salat <span className="inline-block px-2 py-0.5 bg-[#059669] text-white text-[10px] font-bold rounded-full align-middle ml-2">VEGGIE</span></h5>
-                  <p className="text-black text-sm">(A, C, G, L, M, O)</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Dessert */}
-            <div>
-              <div className="flex justify-between items-baseline border-b border-gray-200 pb-2 mb-4">
-                <h4 className="text-xl font-bold text-black m-0">Dessert</h4>
-                <div className="text-sm"><strong>€4.50</strong></div>
-              </div>
+          ) : (
+            <div className="flex flex-col gap-10">
+              {/* Starters */}
               <div>
-                <h5 className="text-lg font-bold text-black mb-1">Erdbeer-Joghurt Schnitte <span className="inline-block px-2 py-0.5 bg-[#059669] text-white text-[10px] font-bold rounded-full align-middle ml-2">VEGGIE</span></h5>
-                <p className="text-black text-sm">self-made</p>
+                <div className="flex justify-between items-baseline border-b border-gray-200 pb-2 mb-4">
+                  <h4 className="text-xl font-bold text-black m-0">Starters</h4>
+                  <div className="text-sm">KLEIN <strong>€4.90</strong> / GROSS <strong>€6.90</strong></div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {currentMenu.starters?.map((i: any) => renderItemSimple(i))}
+                </div>
               </div>
+
+              {/* Saladbowl */}
+              {currentMenu.salad && currentMenu.salad.name && (
+                <div>
+                  <div className="flex justify-between items-baseline border-b border-gray-200 pb-2 mb-4">
+                    <h4 className="text-xl font-bold text-black m-0">Saladbowl</h4>
+                    <div className="text-sm">KLEIN <strong>€7.50</strong> / GROSS <strong>€10.90</strong></div>
+                  </div>
+                  {renderItemSimple(currentMenu.salad)}
+                </div>
+              )}
+
+              {/* Main Dish */}
+              <div>
+                <div className="flex justify-between items-baseline border-b border-gray-200 pb-2 mb-4">
+                  <h4 className="text-xl font-bold text-black m-0">Main Dish</h4>
+                  <div className="text-sm">KLEIN <strong>€7.50</strong> / GROSS <strong>€11.90</strong></div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                  {currentMenu.meatMains?.map((i: any) => renderItemSimple(i))}
+                  {currentMenu.vegetarianMains?.map((i: any) => renderItemSimple(i))}
+                </div>
+              </div>
+
+              {/* Dessert */}
+              {currentMenu.dessert && currentMenu.dessert.name && (
+                <div>
+                  <div className="flex justify-between items-baseline border-b border-gray-200 pb-2 mb-4">
+                    <h4 className="text-xl font-bold text-black m-0">Dessert</h4>
+                    <div className="text-sm"><strong>€4.50</strong></div>
+                  </div>
+                  <div>
+                    {renderItemSimple(currentMenu.dessert)}
+                  </div>
+                </div>
+              )}
             </div>
-          </div>
+          )}
         </div>
       </section>
 
