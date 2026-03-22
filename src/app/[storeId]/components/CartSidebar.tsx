@@ -520,7 +520,7 @@ export function CartSidebar({ cart, setCart, store, isOpen, onClose }: { cart: a
                                                             <AlertTriangle className="w-3 h-3" />{preorderError}
                                                         </p>
                                                         : <p className="text-xs text-muted-foreground mt-1">
-                                                            Mo–Fr · Lieferung 11:00–12:15 oder 13:30–15:00 Uhr · mindestens 1 Std. im Voraus bestellen
+                                                            Mo–Fr · Lieferung 11:30–12:15 oder 13:30–15:00 Uhr · mindestens 1 Std. im Voraus bestellen
                                                         </p>
                                                     }
                                                 </div>

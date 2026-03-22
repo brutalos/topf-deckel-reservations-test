@@ -10,6 +10,10 @@ function todayPrefix(): string {
 }
 
 async function getKV(): Promise<any | null> {
+    // Force in-memory fallback for local dev to prevent SQLite errors from the local Cloudflare emulator
+    if (process.env.NODE_ENV === 'development') {
+        return null;
+    }
     try {
         const { env } = await getCloudflareContext({ async: true });
         return (env as any).STOCK_KV ?? null;

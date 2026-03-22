@@ -36,7 +36,7 @@ const PEAK_START_NO_ASAP = 11 * 60 + 45;  // 11:45 — ASAP cutoff before peak
 const ASAP_RESUME = 13 * 60;              // 13:00 — ASAP resumes (store approval ready)
 const ASAP_END = 14 * 60 + 45;            // 14:45 — last ASAP (courier arrives by 15:00)
 
-const PREORDER_OPEN = 11 * 60;            // 11:00
+const PREORDER_OPEN = 11 * 60 + 30;       // 11:30
 const PREORDER_MORNING_END = 12 * 60 + 15; // 12:15
 const PREORDER_AFTERNOON_START = 13 * 60 + 30; // 13:30
 const STORE_CLOSE = 15 * 60;             // 15:00
@@ -89,14 +89,14 @@ export function isValidPreorderSlot(
     // 2. Must be within business hours
     const m = getViennaMinutes(dt);
     if (m < PREORDER_OPEN || m >= STORE_CLOSE) {
-        return { valid: false, error: 'Lieferzeit bitte zwischen 11:00 und 15:00 Uhr wählen' };
+        return { valid: false, error: 'Lieferzeit bitte zwischen 11:30 und 15:00 Uhr wählen' };
     }
 
     // 3. Must not be in the blocked peak window (most specific reason)
     if (m >= PREORDER_MORNING_END && m < PREORDER_AFTERNOON_START) {
         return {
             valid: false,
-            error: 'Stoßzeit 12:15–13:30 — bitte 11:00–12:15 oder 13:30–15:00 Uhr wählen',
+            error: 'Stoßzeit 12:15–13:30 — bitte 11:30–12:15 oder 13:30–15:00 Uhr wählen',
         };
     }
 
@@ -157,7 +157,7 @@ export function getPreorderConstraints(
             const rawM = minM + MIN_ADVANCE_MINUTES;
             const rounded = Math.ceil(rawM / 15) * 15;
             if (rounded < PREORDER_OPEN) {
-                minSlot = '11:00';
+                minSlot = '11:30';
             } else if (rounded >= PREORDER_MORNING_END && rounded < PREORDER_AFTERNOON_START) {
                 minSlot = '13:30';
             } else if (rounded >= STORE_CLOSE) {
@@ -169,8 +169,8 @@ export function getPreorderConstraints(
                 minSlot = `${h}:${m}`;
             }
         } else {
-            // Future date — always start at 11:00
-            minSlot = '11:00';
+            // Future date — always start at 11:30
+            minSlot = '11:30';
         }
 
         return {
@@ -191,9 +191,9 @@ export function getPreorderConstraints(
         next.setDate(next.getDate() + 1);
         while (!isViennaWeekday(next)) next.setDate(next.getDate() + 1);
         const nextStr = next.toLocaleString('sv', { timeZone: 'Europe/Vienna' }).split(' ')[0];
-        minLocal = new Date(`${nextStr}T11:00`);
+        minLocal = new Date(`${nextStr}T11:30`);
     } else if (minM < PREORDER_OPEN) {
-        minLocal = new Date(`${dateStr}T11:00`);
+        minLocal = new Date(`${dateStr}T11:30`);
     } else if (minM >= PREORDER_MORNING_END && minM < PREORDER_AFTERNOON_START) {
         minLocal = new Date(`${dateStr}T13:30`);
     } else {

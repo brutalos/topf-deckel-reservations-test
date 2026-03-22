@@ -104,9 +104,17 @@ export default function StorefrontPage({ storeId, menuData }: { storeId: string,
             <main className="p-4 md:p-8 max-w-7xl mx-auto w-full flex-1">
 
                 <div className="flex justify-between items-center mb-8">
-                    <div>
-                        <h1 className="text-3xl font-sans font-bold text-foreground">{store.name}</h1>
-                        <p className="text-muted-foreground">{store.address}</p>
+                    <div className="flex items-center gap-4">
+                        <a href="/" className="w-16 h-16 shrink-0 rounded-2xl overflow-hidden shadow-sm border border-border/50 bg-white flex items-center justify-center p-2 hover:opacity-80 transition-opacity">
+                            <img src="/images/squarespace/dc8d1fa4-c438-415b-9193-ec3ecbfcd796_topf-deckel-stadtkantine.png" alt="Topf & Deckel Logo" className="w-full h-full object-contain cursor-pointer" />
+                        </a>
+                        <div>
+                            <h1 className="text-3xl md:text-4xl font-sans font-extrabold text-foreground tracking-tight">{store.name}</h1>
+                            <p className="text-muted-foreground font-medium mt-1 flex items-center gap-2">
+                                <span className="bg-primary/10 text-primary px-2 py-0.5 rounded text-xs font-bold">Geöffnet</span>
+                                {store.address}
+                            </p>
+                        </div>
                     </div>
                     <button
                         onClick={() => setIsCartOpen(true)}
@@ -193,6 +201,32 @@ export default function StorefrontPage({ storeId, menuData }: { storeId: string,
                             })}
                         </div>
                     )}
+
+                    {/* Delicious Food Gallery */}
+                    <div className="mt-20 pt-16 border-t border-border/50">
+                        <div className="text-center mb-10">
+                            <h2 className="text-3xl font-sans font-extrabold text-foreground tracking-tight">Aus unserer Küche</h2>
+                            <p className="text-muted-foreground mt-3 font-medium text-lg">Frisch auf den Teller, mit Liebe gekocht.</p>
+                        </div>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div className="aspect-square rounded-3xl overflow-hidden group shadow-sm border border-border/50 relative">
+                                <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500 z-10" />
+                                <img src="/images/squarespace/00c81532-dd48-4732-8291-09f753044669_dish_01.jpg" alt="Dish 1" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+                            </div>
+                            <div className="aspect-square rounded-3xl overflow-hidden group shadow-sm border border-border/50 relative">
+                                <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500 z-10" />
+                                <img src="/images/squarespace/b9feb942-8959-4a0e-ab86-f7e736d0edc6_06_seasonal_vegetable_soup.jpeg" alt="Dish 2" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+                            </div>
+                            <div className="aspect-square rounded-3xl overflow-hidden group shadow-sm border border-border/50 relative">
+                                <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500 z-10" />
+                                <img src="/images/squarespace/7e315319-267c-46ab-a1a4-b9bb74a4afbf_dish_03.jpg" alt="Dish 3" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+                            </div>
+                            <div className="aspect-square rounded-3xl overflow-hidden group shadow-sm border border-border/50 relative">
+                                <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500 z-10" />
+                                <img src="/images/squarespace/9490696f-f6f9-4286-981d-3ecaa4d6559f_01-zutaten-die-richtig-wohl-tun.jpg" alt="Zutaten" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </main>
 
