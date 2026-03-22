@@ -30,21 +30,21 @@ const testimonials = [
     quote: '\u201eSeit wir Topf & Deckel nutzen, gibt\u2019s keine hektischen Last-Minute-Bestellungen mehr!\u201c',
     name: 'Chris',
     role: 'Operations Lead, CSGPT.AI',
-    image: 'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/e9221165-4bb8-4b50-a696-47d2eeba8516/chris-operations-lead.jpg?format=500w',
+    image: '/images/squarespace/e9221165-4bb8-4b50-a696-47d2eeba8516_chris-operations-lead.jpg',
     align: 'right' as const,
   },
   {
     quote: '\u201eZuverlässig, gesund, leistbar – genau das, was wir gebraucht haben.\u201c',
     name: 'Diana',
     role: 'Office Managerin, GoStudent',
-    image: 'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/8c509bdf-6216-45c6-9161-025d59c018c8/02_iana-office-managerin-office-delivery.jpg?format=500w',
+    image: '/images/squarespace/8c509bdf-6216-45c6-9161-025d59c018c8_02_iana-office-managerin-office-delivery.jpg',
     align: 'left' as const,
   },
   {
     quote: '\u201eWie ein Mini-Teamevent jede Woche – das Essen bringt alle an einen Tisch.\u201c',
     name: 'Rali',
     role: 'Community & Product, FutureChamps',
-    image: 'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/306a9b08-e32f-413b-8cd5-ed564a82431e/rali-community-and-product.jpg?format=500w',
+    image: '/images/squarespace/306a9b08-e32f-413b-8cd5-ed564a82431e_rali-community-and-product.jpg',
     align: 'right' as const,
   },
 ];
@@ -59,12 +59,12 @@ const solutions = [
 ];
 
 const instagramImages = [
-  'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884094283-EHBVF808MHOR0JDSOI9W/pexels-navada-ra-628779-1703272.jpg?format=750w',
-  'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/45c79e90-9a9b-4e2f-bbb9-72182bcaee6e/pexels-alesiakozik-6632286.jpg?format=750w',
-  'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884094300-YF4ILTUWQ30H18BEG76L/pexels-ella-olsson-572949-3026801.jpg?format=750w',
-  'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884094308-I9TFPMV6JSK1M4HK40W6/pexels-alesiakozik-6544378.jpg?format=750w',
-  'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884094316-55GI81S6YTQKTYUFPCZ3/pexels-sydney-troxell-223521-718742.jpg?format=750w',
-  'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884094322-6F2RKF5Y0WMC7W3KIMYG/pexels-roman-odintsov-5150558.jpg?format=750w',
+  '/images/squarespace/1751884094283-EHBVF808MHOR0JDSOI9W_pexels-navada-ra-628779-1703272.jpg',
+  '/images/squarespace/45c79e90-9a9b-4e2f-bbb9-72182bcaee6e_pexels-alesiakozik-6632286.jpg',
+  '/images/squarespace/1751884094308-I9TFPMV6JSK1M4HK40W6_pexels-alesiakozik-6544378.jpg',
+  '/images/squarespace/1751884094300-YF4ILTUWQ30H18BEG76L_pexels-ella-olsson-572949-3026801.jpg',
+  '/images/squarespace/1751884094316-55GI81S6YTQKTYUFPCZ3_pexels-sydney-troxell-223521-718742.jpg',
+  '/images/squarespace/1751884094322-6F2RKF5Y0WMC7W3KIMYG_pexels-roman-odintsov-5150558.jpg',
 ];
 
 export default function OfficeCateringPage() {
@@ -112,7 +112,7 @@ export default function OfficeCateringPage() {
             ].map((item, i) => (
               <div key={i} className="flex flex-col items-center text-center">
                 <img
-                  src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/0a909979-4f07-4ca8-9e9a-ef68e03148a9/cross_coloured.png?format=300w"
+                  src="/images/squarespace/0a909979-4f07-4ca8-9e9a-ef68e03148a9_cross_coloured.png"
                   className="w-12 h-12 mb-5"
                   alt="X"
                 />
@@ -144,7 +144,7 @@ export default function OfficeCateringPage() {
       {/* ═══ PROMO IMAGE ═══ */}
       <section className="w-full">
         <img
-          src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/2c488c18-fbeb-4a0a-a625-8bc30d25b955/Topf-%26-Deckel-29.-30.7.2025-%28c%29-Nadja-Hudovernik_1-42.jpg?format=2500w"
+          src="/images/squarespace/2c488c18-fbeb-4a0a-a625-8bc30d25b955_Topf--Deckel-29.-30.7.2025-c-Nadja-Hudovernik_1-42.jpg"
           className="w-full h-[500px] object-cover"
           alt="Office Lunch"
         />
@@ -185,12 +185,12 @@ export default function OfficeCateringPage() {
             {/* Two stacked images on the right */}
             <div className="hidden md:flex gap-4 items-start">
               <img
-                src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/89c50f2f-e5c2-4e68-839a-ce0ca819380f/Topf-%26-Deckel-29.-30.7.2025-%28c%29-Nadja-Hudovernik_1-137.jpg?format=2500w"
+                src="/images/squarespace/89c50f2f-e5c2-4e68-839a-ce0ca819380f_Topf--Deckel-29.-30.7.2025-c-Nadja-Hudovernik_1-137.jpg"
                 alt="Frisch gekochte Speisen"
                 className="w-[65%] h-[450px] object-cover rounded-sm"
               />
               <img
-                src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/7858925c-641b-4da3-af58-24d1da5fec0e/Topf-%26-Deckel-29.-30.7.2025-%28c%29-Nadja-Hudovernik_1-155-2.jpg?format=1000w"
+                src="/images/squarespace/7858925c-641b-4da3-af58-24d1da5fec0e_Topf--Deckel-29.-30.7.2025-c-Nadja-Hudovernik_1-155-2.jpg"
                 alt="Lunchboxen"
                 className="w-[35%] h-[200px] object-cover rounded-sm"
               />

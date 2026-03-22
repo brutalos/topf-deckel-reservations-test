@@ -54,3 +54,6 @@ node_modules/
 !.gitignore
 
 photos/
+
+# wrangler cache
+.wrangler/

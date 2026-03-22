@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getShipmentPromise, WoltShipmentPromiseRequest } from '@/lib/wolt';
 import { stores } from '@/config/stores';
+import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
 
 // Optional: Fallback helper to geocode using Google Maps API server-side
 async function geocodeAddress(address: string) {
@@ -25,6 +26,11 @@ async function geocodeAddress(address: string) {
 
 export async function POST(req: Request) {
     try {
+        const ip = getClientIp(req);
+        if (!checkRateLimit(ip, { maxRequests: 15, windowMs: 60000, context: 'wolt-promise' }).success) {
+            return NextResponse.json({ error: 'Too many delivery quote requests. Try again later.' }, { status: 429 });
+        }
+
         const { storeId, customerAddress, dropoffLat, dropoffLon } = await req.json();
 
         if (!storeId || !customerAddress) {

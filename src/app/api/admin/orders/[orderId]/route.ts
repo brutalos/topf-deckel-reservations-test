@@ -24,6 +24,11 @@ export async function GET(_req: Request, { params }: { params: Promise<{ orderId
  * Returns 409 if pickup has already started (canCancel = false).
  */
 export async function DELETE(req: Request, { params }: { params: Promise<{ orderId: string }> }) {
+    const authHeader = req.headers.get('authorization');
+    if (!process.env.ADMIN_API_KEY || authHeader !== `Bearer ${process.env.ADMIN_API_KEY}`) {
+        return NextResponse.json({ error: 'Unauthorized cancellation attempt' }, { status: 401 });
+    }
+
     const { orderId } = await params;
     const { reason } = await req.json().catch(() => ({ reason: 'Cancelled' }));
 

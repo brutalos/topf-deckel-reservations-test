@@ -6,17 +6,17 @@ const accordionItems = [
   {
     title: 'Corporate',
     content: 'Business Lunch, Teamfeier oder Office-Eröffnung – wir liefern unkompliziert, pünktlich und mit Stil.',
-    image: 'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/00c81532-dd48-4732-8291-09f753044669/dish_01.jpg?format=750w',
+    image: '/images/squarespace/00c81532-dd48-4732-8291-09f753044669_dish_01.jpg',
   },
   {
     title: 'Veranstaltungen und Feiern',
     content: 'Wir sind bestrebt, Ihre Erwartungen zu übertreffen, indem wir für jeden Anlass hochwertige, frische und gesunde Speisen anbieten. Sie können darauf vertrauen, dass Ihre Veranstaltung in zuverlässigen Händen ist.',
-    image: 'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884101489-ULY41VQVSJ3W6KTYMUKS/pexels-abie-zerosix-441402-1748865.jpg?format=750w',
+    image: '/images/squarespace/1751884101489-ULY41VQVSJ3W6KTYMUKS_pexels-abie-zerosix-441402-1748865.jpg',
   },
   {
     title: 'Ganztagsevents',
     content: 'Von Brunch bis Dinner - ganztägiges Catering, das den Tag rund macht. Und die Gäste glücklich.',
-    image: 'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/00c81532-dd48-4732-8291-09f753044669/dish_01.jpg?format=750w',
+    image: '/images/squarespace/00c81532-dd48-4732-8291-09f753044669_dish_01.jpg',
   },
 ];
 
@@ -24,37 +24,37 @@ const testimonials = [
   {
     quote: '\u201eDer Geburtstag meiner Tochter war ein Traum. Das Essen war ein Highlight – wunderschön angerichtet und richtig lecker.\u201c',
     name: 'Maria Gruber',
-    image: 'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/2e0680c7-b85a-40b5-87e8-8764db4e49b8/pexels-rdne-8384330.jpg?format=500w',
+    image: '/images/squarespace/2e0680c7-b85a-40b5-87e8-8764db4e49b8_pexels-rdne-8384330.jpg',
     align: 'left' as const,
   },
   {
     quote: 'Unsere Hochzeit war perfekt! Das Essen war fantastisch, die Präsentation wunderschön – unsere Gäste reden heute noch darüber.',
     name: 'Dominik and Anna',
-    image: 'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884101489-ULY41VQVSJ3W6KTYMUKS/pexels-abie-zerosix-441402-1748865.jpg?format=500w',
+    image: '/images/squarespace/1751884101489-ULY41VQVSJ3W6KTYMUKS_pexels-abie-zerosix-441402-1748865.jpg',
     align: 'right' as const,
   },
   {
     quote: '\u201eUnser Familienfest war ein voller Erfolg. Topf & Deckel hat alle Ernährungswünsche berücksichtigt – Service und Essen waren top!\u201c',
     name: 'Johanna Bauer',
-    image: 'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884101513-YA9G989BP5EU4G38LD8J/unsplash-image-L8kMx3rzt7s.jpg?format=500w',
+    image: '/images/squarespace/1751884101513-YA9G989BP5EU4G38LD8J_unsplash-image-L8kMx3rzt7s.jpg',
     align: 'left' as const,
   },
 ];
 
 const galleryImages = [
-  'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884094283-EHBVF808MHOR0JDSOI9W/pexels-navada-ra-628779-1703272.jpg?format=750w',
-  'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/45c79e90-9a9b-4e2f-bbb9-72182bcaee6e/pexels-alesiakozik-6632286.jpg?format=750w',
-  'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884094300-YF4ILTUWQ30H18BEG76L/pexels-ella-olsson-572949-3026801.jpg?format=750w',
-  'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884094308-I9TFPMV6JSK1M4HK40W6/pexels-alesiakozik-6544378.jpg?format=750w',
-  'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884094316-55GI81S6YTQKTYUFPCZ3/pexels-sydney-troxell-223521-718742.jpg?format=750w',
-  'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884094322-6F2RKF5Y0WMC7W3KIMYG/pexels-roman-odintsov-5150558.jpg?format=750w',
+  '/images/squarespace/1751884094283-EHBVF808MHOR0JDSOI9W_pexels-navada-ra-628779-1703272.jpg',
+  '/images/squarespace/45c79e90-9a9b-4e2f-bbb9-72182bcaee6e_pexels-alesiakozik-6632286.jpg',
+  '/images/squarespace/1751884094308-I9TFPMV6JSK1M4HK40W6_pexels-alesiakozik-6544378.jpg',
+  '/images/squarespace/1751884094300-YF4ILTUWQ30H18BEG76L_pexels-ella-olsson-572949-3026801.jpg',
+  '/images/squarespace/1751884094316-55GI81S6YTQKTYUFPCZ3_pexels-sydney-troxell-223521-718742.jpg',
+  '/images/squarespace/1751884094322-6F2RKF5Y0WMC7W3KIMYG_pexels-roman-odintsov-5150558.jpg',
 ];
 
 const foodGallery = [
-  'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/31116196-502d-4cd8-bca0-85f5e92f6d99/events-and-parties_03.jpg?format=750w',
-  'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1762352009897-CWFBJN9BF7K35OKPBKNH/events-and-parties_01.jpg?format=750w',
-  'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/8b5e16ee-fae6-43cf-9e8d-f0994d7c25f7/events-and-parties_04.jpg?format=750w',
-  'https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/9b8daee5-7f19-4751-97fb-54d896468eb9/events-and-parties_02.jpg?format=750w',
+  '/images/squarespace/31116196-502d-4cd8-bca0-85f5e92f6d99_events-and-parties_03.jpg',
+  '/images/squarespace/1762352009897-CWFBJN9BF7K35OKPBKNH_events-and-parties_01.jpg',
+  '/images/squarespace/8b5e16ee-fae6-43cf-9e8d-f0994d7c25f7_events-and-parties_04.jpg',
+  '/images/squarespace/9b8daee5-7f19-4751-97fb-54d896468eb9_events-and-parties_02.jpg',
 ];
 
 export default function EventsPartysPage() {

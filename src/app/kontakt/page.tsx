@@ -1,76 +1,190 @@
+"use client";
+
 import Link from 'next/link';
-import { Send } from 'lucide-react';
 
 export default function KontaktPage() {
   return (
-    <main className="min-h-screen pt-12 bg-background font-body pb-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-[#eef7f2] font-body flex flex-col">
+      {/* Hero & Form Section (Deep Green) */}
+      <section className="bg-[#6db082] pt-32 pb-24 w-full flex flex-col items-center">
+        <h1 className="text-white text-5xl md:text-6xl font-bold font-sans tracking-wide mb-16">
+          Hast du Fragen?
+        </h1>
 
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-sans font-extrabold text-foreground mb-6 leading-tight">
-            Hast du Fragen?
-          </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-            Schreib uns dein Anliegen über das Kontaktformular – wir melden uns so schnell wie möglich bei dir zurück.
+        {/* Form Container */}
+        <div className="w-full max-w-2xl bg-[#f4f4f4] rounded shadow-sm p-8 md:p-12 z-10 mx-4 md:mx-0">
+          <h2 className="text-lg font-bold mb-6 font-sans text-[#13141c]">Namen</h2>
+          <form
+            className="space-y-6"
+            onSubmit={(e) => {
+              e.preventDefault();
+              const formData = new FormData(e.currentTarget);
+              const subject = encodeURIComponent('Kontakt Anfrage');
+              const body = encodeURIComponent(
+                `Name: ${formData.get('vorname')} ${formData.get('nachname')}\nE-Mail: ${formData.get('email')}\n\nNachricht:\n${formData.get('message')}`
+              );
+              window.location.href = `mailto:info@topfdeckel.at?subject=${subject}&body=${body}`;
+            }}
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="flex flex-col">
+                <label className="text-sm text-[#13141c] mb-2">
+                  Vorname <span className="text-gray-500 font-normal">(erforderlich)</span>
+                </label>
+                <input
+                  type="text"
+                  name="vorname"
+                  className="w-full p-4 bg-[#eadeea] border-none focus:outline-none focus:ring-1 focus:ring-gray-400 text-[#13141c] transition-colors"
+                  required
+                />
+              </div>
+              <div className="flex flex-col">
+                <label className="text-sm text-[#13141c] mb-2">
+                  Nachname <span className="text-gray-500 font-normal">(erforderlich)</span>
+                </label>
+                <input
+                  type="text"
+                  name="nachname"
+                  className="w-full p-4 bg-[#eadeea] border-none focus:outline-none focus:ring-1 focus:ring-gray-400 text-[#13141c] transition-colors"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col">
+              <label className="text-sm text-[#13141c] mb-2">
+                Email <span className="text-gray-500 font-normal">(erforderlich)</span>
+              </label>
+              <input
+                type="email"
+                name="email"
+                className="w-full p-4 bg-[#eadeea] border-none focus:outline-none focus:ring-1 focus:ring-gray-400 text-[#13141c] transition-colors"
+                required
+              />
+            </div>
+
+            <div className="flex flex-col">
+              <label className="text-sm text-[#13141c] mb-2">
+                Nachricht <span className="text-gray-500 font-normal">(erforderlich)</span>
+              </label>
+              <textarea
+                rows={6}
+                name="message"
+                className="w-full p-4 bg-[#eadeea] border-none focus:outline-none focus:ring-1 focus:ring-gray-400 text-[#13141c] resize-none transition-colors"
+                required
+              ></textarea>
+            </div>
+
+            <div className="pt-2">
+              <button
+                type="submit"
+                className="w-full bg-black text-white text-sm tracking-widest font-bold py-5 hover:bg-gray-800 transition-colors uppercase"
+              >
+                Anfrage abschicken
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      {/* Light Green Feed Section */}
+      <section className="bg-[#eef7f2] w-full pt-20 pb-16 flex flex-col items-center">
+        {/* Social Feed Text */}
+        <div className="text-center mb-12 px-4 max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 font-sans text-[#13141c] leading-tight">
+            Von der Küche direkt in deinen Feed.
+          </h2>
+          <p className="text-lg md:text-xl text-[#13141c]">
+            Eindrücke aus unserem Alltag – Gerichte, Lieblingsmomente und alles, was gesundes Essen besonders macht.
           </p>
         </div>
 
-        <div className="max-w-3xl mx-auto bg-card p-8 md:p-12 rounded-3xl shadow-xl border border-border mb-24">
-          <form className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-foreground">Vorname *</label>
-                <input type="text" className="w-full p-4 border border-border rounded-xl bg-background focus:ring-2 focus:ring-primary outline-none transition-all" required />
+        {/* Social Feed Images */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 px-4 md:px-8 w-full max-w-[1600px] mb-16">
+          <a
+            href="https://www.instagram.com/p/C3lYvffMz13/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative w-full aspect-square cursor-pointer block hover:opacity-90 transition-opacity"
+          >
+            <img
+              src="/images/squarespace/1754497238144-4LJEP3KVTH8BYQ18IU3V_image-asset.jpeg"
+              alt="Fennel"
+              className="w-full h-full object-cover"
+            />
+          </a>
+          <a
+            href="https://www.instagram.com/reel/C3hWiVRtX1M/embed/?autoplay=1"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative w-full aspect-square cursor-pointer block hover:opacity-90 transition-opacity"
+          >
+            <img
+              src="/images/squarespace/1754497239168-H2MRKJOZY43P6W7G6H4F_image-asset.jpeg"
+              alt="Pumpkin"
+              className="w-full h-full object-cover"
+            />
+            {/* Play Button Overlay (Optional, for visual match if it was a video) */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-12 h-12 flex items-center justify-center text-white opacity-90">
+                <svg viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10">
+                  <path fillRule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clipRule="evenodd" />
+                </svg>
               </div>
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-foreground">Nachname *</label>
-                <input type="text" className="w-full p-4 border border-border rounded-xl bg-background focus:ring-2 focus:ring-primary outline-none transition-all" required />
+            </div>
+          </a>
+          <a
+            href="https://www.instagram.com/reel/C3DBEjWMMl5/embed/?autoplay=1"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative w-full aspect-square cursor-pointer block hover:opacity-90 transition-opacity"
+          >
+            <img
+              src="/images/squarespace/1754497240319-25HZ64GLEWA1Y9677S3G_image-asset.jpeg"
+              alt="Lasagna"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-12 h-12 flex items-center justify-center text-white opacity-90">
+                <svg viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10">
+                  <path fillRule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clipRule="evenodd" />
+                </svg>
               </div>
             </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-foreground">E-Mail Adresse *</label>
-              <input type="email" className="w-full p-4 border border-border rounded-xl bg-background focus:ring-2 focus:ring-primary outline-none transition-all" required />
+          </a>
+          <a
+            href="https://www.instagram.com/reel/C2724cps-xj/embed/?autoplay=1"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative w-full aspect-square cursor-pointer block hover:opacity-90 transition-opacity"
+          >
+            <img
+              src="/images/squarespace/1754497241334-7CZ8XEVV1NE8QNVO0JK5_image-asset.jpeg"
+              alt="Person Episode 6"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-12 h-12 flex items-center justify-center text-white opacity-90">
+                <svg viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10">
+                  <path fillRule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clipRule="evenodd" />
+                </svg>
+              </div>
             </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-foreground">Thema *</label>
-              <select className="w-full p-4 border border-border rounded-xl bg-background focus:ring-2 focus:ring-primary outline-none transition-all" required>
-                <option value="">Bitte wählen...</option>
-                <option value="catering">Office Catering</option>
-                <option value="events">Events & Partys</option>
-                <option value="franchise">Franchise Anfrage</option>
-                <option value="jobs">Bewerbung</option>
-                <option value="other">Sonstiges</option>
-              </select>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-foreground">Deine Nachricht *</label>
-              <textarea rows={6} className="w-full p-4 border border-border rounded-xl bg-background focus:ring-2 focus:ring-primary outline-none transition-all resize-none" required></textarea>
-            </div>
-
-            <button type="button" className="w-full flex items-center justify-center px-8 py-4 bg-foreground text-white rounded-xl font-sans font-bold text-lg hover:bg-foreground/90 transition-colors shadow-lg">
-              Nachricht senden
-              <Send className="ml-2 h-5 w-5" />
-            </button>
-          </form>
+          </a>
         </div>
 
-        <div className="text-center mb-16">
-          <h2 className="text-3xl font-sans font-bold mb-4">Von der Küche direkt in deinen Feed.</h2>
-          <p className="text-lg text-muted-foreground">Eindrücke aus unserem Alltag – Gerichte, Lieblingsmomente und alles, was gesundes Essen besonders macht.</p>
+        {/* Instagram Link */}
+        <div className="pb-8">
+          <a
+            href="https://www.instagram.com/Topfdeckel_wien"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-black text-xl font-bold border-b-2 border-black pb-1 hover:text-gray-700 hover:border-gray-700 transition-colors"
+          >
+            Folge uns auf Instagram
+          </a>
         </div>
-
-        {/* Social Feed Gallery placeholder */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1754497238144-4LJEP3KVTH8BYQ18IU3V/image-asset.jpeg?format=500w" className="w-full h-64 object-cover rounded-xl hover:scale-[1.02] transition-transform" alt="Feed 1" />
-          <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1754497239168-H2MRKJOZY43P6W7G6H4F/image-asset.jpeg?format=500w" className="w-full h-64 object-cover rounded-xl hover:scale-[1.02] transition-transform" alt="Feed 2" />
-          <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1754497240319-25HZ64GLEWA1Y9677S3G/image-asset.jpeg?format=500w" className="w-full h-64 object-cover rounded-xl hover:scale-[1.02] transition-transform" alt="Feed 3" />
-          <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1754497241334-7CZ8XEVV1NE8QNVO0JK5/image-asset.jpeg?format=500w" className="w-full h-64 object-cover rounded-xl hover:scale-[1.02] transition-transform" alt="Feed 4" />
-        </div>
-
-      </div>
+      </section>
     </main>
   );
 }

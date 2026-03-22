@@ -45,9 +45,8 @@ export async function POST(req: Request) {
             }
             event = JSON.parse(Buffer.from(payload, 'base64url').toString('utf8'));
         } else {
-            // Fallback: some test senders post the event directly (without JWT wrapper)
-            const sig = req.headers ? null : null; // no raw-body HMAC for direct format
-            event = body;
+            console.error('[Wolt Webhook] Missing JWT token in body! Webhook rejected.');
+            return NextResponse.json({ error: 'Missing security token' }, { status: 401 });
         }
 
         const merchantOrderId: string = event?.details?.merchant_order_reference_id || '';

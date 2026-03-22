@@ -3,6 +3,11 @@ import { getOrdersByStore, getAllOrders, withFreshEta, addOrder, nextOrderNumber
 
 /** GET /api/admin/orders?storeId=vorgarten */
 export async function GET(req: Request) {
+    const authHeader = req.headers.get('authorization');
+    if (!process.env.ADMIN_API_KEY || authHeader !== `Bearer ${process.env.ADMIN_API_KEY}`) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { searchParams } = new URL(req.url);
     const storeId = searchParams.get('storeId');
     const orders = storeId ? await getOrdersByStore(storeId) : await getAllOrders();
@@ -11,6 +16,11 @@ export async function GET(req: Request) {
 
 /** POST /api/admin/orders — dev-only: inject a test order to verify store works */
 export async function POST(req: Request) {
+    const authHeader = req.headers.get('authorization');
+    if (!process.env.ADMIN_API_KEY || authHeader !== `Bearer ${process.env.ADMIN_API_KEY}`) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { storeId = 'vorgarten', ...rest } = await req.json().catch(() => ({}));
     const id = `WOLT-TEST-${Date.now()}`;
     const orderNumber = await nextOrderNumber();

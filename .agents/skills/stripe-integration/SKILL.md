@@ -372,7 +372,64 @@ export default function CheckoutPage() {
 
 ---
 
-## 5. Webhook Handler
+## 5. Stripe Connect (Marketplaces & Split Payments)
+
+Best for: Platforms where users buy from third-party vendors (e.g., Food Delivery or Franchised Store Platforms). Stripe Connect solves the problem of receiving customer funds and instantly routing the right percentage to the vendor's bank account, while keeping a platform fee (like a delivery cost markup).
+
+### 5.1 Create a Connected Account (Vendor Onboarding)
+When adding a new franchisee/vendor, you create a Stripe Connect Account (Standard or Express) and generate an onboarding link:
+
+```typescript
+// 1. Create a blank Express/Standard account shell
+const account = await stripe.accounts.create({ type: 'standard' });
+
+// 2. Generate a secure onboarding link 
+const accountLink = await stripe.accountLinks.create({
+  account: account.id, // e.g., acct_1XYZ...
+  refresh_url: 'https://your-domain.com/reauth',
+  return_url: 'https://your-domain.com/success',
+  type: 'account_onboarding',
+});
+// Redirect the user to `accountLink.url` directly!
+```
+
+### 5.2 Split Payments & Delivery Fees (Destination Charges)
+When a customer checks out, the backend calculates the complete total (food cost + customer-facing delivery fee). 
+If the store is franchised, you use `transfer_data` in the `PaymentIntent` payload to send the funds directly to their Stripe Connect `stripeAccountId`.
+
+**Important Delivery Fee Logic (Topf-Deckel Example):**
+In `topf-deckel`, the platform subsidizes 50% of the Wolt delivery fee for the customer. To ensure the platform has enough to pay the external full Wolt invoice, it takes the remaining 50% out of the franchisee's profit margin utilizing the `application_fee_amount`:
+
+```typescript
+// In app/api/checkout/session/route.ts
+const paymentIntentPayload: any = {
+  amount: amountInCents, // e.g., Food €20.00 + Delivery €2.50 = €22.50
+  currency: 'eur',
+  automatic_payment_methods: { enabled: true },
+  metadata: { storeId: store.id }
+};
+
+// Inject the Stripe Connect routing dynamically if this store is franchised
+if (store.stripeAccountId) {
+  paymentIntentPayload.transfer_data = {
+    destination: store.stripeAccountId, // Send funds directly to franchisee
+  };
+  
+  // Platform keeps 100% of the actual Wolt delivery fee to pay the external invoice.
+  // Since the UI only charges the customer 50% (deliveryFeeInCents), we multiply by 2 
+  // so the remaining 50% is taken out of the franchisee's food sales instead.
+  if (deliveryInfo?.mode === 'delivery' && deliveryInfo.deliveryFeeInCents) {
+    paymentIntentPayload.application_fee_amount = deliveryInfo.deliveryFeeInCents * 2;
+  }
+}
+
+const paymentIntent = await stripe.paymentIntents.create(paymentIntentPayload);
+```
+*Note: Stripe handles the routing math instantly upon successful payment. The vendor sees the transaction minus your application fee.*
+
+---
+
+## 6. Webhook Handler
 
 **MUST verify signatures. MUST handle idempotently.**
 
@@ -438,7 +495,7 @@ export async function POST(req: NextRequest) {
 
 ---
 
-## 6. Which Flow to Choose
+## 7. Which Flow to Choose
 
 | Criteria | Stripe Checkout (Redirect) | Stripe Elements (Embedded) |
 |---|---|---|
@@ -452,7 +509,7 @@ export async function POST(req: NextRequest) {
 
 ---
 
-## 7. Testing
+## 8. Testing
 
 ### Test Card Numbers
 | Card | Behavior |
@@ -466,7 +523,7 @@ Use any future expiry date (e.g. 12/34) and any 3-digit CVC.
 
 ---
 
-## 8. Best Practices
+## 9. Best Practices
 
 1. **Always use webhooks** — don't rely solely on client-side confirmation
 2. **Verify webhook signatures** — never trust unverified payloads

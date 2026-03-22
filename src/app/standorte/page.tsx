@@ -41,7 +41,7 @@ export default function StandortePage() {
           <section id="gumpendorfer" className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="order-2 md:order-1">
               <img
-                src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/f215cea4-c02a-4a0b-baf5-b0424741478b/Store+Gumpendorfer.png?format=1000w"
+                src="/images/squarespace/f215cea4-c02a-4a0b-baf5-b0424741478b_Store_Gumpendorfer.png"
                 alt="Store Gumpendorfer"
                 className="w-full max-w-sm mb-6 object-contain"
               />
@@ -65,22 +65,22 @@ export default function StandortePage() {
               </Link>
             </div>
             <div className="grid grid-cols-2 grid-rows-2 gap-4 h-[400px] sm:h-[500px] order-1 md:order-2">
-              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/0efecb50-37c3-4f1f-a28a-006d6c02425c/gumpendorfer.jpg?format=1000w" className="w-full h-full object-cover rounded-xl col-span-1 row-span-2" alt="Location" />
-              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/9ca288dd-6414-4089-ba9c-94a4ec0fa637/281A6248.jpg?format=1000w" className="w-full h-full object-cover rounded-xl col-span-1 row-span-1" alt="Location" />
-              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/eccc3e38-f3e1-4656-9958-5ec7ebb86824/281A7174.jpg?format=1000w" className="w-full h-full object-cover rounded-xl col-span-1 row-span-1" alt="Location" />
+              <img src="/images/squarespace/0efecb50-37c3-4f1f-a28a-006d6c02425c_gumpendorfer.jpg" className="w-full h-full object-cover rounded-xl col-span-1 row-span-2" alt="Location" />
+              <img src="/images/squarespace/9ca288dd-6414-4089-ba9c-94a4ec0fa637_281A6248.jpg" className="w-full h-full object-cover rounded-xl col-span-1 row-span-1" alt="Location" />
+              <img src="/images/squarespace/eccc3e38-f3e1-4656-9958-5ec7ebb86824_281A7174.jpg" className="w-full h-full object-cover rounded-xl col-span-1 row-span-1" alt="Location" />
             </div>
           </section>
 
           {/* Schottengasse */}
           <section id="schottengasse" className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="grid grid-cols-2 grid-rows-2 gap-4 h-[400px] sm:h-[500px]">
-              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/547d7e94-c0b9-46bb-954f-bedb59cc9a1a/281A6996.jpg?format=1000w" className="w-full h-full object-cover rounded-xl col-span-1 row-span-2" alt="Location" />
-              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/2e41cf0d-0625-4ecf-bbee-40867f2da3b0/281A7025.jpg?format=1000w" className="w-full h-full object-cover rounded-xl col-span-1 row-span-1" alt="Location" />
-              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/88031348-b02b-4df9-84fe-9e695ce6aac8/281A7043.jpg?format=1000w" className="w-full h-full object-cover rounded-xl col-span-1 row-span-1" alt="Location" />
+              <img src="/images/squarespace/547d7e94-c0b9-46bb-954f-bedb59cc9a1a_281A6996.jpg" className="w-full h-full object-cover rounded-xl col-span-1 row-span-2" alt="Location" />
+              <img src="/images/squarespace/2e41cf0d-0625-4ecf-bbee-40867f2da3b0_281A7025.jpg" className="w-full h-full object-cover rounded-xl col-span-1 row-span-1" alt="Location" />
+              <img src="/images/squarespace/88031348-b02b-4df9-84fe-9e695ce6aac8_281A7043.jpg" className="w-full h-full object-cover rounded-xl col-span-1 row-span-1" alt="Location" />
             </div>
             <div>
               <img
-                src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884087645-EQNMXVA34S9MQ8FDD2XI/Store+Schottengasse.png?format=1000w"
+                src="/images/squarespace/1751884087645-EQNMXVA34S9MQ8FDD2XI_Store_Schottengasse.png"
                 alt="Store Schottengasse"
                 className="w-full max-w-sm mb-6 object-contain"
               />
@@ -108,7 +108,7 @@ export default function StandortePage() {
           <section id="judengasse" className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="order-2 md:order-1">
               <img
-                src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884087668-9PW5KLLF3RW4344VNV2M/Store+Judengasse.png?format=1000w"
+                src="/images/squarespace/1751884087668-9PW5KLLF3RW4344VNV2M_Store_Judengasse.png"
                 alt="Store Judengasse"
                 className="w-full max-w-sm mb-6 object-contain"
               />
@@ -132,22 +132,22 @@ export default function StandortePage() {
               </Link>
             </div>
             <div className="grid grid-cols-2 grid-rows-2 gap-4 h-[400px] sm:h-[500px] order-1 md:order-2">
-              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/d12e9087-34d4-4f21-a675-3708c45a1c73/judengasse.jpg?format=1000w" className="w-full h-full object-cover rounded-xl col-span-1 row-span-2" alt="Location" />
-              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/9137a0d1-35da-4f17-bc66-166643c41e8d/281A7254.jpg?format=1000w" className="w-full h-full object-cover rounded-xl col-span-1 row-span-1" alt="Location" />
-              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/8bbf00bd-e796-4a68-9ff3-6d566fac0ee0/281A6743.jpg?format=1000w" className="w-full h-full object-cover rounded-xl col-span-1 row-span-1" alt="Location" />
+              <img src="/images/squarespace/d12e9087-34d4-4f21-a675-3708c45a1c73_judengasse.jpg" className="w-full h-full object-cover rounded-xl col-span-1 row-span-2" alt="Location" />
+              <img src="/images/squarespace/9137a0d1-35da-4f17-bc66-166643c41e8d_281A7254.jpg" className="w-full h-full object-cover rounded-xl col-span-1 row-span-1" alt="Location" />
+              <img src="/images/squarespace/8bbf00bd-e796-4a68-9ff3-6d566fac0ee0_281A6743.jpg" className="w-full h-full object-cover rounded-xl col-span-1 row-span-1" alt="Location" />
             </div>
           </section>
 
           {/* Wipplingerstraße */}
           <section id="wipplingerstrae" className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="grid grid-cols-2 grid-rows-2 gap-4 h-[400px] sm:h-[500px]">
-              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/091d161a-40cb-4294-b814-40ddcdb70355/wipplinger.jpg?format=1000w" className="w-full h-full object-cover rounded-xl col-span-1 row-span-2" alt="Location" />
-              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/28ce4056-40bf-43cd-9ce9-5e88e8beedeb/281A7224-2.jpg?format=1000w" className="w-full h-full object-cover rounded-xl col-span-1 row-span-1" alt="Location" />
-              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/aea2a613-0b56-4062-a85a-719c0bafef04/281A7232.jpg?format=1000w" className="w-full h-full object-cover rounded-xl col-span-1 row-span-1" alt="Location" />
+              <img src="/images/squarespace/091d161a-40cb-4294-b814-40ddcdb70355_wipplinger.jpg" className="w-full h-full object-cover rounded-xl col-span-1 row-span-2" alt="Location" />
+              <img src="/images/squarespace/28ce4056-40bf-43cd-9ce9-5e88e8beedeb_281A7224-2.jpg" className="w-full h-full object-cover rounded-xl col-span-1 row-span-1" alt="Location" />
+              <img src="/images/squarespace/aea2a613-0b56-4062-a85a-719c0bafef04_281A7232.jpg" className="w-full h-full object-cover rounded-xl col-span-1 row-span-1" alt="Location" />
             </div>
             <div>
               <img
-                src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884087682-OLTBURFRJY85KN47IEFD/Store+Wipplingerstra%C3%9Fe.png?format=1000w"
+                src="/images/squarespace/1751884087682-OLTBURFRJY85KN47IEFD_Store_Wipplingerstrae.png"
                 alt="Store Wipplingerstraße"
                 className="w-full max-w-sm mb-6 object-contain"
               />
@@ -175,7 +175,7 @@ export default function StandortePage() {
           <section id="vorgartenstrae" className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="order-2 md:order-1">
               <img
-                src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/0b3b90a6-4a21-4b65-a7c4-18610d7b93da/Store+Vorgartenstrasse.png?format=1000w"
+                src="/images/squarespace/0b3b90a6-4a21-4b65-a7c4-18610d7b93da_Store_Vorgartenstrasse.png"
                 alt="Store Vorgartenstraße"
                 className="w-full max-w-sm mb-6 object-contain"
               />
@@ -200,9 +200,9 @@ export default function StandortePage() {
               </Link>
             </div>
             <div className="grid grid-cols-2 grid-rows-2 gap-4 h-[400px] sm:h-[500px] order-1 md:order-2">
-              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1c7012bf-2e63-4c9d-b748-fa7b44477007/vorgartenstrasse_02.jpg?format=1000w" className="w-full h-full object-cover rounded-xl col-span-1 row-span-2" alt="Location" />
-              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/ad073d4a-2f7a-49f6-a4a8-84b27a57c643/vorgartenstrasse_01.jpg?format=1000w" className="w-full h-full object-cover rounded-xl col-span-1 row-span-1" alt="Location" />
-              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/3bd45dd5-d2f2-42c3-82aa-69c042029545/281A6327.jpg?format=1000w" className="w-full h-full object-cover rounded-xl col-span-1 row-span-1" alt="Location" />
+              <img src="/images/squarespace/1c7012bf-2e63-4c9d-b748-fa7b44477007_vorgartenstrasse_02.jpg" className="w-full h-full object-cover rounded-xl col-span-1 row-span-2" alt="Location" />
+              <img src="/images/squarespace/ad073d4a-2f7a-49f6-a4a8-84b27a57c643_vorgartenstrasse_01.jpg" className="w-full h-full object-cover rounded-xl col-span-1 row-span-1" alt="Location" />
+              <img src="/images/squarespace/3bd45dd5-d2f2-42c3-82aa-69c042029545_281A6327.jpg" className="w-full h-full object-cover rounded-xl col-span-1 row-span-1" alt="Location" />
             </div>
           </section>
         </div>
@@ -237,12 +237,12 @@ export default function StandortePage() {
 
       {/* Bottom Image Gallery */}
       <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 h-[250px] sm:h-[300px] lg:h-[350px]">
-        <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884087701-9KFPIDPSNVOQ05ZEE6MN/pexels-navada-ra-628779-1703272.jpg?format=1000w" className="w-full h-full object-cover" alt="Gallery" />
-        <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884087708-X9WIAAOKBTKVZOOEXOKK/pexels-solliefoto-299352.jpg?format=1000w" className="w-full h-full object-cover" alt="Gallery" />
-        <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884087715-KHU7ZK85CQPFQU1IG8OS/pexels-ella-olsson-572949-3026801.jpg?format=1000w" className="w-full h-full object-cover" alt="Gallery" />
-        <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884087726-VPVNL3WAMN1YXOS4FCUL/pexels-alesiakozik-6544378.jpg?format=1000w" className="w-full h-full object-cover" alt="Gallery" />
-        <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884087734-072GVEEK8BPOGL7TTV58/pexels-sydney-troxell-223521-718742.jpg?format=1000w" className="w-full h-full object-cover" alt="Gallery" />
-        <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1751884087745-APVORYP654LERPIE2MA8/pexels-roman-odintsov-5150558.jpg?format=1000w" className="w-full h-full object-cover" alt="Gallery" />
+        <img src="/images/squarespace/1751884087701-9KFPIDPSNVOQ05ZEE6MN_pexels-navada-ra-628779-1703272.jpg" className="w-full h-full object-cover" alt="Gallery" />
+        <img src="/images/squarespace/1751884087708-X9WIAAOKBTKVZOOEXOKK_pexels-solliefoto-299352.jpg" className="w-full h-full object-cover" alt="Gallery" />
+        <img src="/images/squarespace/1751884087726-VPVNL3WAMN1YXOS4FCUL_pexels-alesiakozik-6544378.jpg" className="w-full h-full object-cover" alt="Gallery" />
+        <img src="/images/squarespace/1751884087715-KHU7ZK85CQPFQU1IG8OS_pexels-ella-olsson-572949-3026801.jpg" className="w-full h-full object-cover" alt="Gallery" />
+        <img src="/images/squarespace/1751884087734-072GVEEK8BPOGL7TTV58_pexels-sydney-troxell-223521-718742.jpg" className="w-full h-full object-cover" alt="Gallery" />
+        <img src="/images/squarespace/1751884087745-APVORYP654LERPIE2MA8_pexels-roman-odintsov-5150558.jpg" className="w-full h-full object-cover" alt="Gallery" />
       </section>
     </main>
   );

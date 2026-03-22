@@ -42,6 +42,7 @@ export default function StorefrontPage({ storeId, menuData }: { storeId: string,
     }, [storeId]);
 
     const today = new Date();
+    const isWeekend = today.getDay() === 0 || today.getDay() === 6;
     const todayStr = `(${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')})`;
 
     const availableCategories = useMemo(() => {
@@ -101,7 +102,7 @@ export default function StorefrontPage({ storeId, menuData }: { storeId: string,
     return (
         <div className="min-h-screen bg-background font-body flex flex-col pt-24">
             <main className="p-4 md:p-8 max-w-7xl mx-auto w-full flex-1">
-                
+
                 <div className="flex justify-between items-center mb-8">
                     <div>
                         <h1 className="text-3xl font-sans font-bold text-foreground">{store.name}</h1>
@@ -159,33 +160,39 @@ export default function StorefrontPage({ storeId, menuData }: { storeId: string,
                         </div>
                     )}
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {standardItems.map((item) => {
-                            const isSoldOut = soldOutForDisplay.has(item.name);
-                            return (
-                                <Card key={item.id} className={`group overflow-hidden border rounded-2xl flex flex-col h-full bg-card ${isSoldOut ? 'opacity-60 grayscale' : 'hover:shadow-md'}`}>
-                                    <CardContent className="p-6 flex flex-col h-full relative">
-                                        {isSoldOut && <div className="absolute top-4 right-4 bg-red-100 text-red-600 text-xs font-bold px-2 py-1 rounded-full">Ausverkauft</div>}
-                                        <div className="flex-1">
-                                            <h3 className={`font-sans font-bold text-xl mb-2 ${isSoldOut ? 'line-through' : ''}`}>{item.name}</h3>
-                                            {item.description && <p className="text-sm text-muted-foreground mb-4">{item.description}</p>}
-                                        </div>
-                                        <div className="flex flex-col gap-2 mt-auto">
-                                            {Object.entries(item.prices || {}).map(([size, price]: [any, any]) => (
-                                                <div key={size} className="flex items-center justify-between">
-                                                    <span className="text-xs font-bold text-muted-foreground uppercase">{size === 'S' ? 'Klein' : 'Groß'}</span>
-                                                    <div className="flex items-center gap-2">
-                                                        <span className="font-bold text-foreground">€ {price.toFixed(2).replace('.', ',')}</span>
-                                                        <button disabled={isSoldOut} onClick={() => onAdd(item, size)} className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary/90 disabled:opacity-50"><Plus className="w-4 h-4" /></button>
+                    {isWeekend && isViewingToday ? (
+                        <div className="text-center font-bold text-foreground py-12 mb-10 text-xl max-w-2xl mx-auto">
+                            Wir sind am Wochenende geschlossen. Besuchen Sie uns Montag bis Freitag!
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {standardItems.map((item) => {
+                                const isSoldOut = soldOutForDisplay.has(item.name);
+                                return (
+                                    <Card key={item.id} className={`group overflow-hidden border rounded-2xl flex flex-col h-full bg-card ${isSoldOut ? 'opacity-60 grayscale' : 'hover:shadow-md'}`}>
+                                        <CardContent className="p-6 flex flex-col h-full relative">
+                                            {isSoldOut && <div className="absolute top-4 right-4 bg-red-100 text-red-600 text-xs font-bold px-2 py-1 rounded-full">Ausverkauft</div>}
+                                            <div className="flex-1">
+                                                <h3 className={`font-sans font-bold text-xl mb-2 ${isSoldOut ? 'line-through' : ''}`}>{item.name}</h3>
+                                                {item.description && <p className="text-sm text-muted-foreground mb-4">{item.description}</p>}
+                                            </div>
+                                            <div className="flex flex-col gap-2 mt-auto">
+                                                {Object.entries(item.prices || {}).map(([size, price]: [any, any]) => (
+                                                    <div key={size} className="flex items-center justify-between">
+                                                        <span className="text-xs font-bold text-muted-foreground uppercase">{size === 'S' ? 'Klein' : 'Groß'}</span>
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="font-bold text-foreground">€ {price.toFixed(2).replace('.', ',')}</span>
+                                                            <button disabled={isSoldOut} onClick={() => onAdd(item, size)} className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary/90 disabled:opacity-50"><Plus className="w-4 h-4" /></button>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            );
-                        })}
-                    </div>
+                                                ))}
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                );
+                            })}
+                        </div>
+                    )}
                 </div>
             </main>
 

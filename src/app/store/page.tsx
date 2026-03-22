@@ -64,7 +64,7 @@ export default function Home() {
     <main className="min-h-screen pt-12 bg-background font-body flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-xl text-center mb-8 mt-12 flex flex-col items-center">
         <img
-          src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/dc8d1fa4-c438-415b-9193-ec3ecbfcd796/topf-deckel-stadtkantine.png?format=1500w"
+          src="/images/squarespace/dc8d1fa4-c438-415b-9193-ec3ecbfcd796_topf-deckel-stadtkantine.png"
           alt="Topf & Deckel Logo"
           className="h-20 md:h-28 object-contain mb-8 hover:scale-105 transition-transform duration-500 will-change-transform"
         />

@@ -148,7 +148,7 @@ export default function SuccessPage({ params, searchParams }: {
             <div style={{ maxWidth: 600, width: '100%', textAlign: 'center', padding: '2rem' }}>
                 {/* Logo */}
                 <img
-                    src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/dc8d1fa4-c438-415b-9193-ec3ecbfcd796/topf-deckel-stadtkantine.png?format=1500w"
+                    src="/images/squarespace/dc8d1fa4-c438-415b-9193-ec3ecbfcd796_topf-deckel-stadtkantine.png"
                     height={60}
                     alt="Topf & Deckel"
                     style={{ marginBottom: '2rem' }}

@@ -34,7 +34,7 @@ function getWeekDays() {
     return days;
 }
 
-const PRICING: Record<string, any> = {
+export const PRICING: Record<string, any> = {
     starters: { prices: { S: 4.90, L: 6.90 }, weights: { S: 0 } },
     salad: { prices: { S: 7.50, L: 10.90 }, weights: { S: 0 } },
     meatMains: { prices: { S: 7.50, L: 11.90 }, weights: { S: 0 } },
@@ -75,6 +75,37 @@ export async function getRawWeeklyMenu(): Promise<Record<string, any>> {
     }
 }
 
+export const komboMocks = [
+    {
+        id: "kombo-light-fixed", // static ID for secure checkout matching
+        category: "Tageskarte",
+        name: "Light Lunch Kombo",
+        description: "Wähle eine Kombination & spare bis zu 25%!",
+        tags: [],
+        prices: { S: 9.50 },
+        weights: { S: 700 },
+        savings: "25%",
+        komboOptions: [
+            { label: "Salat/Suppe klein + Main Dish klein" },
+            { label: "Main Dish klein + Dessert" }
+        ]
+    },
+    {
+        id: "kombo-big-fixed", // static ID for secure checkout matching
+        category: "Tageskarte",
+        name: "Big Lunch Kombo",
+        description: "Wähle eine Kombination & spare bis zu 20%!",
+        tags: [],
+        prices: { S: 13.90 },
+        weights: { S: 900 },
+        savings: "20%",
+        komboOptions: [
+            { label: "Salat/Suppe klein + Main Dish groß" },
+            { label: "Main Dish groß + Dessert" }
+        ]
+    }
+];
+
 export async function getDynamicMenu(): Promise<any[]> {
     try {
         // next: { revalidate: 3600 } caches the result for 1 hour on the server
@@ -95,37 +126,6 @@ export async function getDynamicMenu(): Promise<any[]> {
 
         const weekDays = getWeekDays();
         const menuItems: any[] = [];
-
-        const komboMocks = [
-            {
-                id: "kombo-light-" + crypto.randomUUID(),
-                category: "Tageskarte",
-                name: "Light Lunch Kombo",
-                description: "Wähle eine Kombination & spare bis zu 25%!",
-                tags: [],
-                prices: { S: 9.50 },
-                weights: { S: 700 },
-                savings: "25%",
-                komboOptions: [
-                    { label: "Salat/Suppe klein + Main Dish klein" },
-                    { label: "Main Dish klein + Dessert" }
-                ]
-            },
-            {
-                id: "kombo-big-" + crypto.randomUUID(),
-                category: "Tageskarte",
-                name: "Big Lunch Kombo",
-                description: "Wähle eine Kombination & spare bis zu 20%!",
-                tags: [],
-                prices: { S: 13.90 },
-                weights: { S: 900 },
-                savings: "20%",
-                komboOptions: [
-                    { label: "Salat/Suppe klein + Main Dish groß" },
-                    { label: "Main Dish groß + Dessert" }
-                ]
-            }
-        ];
 
         menuItems.push(...komboMocks);
 

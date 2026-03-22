@@ -7,13 +7,24 @@ export default async function HomePage() {
   const weeklyMenu = await getRawWeeklyMenu();
 
   const now = new Date();
+  const currentDayIndex = now.getDay();
   const daysOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-  let dayKey = daysOfWeek[now.getDay()];
-  if (dayKey === 'saturday' || dayKey === 'sunday' || !weeklyMenu[dayKey]) {
-    dayKey = 'monday'; // default fallback if weekend or day missing
+  let dayKey = daysOfWeek[currentDayIndex];
+
+  const isWeekend = currentDayIndex === 0 || currentDayIndex === 6;
+
+  // Create a target date that corresponds to the menu being shown
+  let targetDate = new Date(now);
+
+  if (!isWeekend && !weeklyMenu[dayKey]) {
+    dayKey = 'monday'; // default fallback if a weekday is missing
+
+    // If a weekday is missing, fallback the date to Monday of the current week
+    const diff = currentDayIndex - 1;
+    targetDate.setDate(targetDate.getDate() - diff);
   }
 
-  const currentMenu = weeklyMenu[dayKey] || {};
+  const currentMenu = isWeekend ? null : (weeklyMenu[dayKey] || {});
 
   const renderBadge = (dietary: string[]) => {
     if (!dietary) return null;
@@ -37,7 +48,7 @@ export default async function HomePage() {
   };
 
   const dateOptions: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-  const dateString = now.toLocaleDateString('de-AT', dateOptions);
+  const dateString = targetDate.toLocaleDateString('de-AT', dateOptions);
 
   return (
     <main className="min-h-screen font-sans">
@@ -122,7 +133,11 @@ export default async function HomePage() {
           </div>
 
           {/* Menu Items Preview */}
-          {!currentMenu.starters ? (
+          {isWeekend ? (
+            <div className="text-center font-bold text-black py-12 mb-10 text-xl max-w-2xl mx-auto">
+              Wir sind am Wochenende geschlossen. Besuchen Sie uns Montag bis Freitag!
+            </div>
+          ) : !currentMenu?.starters ? (
             <div className="text-center font-bold text-black py-12 mb-10">
               Aktuell kein Menü für heute verfügbar.
             </div>
@@ -187,7 +202,7 @@ export default async function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 md:gap-8">
             <div className="flex flex-col items-center">
               <div className="w-[160px] h-[160px] md:w-[200px] md:h-[200px] rounded-full overflow-hidden mb-8 border-4 border-transparent hover:scale-105 transition-transform duration-300 shadow-xl">
-                <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/b89191cf-0265-43b0-a6c1-3ca17e419e53/events-and-parties_03.jpg?format=500w" alt="Täglich andere Gerichte" className="w-full h-full object-cover" />
+                <img src="/images/squarespace/b89191cf-0265-43b0-a6c1-3ca17e419e53_events-and-parties_03.jpg" alt="Täglich andere Gerichte" className="w-full h-full object-cover" />
               </div>
               <h3 className="text-white text-[1.35rem] font-bold mb-3 md:mb-4 px-2">Täglich andere Gerichte</h3>
               <p className="text-white/95 text-[15px] leading-relaxed px-4 md:px-2">Abwechslungsreich, ausgewogen – für jeden etwas dabei.</p>
@@ -195,7 +210,7 @@ export default async function HomePage() {
 
             <div className="flex flex-col items-center">
               <div className="w-[180px] h-[180px] rounded-full overflow-hidden mb-6 border-4 border-transparent hover:scale-105 transition-transform duration-300">
-                <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/b9feb942-8959-4a0e-ab86-f7e736d0edc6/06_seasonal_vegetable_soup.jpeg?format=500w" alt="Frisch & selbst gekocht" className="w-full h-full object-cover" />
+                <img src="/images/squarespace/b9feb942-8959-4a0e-ab86-f7e736d0edc6_06_seasonal_vegetable_soup.jpeg" alt="Frisch & selbst gekocht" className="w-full h-full object-cover" />
               </div>
               <h3 className="text-white text-xl font-bold mb-3">Frisch & selbst gekocht</h3>
               <p className="text-white/90 text-sm leading-relaxed px-4">Mit hochwertigen, saisonalen Zutaten – ohne Kompromisse.</p>
@@ -203,7 +218,7 @@ export default async function HomePage() {
 
             <div className="flex flex-col items-center">
               <div className="w-[180px] h-[180px] rounded-full overflow-hidden mb-6 border-4 border-transparent hover:scale-105 transition-transform duration-300">
-                <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/f11870eb-6638-42d9-8c9d-31fc75bcc0b3/qualitat-ohne-kompromisse.jpg?format=500w" alt="Schnell & unkompliziert" className="w-full h-full object-cover" />
+                <img src="/images/squarespace/f11870eb-6638-42d9-8c9d-31fc75bcc0b3_qualitat-ohne-kompromisse.jpg" alt="Schnell & unkompliziert" className="w-full h-full object-cover" />
               </div>
               <h3 className="text-white text-xl font-bold mb-3">Schnell & unkompliziert</h3>
               <p className="text-white/90 text-sm leading-relaxed px-4">Lunch, der einfach funktioniert – ob vor Ort oder zum Mitnehmen.</p>
@@ -211,7 +226,7 @@ export default async function HomePage() {
 
             <div className="flex flex-col items-center">
               <div className="w-[180px] h-[180px] rounded-full overflow-hidden mb-6 border-4 border-transparent hover:scale-105 transition-transform duration-300">
-                <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/934770c8-4f3f-4b25-a188-56adb7d58b30/pexels-kaboompics-5916.jpg?format=500w" alt="Fair, ehrlich & gesund" className="w-full h-full object-cover" />
+                <img src="/images/squarespace/934770c8-4f3f-4b25-a188-56adb7d58b30_pexels-kaboompics-5916.jpg" alt="Fair, ehrlich & gesund" className="w-full h-full object-cover" />
               </div>
               <h3 className="text-white text-xl font-bold mb-3">Fair, ehrlich & gesund</h3>
               <p className="text-white/90 text-sm leading-relaxed px-4">Top Qualität zum vernünftigen Preis. Kein Schnickschnack.</p>
@@ -223,29 +238,25 @@ export default async function HomePage() {
       {/* 4. Catering */}
       <section className="py-20 md:py-32 bg-white px-4 md:px-8">
         <div className="max-w-[1200px] mx-auto text-center">
-          <h2 className="text-[#6CB78E] text-[2.5rem] sm:text-[3rem] md:text-[4rem] font-extrabold tracking-tight mb-8 leading-[1.1]">Übrigens: Wir können<br className="md:hidden" />auch Catering</h2>
-          <p className="text-black font-medium text-[1.1rem] md:text-[1.25rem] max-w-[800px] mx-auto mb-16 leading-relaxed px-4">
-            Ob Office-Lunch, Meeting oder Feier: Unser Essen bringt Geschmack, Frische und ein gutes Gefühl auf den Tisch. Unkompliziert. Flexibel. Und richtig gut.
+          <h2 className="text-[#66B28C] text-[2.5rem] md:text-[3.5rem] font-bold tracking-tight mb-8 leading-[1.1]">Übrigens: Wir können <br className="md:hidden" />auch Catering</h2>
+          <p className="text-black font-medium text-[1.1rem] md:text-[1.2rem] max-w-[800px] mx-auto mb-16 leading-relaxed px-4">
+            Ob Office-Lunch, Meeting oder Feier: Unser Essen bringt Geschmack, Frische und ein gutes Gefühl auf den Tisch.<br className="hidden md:block" /> Unkompliziert. Flexibel. Und richtig gut.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 mb-16 px-4 md:px-0">
-            <Link href="/events-partys" className="group block relative rounded-3xl overflow-hidden h-[300px] shadow-lg">
-              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/eb20c8fe-1779-442b-8b7b-668b5acc254f/Events+%26+Partys?format=1000w" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Events & Partys" />
-              <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                <span className="text-white text-3xl font-bold border-b-2 border-transparent group-hover:border-white transition-all pb-1">Events & Partys</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 px-4 md:px-8 items-start mb-4">
+            <Link href="/office-catering" className="group block text-left">
+              <div className="overflow-hidden rounded-sm mb-5">
+                <img src="/images/squarespace/de3e785c-8d8a-4df1-bc23-2d6d03b8629c_Office_Catering.jpg" className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700" alt="Office Catering" />
               </div>
+              <span className="text-black text-[1.8rem] font-bold underline underline-offset-4 decoration-2 hover:text-gray-600 transition-colors">Office Catering</span>
             </Link>
-            <Link href="/office-catering" className="group block relative rounded-3xl overflow-hidden h-[300px] shadow-lg">
-              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/de3e785c-8d8a-4df1-bc23-2d6d03b8629c/Office+Catering?format=1000w" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Office Catering" />
-              <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                <span className="text-white text-3xl font-bold border-b-2 border-transparent group-hover:border-white transition-all pb-1">Office Catering</span>
+            <Link href="/events-partys" className="group block text-left">
+              <div className="overflow-hidden rounded-sm mb-5">
+                <img src="/images/squarespace/eb20c8fe-1779-442b-8b7b-668b5acc254f_Events__Partys.jpg" className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700" alt="Events & Partys" />
               </div>
+              <span className="text-black text-[1.8rem] font-bold underline underline-offset-4 decoration-2 hover:text-gray-600 transition-colors">Events & Partys</span>
             </Link>
           </div>
-
-          <Link href="/unsere-geschichte" className="text-[#6CB78E] font-bold text-sm tracking-wide uppercase hover:underline">
-            Unsere Geschichte lesen →
-          </Link>
         </div>
       </section>
 
@@ -255,9 +266,9 @@ export default async function HomePage() {
           <h2 className="text-black text-[2.5rem] sm:text-[3rem] md:text-[4rem] font-extrabold tracking-tight mb-12 leading-[1.1]">Vorgartenstraße,<br className="md:hidden" />wir sind da!</h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
-            <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1c7012bf-2e63-4c9d-b748-fa7b44477007/vorgartenstrasse_02.jpg?format=1000w" className="w-full h-48 md:h-64 object-cover rounded-2xl shadow-lg" alt="Vorgartenstraße Store" />
-            <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/ad073d4a-2f7a-49f6-a4a8-84b27a57c643/vorgartenstrasse_01.jpg?format=1000w" className="w-full h-48 md:h-64 object-cover rounded-2xl shadow-lg" alt="Vorgartenstraße Interior" />
-            <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/3bd45dd5-d2f2-42c3-82aa-69c042029545/281A6327.jpg?format=1000w" className="w-full h-48 md:h-64 object-cover rounded-2xl shadow-lg" alt="Vorgartenstraße Food" />
+            <img src="/images/squarespace/1c7012bf-2e63-4c9d-b748-fa7b44477007_vorgartenstrasse_02.jpg" className="w-full h-48 md:h-64 object-cover rounded-2xl shadow-lg" alt="Vorgartenstraße Store" />
+            <img src="/images/squarespace/ad073d4a-2f7a-49f6-a4a8-84b27a57c643_vorgartenstrasse_01.jpg" className="w-full h-48 md:h-64 object-cover rounded-2xl shadow-lg" alt="Vorgartenstraße Interior" />
+            <img src="/images/squarespace/3bd45dd5-d2f2-42c3-82aa-69c042029545_281A6327.jpg" className="w-full h-48 md:h-64 object-cover rounded-2xl shadow-lg" alt="Vorgartenstraße Food" />
           </div>
 
           <p className="text-black text-[1.1rem] md:text-[1.25rem] max-w-[700px] mx-auto mb-12 leading-relaxed font-medium px-4">
@@ -282,30 +293,30 @@ export default async function HomePage() {
           </p>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
-            <div className="relative aspect-square group cursor-pointer overflow-hidden rounded-md">
-              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1754497238144-4LJEP3KVTH8BYQ18IU3V/image-asset.jpeg?format=500w" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Instagram Post 1" />
+            <a href="https://www.instagram.com/p/C3lYvffMz13/" target="_blank" rel="noopener noreferrer" className="relative aspect-square group cursor-pointer overflow-hidden rounded-md">
+              <img src="/images/squarespace/1754497238144-4LJEP3KVTH8BYQ18IU3V_image-asset.jpeg?format=500w" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Instagram Post 1" />
               <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                 <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
               </div>
-            </div>
-            <div className="relative aspect-square group cursor-pointer overflow-hidden rounded-md">
-              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1754497239168-H2MRKJOZY43P6W7G6H4F/image-asset.jpeg?format=500w" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Instagram Post 2" />
+            </a>
+            <a href="https://www.instagram.com/reel/C3hWiVRtX1M/embed/?autoplay=1" target="_blank" rel="noopener noreferrer" className="relative aspect-square group cursor-pointer overflow-hidden rounded-md">
+              <img src="/images/squarespace/1754497239168-H2MRKJOZY43P6W7G6H4F_image-asset.jpeg?format=500w" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Instagram Post 2" />
               <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                 <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
               </div>
-            </div>
-            <div className="relative aspect-square group cursor-pointer overflow-hidden rounded-md">
-              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1754497240319-25HZ64GLEWA1Y9677S3G/image-asset.jpeg?format=500w" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Instagram Post 3" />
+            </a>
+            <a href="https://www.instagram.com/reel/C3DBEjWMMl5/embed/?autoplay=1" target="_blank" rel="noopener noreferrer" className="relative aspect-square group cursor-pointer overflow-hidden rounded-md">
+              <img src="/images/squarespace/1754497240319-25HZ64GLEWA1Y9677S3G_image-asset.jpeg?format=500w" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Instagram Post 3" />
               <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                 <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
               </div>
-            </div>
-            <div className="relative aspect-square group cursor-pointer overflow-hidden rounded-md">
-              <img src="https://images.squarespace-cdn.com/content/v1/686ba132b57f0f0495047c8a/1754497241334-7CZ8XEVV1NE8QNVO0JK5/image-asset.jpeg?format=500w" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Instagram Post 4" />
+            </a>
+            <a href="https://www.instagram.com/reel/C2724cps-xj/embed/?autoplay=1" target="_blank" rel="noopener noreferrer" className="relative aspect-square group cursor-pointer overflow-hidden rounded-md">
+              <img src="/images/squarespace/1754497241334-7CZ8XEVV1NE8QNVO0JK5_image-asset.jpeg?format=500w" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Instagram Post 4" />
               <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                 <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
               </div>
-            </div>
+            </a>
           </div>
 
           <Link href="#" className="text-white font-bold text-sm tracking-wide underline underline-offset-4 hover:text-white/80 transition-colors">

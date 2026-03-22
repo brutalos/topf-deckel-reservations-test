@@ -794,6 +794,42 @@ export async function cancelDelivery(
 }
 ```
 
+### 3.1.5 Built-In Rate Limiting Utility (`lib/rateLimit.ts`)
+
+**CRITICAL:** Public unauthenticated endpoints like `/api/wolt/promise` CAN be spammed to exhaust your API limits (Google Maps, Stripe). You MUST implement this rate limiter or an Upstash Redis equivalent.
+
+```typescript
+// lib/rateLimit.ts
+type RateLimitInfo = { count: number; expiresAt: number };
+const rateLimitCache = new Map<string, RateLimitInfo>();
+const CLEANUP_INTERVAL = 60000;
+let lastCleanup = Date.now();
+
+export function checkRateLimit(ip: string, limits: { maxRequests: number; windowMs: number; context: string }): { success: boolean } {
+    const now = Date.now();
+    const key = `${limits.context}:${ip}`;
+    if (now - lastCleanup > CLEANUP_INTERVAL) {
+        lastCleanup = now;
+        for (const [k, v] of rateLimitCache.entries()) {
+            if (now > v.expiresAt) rateLimitCache.delete(k);
+        }
+    }
+    const current = rateLimitCache.get(key);
+    if (current && now < current.expiresAt) {
+        if (current.count >= limits.maxRequests) return { success: false };
+        current.count += 1;
+        rateLimitCache.set(key, current);
+    } else {
+        rateLimitCache.set(key, { count: 1, expiresAt: now + limits.windowMs });
+    }
+    return { success: true };
+}
+
+export function getClientIp(req: Request): string {
+    return req.headers.get('x-forwarded-for')?.split(',')[0].trim() || '127.0.0.1';
+}
+```
+
 ### 3.2 API Route — Get Shipping Cost (`app/api/wolt/promise/route.ts`)
 
 Called from the checkout UI when the user enters their address.
@@ -802,9 +838,16 @@ Called from the checkout UI when the user enters their address.
 // app/api/wolt/promise/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { getShipmentPromise } from '@/lib/wolt';
+import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
 
 export async function POST(req: NextRequest) {
   try {
+    // 🚨 MANDATORY SECURITY: Rate Limit externally-facing unauthenticated routes!
+    const ip = getClientIp(req);
+    if (!checkRateLimit(ip, { maxRequests: 15, windowMs: 60000, context: 'wolt-promise' }).success) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+    }
+
     const body = await req.json();
 
     // Address fields only — no coordinates
@@ -1025,6 +1068,12 @@ function isValidE164(phone: string): boolean {
 
 export async function POST(req: NextRequest) {
   try {
+    // 🚨 MANDATORY SECURITY: Protect Dispatch to prevent arbitrary courier theft & financial DoS
+    const authHeader = req.headers.get('authorization');
+    if (!process.env.ADMIN_API_KEY || authHeader !== `Bearer ${process.env.ADMIN_API_KEY}`) {
+      return NextResponse.json({ error: 'Unauthorized courier dispatch attempt' }, { status: 401 });
+    }
+
     const { orderId } = await req.json();
 
     if (!orderId) {
@@ -1164,16 +1213,18 @@ export async function POST(req: NextRequest) {
     }
 
     // Decode and verify the JWT
-    let payload: any;
-    if (WOLT_WEBHOOK_SECRET) {
-      payload = jwt.verify(token, WOLT_WEBHOOK_SECRET);
-    } else {
-      // In dev, decode without verification (NOT for production!)
-      payload = jwt.decode(token);
+    // 🚨 MANDATORY SECURITY: Strictly verify the JWT. Never allow fallbacks.
+    if (!WOLT_WEBHOOK_SECRET) {
+      console.error('CRITICAL: WOLT_WEBHOOK_SECRET is not set in environment variables!');
+      return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
     }
 
-    if (!payload) {
-      return NextResponse.json({ error: 'Invalid token' }, { status: 400 });
+    let payload: any;
+    try {
+      payload = jwt.verify(token, WOLT_WEBHOOK_SECRET);
+    } catch (err) {
+      console.error('Wolt Webhook Error: Invalid signature');
+      return NextResponse.json({ error: 'Invalid token signature' }, { status: 401 });
     }
 
     // Common webhook events:

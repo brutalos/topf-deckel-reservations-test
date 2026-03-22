@@ -5,6 +5,11 @@ import { updateOrder, findOrderById } from '@/lib/orderStore';
 
 export async function POST(req: Request) {
     try {
+        const authHeader = req.headers.get('authorization');
+        if (!process.env.ADMIN_API_KEY || authHeader !== `Bearer ${process.env.ADMIN_API_KEY}`) {
+            return NextResponse.json({ error: 'Unauthorized courier dispatch attempt' }, { status: 401 });
+        }
+
         const { orderId, storeId, customerName, customerPhone, customerAddress, deliveryNote, noContact, promiseId: existingPromiseId, orderDetails, scheduledDropoffTime } = await req.json();
 
         if (!orderId || !storeId || !customerAddress) {
