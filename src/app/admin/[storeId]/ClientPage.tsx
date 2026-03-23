@@ -39,7 +39,7 @@ interface Order {
     canCancel?: boolean;
 }
 
-export default function AdminDashboard({ storeId, menuData }: { storeId: string, menuData: any[] }) {
+export default function AdminDashboard({ storeId, menuData, adminKey }: { storeId: string, menuData: any[], adminKey: string }) {
     const store = stores.find((s) => s.id === storeId);
     const [orders, setOrders] = useState<Order[]>([]);
     const [isDispatching, setIsDispatching] = useState<string | null>(null);
@@ -88,17 +88,19 @@ export default function AdminDashboard({ storeId, menuData }: { storeId: string,
 
     // Load sold-out state from API on mount
     useEffect(() => {
-        fetch(`/api/stock?storeId=${storeId}`)
+        fetch(`/api/stock?storeId=${storeId}`, { headers: { 'Authorization': `Bearer ${adminKey}` } })
             .then(r => r.json())
             .then(data => setSoldOut(new Set(data.soldOut || [])))
             .catch(() => { });
-    }, [storeId]);
+    }, [storeId, adminKey]);
 
     // Poll orders every 5 seconds
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const res = await fetch(`/api/admin/orders?storeId=${storeId}`);
+                const res = await fetch(`/api/admin/orders?storeId=${storeId}`, {
+                    headers: { 'Authorization': `Bearer ${adminKey}` }
+                });
                 if (!res.ok) {
                     if (res.status === 401) console.error('[Admin Dashboard] Polling failed: 401 Unauthorized (Invalid API Key)');
                     return;
@@ -152,7 +154,7 @@ export default function AdminDashboard({ storeId, menuData }: { storeId: string,
         try {
             await fetch('/api/stock', {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminKey}` },
                 body: JSON.stringify({ name, sold: newSold, storeId }),
             });
         } catch {
@@ -170,7 +172,7 @@ export default function AdminDashboard({ storeId, menuData }: { storeId: string,
         try {
             const res = await fetch('/api/wolt/delivery', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminKey}` },
                 body: JSON.stringify({
                     orderId: order.id,
                     storeId,
@@ -199,7 +201,7 @@ export default function AdminDashboard({ storeId, menuData }: { storeId: string,
         try {
             const res = await fetch(`/api/admin/orders/${order.id}`, {
                 method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminKey}` },
                 body: JSON.stringify({ reason: 'Cancelled by kitchen' }),
             });
             if (res.status === 409) {

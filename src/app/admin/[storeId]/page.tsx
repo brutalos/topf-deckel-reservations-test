@@ -6,20 +6,8 @@ export default async function Page({ params }: { params: Promise<{ storeId: stri
     const { storeId } = await params;
     const menuData = await getDynamicMenu();
 
-    // Set the admin API key as a secure httpOnly cookie.
-    // The browser sends cookies automatically with every fetch request,
-    // so the client component does NOT need to know the key at all.
-    const cookieStore = await cookies();
+    // Pass the admin API key directly to the client component.
     const adminKey = process.env.ADMIN_API_KEY || '';
-    if (adminKey) {
-        cookieStore.set('admin_api_key', adminKey, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
-            path: '/api',
-            maxAge: 60 * 60 * 24, // 24 hours
-        });
-    }
 
-    return <AdminDashboard storeId={storeId} menuData={menuData} />;
+    return <AdminDashboard storeId={storeId} menuData={menuData} adminKey={adminKey} />;
 }
