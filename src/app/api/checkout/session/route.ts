@@ -60,6 +60,7 @@ export async function POST(req: Request) {
         const paymentIntentPayload: any = {
             amount: amountInCents,
             currency: 'eur',
+            capture_method: 'manual',
             automatic_payment_methods: {
                 enabled: true,
             },

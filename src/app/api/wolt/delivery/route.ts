@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createDelivery, getShipmentPromise, WoltDeliveryRequest } from '@/lib/wolt';
+import { stripe } from '@/lib/stripe';
 import { stores } from '@/config/stores';
 import { updateOrder, findOrderById } from '@/lib/orderStore';
 
@@ -7,6 +8,7 @@ export async function POST(req: Request) {
     try {
         const authHeader = req.headers.get('authorization');
         if (!process.env.ADMIN_API_KEY || authHeader !== `Bearer ${process.env.ADMIN_API_KEY}`) {
+            console.error(`[Admin API] 401 Unauthorized - POST /api/wolt/delivery. Header: ${authHeader ? 'Present' : 'Missing'}`);
             return NextResponse.json({ error: 'Unauthorized courier dispatch attempt' }, { status: 401 });
         }
 
@@ -140,6 +142,17 @@ export async function POST(req: Request) {
 
         console.log(`🚀 Dispatching Wolt courier for order ${orderId}...`);
         const woltResponse = await createDelivery(store.woltVenueId, deliveryReq);
+
+        // ── Capture the Stripe Payment Hold ─────────────────────────────────
+        if (storedOrder?.stripePaymentId) {
+            try {
+                await stripe.paymentIntents.capture(storedOrder.stripePaymentId);
+                console.log(`💰 Captured Stripe payment: ${storedOrder.stripePaymentId}`);
+            } catch (captureErr: any) {
+                console.warn(`⚠️ Failed to capture Stripe payment: ${captureErr.message}`);
+                // Proceed anyway, admin can manually capture in Stripe dashboard if needed
+            }
+        }
 
         const trackingUrl = woltResponse.tracking?.url || woltResponse.tracking_url || null;
         const woltDeliveryId = woltResponse.id || null;

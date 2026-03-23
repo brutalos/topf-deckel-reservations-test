@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
-import { addOrder, nextOrderNumber } from '@/lib/orderStore';
+import { addOrder, nextOrderNumber, findOrderById } from '@/lib/orderStore';
 
 export async function POST(req: Request) {
     try {
@@ -40,8 +40,15 @@ export async function POST(req: Request) {
 
         console.log(`[Stripe Webhook] Event type: ${event.type}`);
 
-        if (event.type === 'payment_intent.succeeded') {
+        if (event.type === 'payment_intent.amount_capturable_updated' || event.type === 'payment_intent.succeeded') {
             const pi = event.data.object as any;
+
+            const existingOrder = await findOrderById(pi.id);
+            if (existingOrder) {
+                console.log(`[Stripe Webhook] Order for PI ${pi.id} already exists. Skipping.`);
+                return NextResponse.json({ received: true });
+            }
+
             const meta = pi.metadata || {};
 
             console.log(`[Stripe Webhook] PI: ${pi.id} | StoreId: ${meta.storeId || '(none)'} | Customer: ${meta.customerName || '(none)'}`);

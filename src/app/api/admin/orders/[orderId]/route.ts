@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { withFreshEta, findOrderById, updateOrder } from '@/lib/orderStore';
+import { stripe } from '@/lib/stripe';
 import { stores } from '@/config/stores';
 
 /**
@@ -26,6 +27,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ orderId
 export async function DELETE(req: Request, { params }: { params: Promise<{ orderId: string }> }) {
     const authHeader = req.headers.get('authorization');
     if (!process.env.ADMIN_API_KEY || authHeader !== `Bearer ${process.env.ADMIN_API_KEY}`) {
+        console.error(`[Admin API] 401 Unauthorized - DELETE /api/admin/orders/[orderId]. Header: ${authHeader ? 'Present' : 'Missing'}`);
         return NextResponse.json({ error: 'Unauthorized cancellation attempt' }, { status: 401 });
     }
 
@@ -43,6 +45,16 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ order
             { error: 'Cannot cancel: courier has already started pickup' },
             { status: 409 }
         );
+    }
+
+    // ── Release the Stripe Payment Hold ──────────────────────────────────
+    if (order.stripePaymentId && order.stripePaymentId.startsWith('pi_')) {
+        try {
+            await stripe.paymentIntents.cancel(order.stripePaymentId);
+            console.log(`💸 Cancelled Stripe payment hold: ${order.stripePaymentId}`);
+        } catch (cancelErr: any) {
+            console.warn(`⚠️ Failed to cancel Stripe payment: ${cancelErr.message}`);
+        }
     }
 
     // ── Cancel on Wolt if a delivery was already dispatched ──────────────
