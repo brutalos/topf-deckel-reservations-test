@@ -12,6 +12,9 @@ export async function POST(req: Request) {
         }
 
         const { items, storeId, deliveryInfo } = await req.json();
+        console.log(`\n[Checkout Session] 🛒 Initializing checkout for storeId: ${storeId}`);
+        console.log(`[Checkout Session] 📦 Items:`, JSON.stringify(items, null, 2));
+        console.log(`[Checkout Session] 🚚 Delivery Info:`, JSON.stringify(deliveryInfo, null, 2));
 
         if (!items || !items.length) {
             return NextResponse.json({ error: 'Cart is empty' }, { status: 400 });
@@ -55,7 +58,10 @@ export async function POST(req: Request) {
 
         if (deliveryInfo?.mode === 'delivery' && deliveryInfo.deliveryFeeInCents) {
             amountInCents += deliveryInfo.deliveryFeeInCents;
+            console.log(`[Checkout Session] 💶 Added delivery fee: ${deliveryInfo.deliveryFeeInCents} cents`);
         }
+
+        console.log(`[Checkout Session] 💰 Total amount calculated: ${amountInCents} cents (€${(amountInCents / 100).toFixed(2)})`);
 
         const paymentIntentPayload: any = {
             amount: amountInCents,
@@ -102,7 +108,9 @@ export async function POST(req: Request) {
             }
         }
 
+        console.log(`[Checkout Session] ⏳ Creating Stripe PaymentIntent with payload...`);
         const paymentIntent = await stripe.paymentIntents.create(paymentIntentPayload);
+        console.log(`[Checkout Session] ✅ Successfully created PaymentIntent: ${paymentIntent.id} (status: ${paymentIntent.status})`);
 
         return NextResponse.json({
             clientSecret: paymentIntent.client_secret,

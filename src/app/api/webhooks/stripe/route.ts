@@ -3,6 +3,7 @@ import { stripe } from '@/lib/stripe';
 import { addOrder, nextOrderNumber, findOrderById } from '@/lib/orderStore';
 
 export async function POST(req: Request) {
+    console.log(`\n[Stripe Webhook] 🔔 POST Request received at /api/webhooks/stripe`);
     try {
         // req.text() gives the exact UTF-8 string Stripe signed — works in Node.js and Edge
         const body = await req.text();
