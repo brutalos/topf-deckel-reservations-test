@@ -3,12 +3,12 @@ import { createDelivery, getShipmentPromise, WoltDeliveryRequest } from '@/lib/w
 import { stripe } from '@/lib/stripe';
 import { stores } from '@/config/stores';
 import { updateOrder, findOrderById } from '@/lib/orderStore';
+import { isAdminAuthorized, getAuthDebugInfo } from '@/lib/adminAuth';
 
 export async function POST(req: Request) {
     try {
-        const authHeader = req.headers.get('authorization');
-        if (!process.env.ADMIN_API_KEY || authHeader !== `Bearer ${process.env.ADMIN_API_KEY}`) {
-            console.error(`[Admin API] 401 Unauthorized - POST /api/wolt/delivery. Header: ${authHeader ? 'Present' : 'Missing'}`);
+        if (!isAdminAuthorized(req)) {
+            console.error(`[Admin API] 401 Unauthorized - POST /api/wolt/delivery. ${getAuthDebugInfo(req)}`);
             return NextResponse.json({ error: 'Unauthorized courier dispatch attempt' }, { status: 401 });
         }
 

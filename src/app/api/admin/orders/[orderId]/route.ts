@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { withFreshEta, findOrderById, updateOrder } from '@/lib/orderStore';
 import { stripe } from '@/lib/stripe';
 import { stores } from '@/config/stores';
+import { isAdminAuthorized, getAuthDebugInfo } from '@/lib/adminAuth';
 
 /**
  * GET /api/admin/orders/[orderId]
@@ -25,9 +26,8 @@ export async function GET(_req: Request, { params }: { params: Promise<{ orderId
  * Returns 409 if pickup has already started (canCancel = false).
  */
 export async function DELETE(req: Request, { params }: { params: Promise<{ orderId: string }> }) {
-    const authHeader = req.headers.get('authorization');
-    if (!process.env.ADMIN_API_KEY || authHeader !== `Bearer ${process.env.ADMIN_API_KEY}`) {
-        console.error(`[Admin API] 401 Unauthorized - DELETE /api/admin/orders/[orderId]. Header: ${authHeader ? 'Present' : 'Missing'}`);
+    if (!isAdminAuthorized(req)) {
+        console.error(`[Admin API] 401 Unauthorized - DELETE /api/admin/orders/[orderId]. ${getAuthDebugInfo(req)}`);
         return NextResponse.json({ error: 'Unauthorized cancellation attempt' }, { status: 401 });
     }
 

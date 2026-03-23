@@ -39,7 +39,7 @@ interface Order {
     canCancel?: boolean;
 }
 
-export default function AdminDashboard({ storeId, menuData, adminApiKey }: { storeId: string, menuData: any[], adminApiKey: string }) {
+export default function AdminDashboard({ storeId, menuData }: { storeId: string, menuData: any[] }) {
     const store = stores.find((s) => s.id === storeId);
     const [orders, setOrders] = useState<Order[]>([]);
     const [isDispatching, setIsDispatching] = useState<string | null>(null);
@@ -98,9 +98,7 @@ export default function AdminDashboard({ storeId, menuData, adminApiKey }: { sto
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const res = await fetch(`/api/admin/orders?storeId=${storeId}`, {
-                    headers: { 'Authorization': `Bearer ${adminApiKey}` }
-                });
+                const res = await fetch(`/api/admin/orders?storeId=${storeId}`);
                 if (!res.ok) {
                     if (res.status === 401) console.error('[Admin Dashboard] Polling failed: 401 Unauthorized (Invalid API Key)');
                     return;
@@ -172,10 +170,7 @@ export default function AdminDashboard({ storeId, menuData, adminApiKey }: { sto
         try {
             const res = await fetch('/api/wolt/delivery', {
                 method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${adminApiKey}`
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     orderId: order.id,
                     storeId,
@@ -204,10 +199,7 @@ export default function AdminDashboard({ storeId, menuData, adminApiKey }: { sto
         try {
             const res = await fetch(`/api/admin/orders/${order.id}`, {
                 method: 'DELETE',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${adminApiKey}`
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ reason: 'Cancelled by kitchen' }),
             });
             if (res.status === 409) {

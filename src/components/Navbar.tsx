@@ -24,6 +24,7 @@ export default function Navbar() {
   if (
     pathname === '/store' ||
     pathname.includes('/track') ||
+    pathname.includes('/success') ||
     pathname.includes('/admin') ||
     (pathname.match(/^\/[a-zA-Z0-9-]+$/) && !['/tageskarte', '/wochenmenu', '/standorte', '/office-catering', '/events-partys', '/unsere-geschichte', '/franchise', '/jobs', '/kontakt'].includes(pathname))
   ) {

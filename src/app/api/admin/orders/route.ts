@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import { getOrdersByStore, getAllOrders, withFreshEta, addOrder, nextOrderNumber } from '@/lib/orderStore';
+import { isAdminAuthorized, getAuthDebugInfo } from '@/lib/adminAuth';
 
 /** GET /api/admin/orders?storeId=vorgarten */
 export async function GET(req: Request) {
-    const authHeader = req.headers.get('authorization');
-    if (!process.env.ADMIN_API_KEY || authHeader !== `Bearer ${process.env.ADMIN_API_KEY}`) {
-        console.error(`[Admin API] 401 Unauthorized - GET /api/admin/orders. Header: ${authHeader ? 'Present' : 'Missing'}`);
+    if (!isAdminAuthorized(req)) {
+        console.error(`[Admin API] 401 Unauthorized - GET /api/admin/orders. ${getAuthDebugInfo(req)}`);
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -17,9 +17,8 @@ export async function GET(req: Request) {
 
 /** POST /api/admin/orders — dev-only: inject a test order to verify store works */
 export async function POST(req: Request) {
-    const authHeader = req.headers.get('authorization');
-    if (!process.env.ADMIN_API_KEY || authHeader !== `Bearer ${process.env.ADMIN_API_KEY}`) {
-        console.error(`[Admin API] 401 Unauthorized - POST /api/admin/orders. Header: ${authHeader ? 'Present' : 'Missing'}`);
+    if (!isAdminAuthorized(req)) {
+        console.error(`[Admin API] 401 Unauthorized - POST /api/admin/orders. ${getAuthDebugInfo(req)}`);
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
