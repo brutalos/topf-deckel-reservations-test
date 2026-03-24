@@ -13,9 +13,6 @@ export async function POST(req: Request) {
 
         const reservation = await ReservationService.createReservation(parsed.data);
 
-        // Stub for Email Notification
-        console.log(`[Email Stub] Sending confirmation to ${parsed.data.guestEmail}. Edit Token: ${reservation.editToken}`);
-
         return NextResponse.json(reservation);
     } catch (error: any) {
         if (error.message === 'SLOT_NO_LONGER_AVAILABLE') {

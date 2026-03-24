@@ -142,12 +142,35 @@ export default function BookingForm() {
                         </div>
                     </div>
                     
-                    <div className="text-center text-sm text-zinc-500">
-                        Eine Bestätigungs-E-Mail wurde an {reservation.guestEmail} gesendet.
+                    <div className="space-y-3 pt-4 border-t border-zinc-100">
+                        <Label className="text-zinc-500 text-xs font-bold uppercase tracking-wider">Ihre Buchung verwalten</Label>
+                        <div className="p-3 bg-zinc-50 rounded-xl border border-zinc-200 flex flex-col gap-2">
+                            <p className="text-[11px] text-zinc-500 leading-tight">
+                                Speichern Sie diesen Link, um Ihre Reservierung später zu ändern oder zu stornieren:
+                            </p>
+                            <div className="flex gap-2">
+                                <Input 
+                                    readOnly 
+                                    value={`${window.location.origin}/reservations/manage/${reservation.editToken}`}
+                                    className="h-9 text-[10px] bg-white border-zinc-200 text-zinc-600 truncate"
+                                />
+                                <Button 
+                                    variant="outline" 
+                                    size="sm" 
+                                    className="h-9 px-3 text-xs font-bold border-zinc-200 text-zinc-900"
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(`${window.location.origin}/reservations/manage/${reservation.editToken}`);
+                                        toast.success('Link kopiert!');
+                                    }}
+                                >
+                                    Kopieren
+                                </Button>
+                            </div>
+                        </div>
                     </div>
 
-                    <Button variant="outline" className="w-full text-zinc-900 border-zinc-200" onClick={() => window.location.href = `/reservations/manage/${reservation.editToken}`}>
-                        Reservierung verwalten
+                    <Button variant="default" className="w-full bg-[#E51B24] text-white hover:bg-[#C4161D] h-12 rounded-xl font-bold mt-4" onClick={() => window.location.href = `/reservations/manage/${reservation.editToken}`}>
+                        Jetzt aufrufen
                     </Button>
                 </CardContent>
             </Card>
