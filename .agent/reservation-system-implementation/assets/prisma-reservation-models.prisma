@@ -1,0 +1,132 @@
+// Merge into prisma/schema.prisma and adapt field names / relations as needed.
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  NO_SHOW
+  SEATED
+  COMPLETED
+}
+
+enum ReservationSource {
+  PUBLIC
+  ADMIN
+  IMPORT
+}
+
+enum ReservationAuditAction {
+  CREATED
+  UPDATED
+  STATUS_CHANGED
+  CANCELLED
+  RESCHEDULED
+  ASSIGNMENTS_CHANGED
+  BLOCK_CREATED
+  BLOCK_REMOVED
+  NOTE_ADDED
+}
+
+enum ReservationBlockScope {
+  LOCATION
+  AREA
+  TABLE
+}
+
+model Reservation {
+  id                   String       @id @default(cuid())
+  referenceCode        String       @unique
+  locationId           String
+  locationSlug         String
+  status               ReservationStatus @default(CONFIRMED)
+  source               ReservationSource @default(PUBLIC)
+
+  partySize            Int
+  reservedFrom         DateTime
+  reservedUntil        DateTime
+
+  customerName         String
+  customerEmail        String?
+  customerPhone        String?
+  specialRequests      String?
+  internalNotes        String?
+  areaPreference       String?
+  assignedComboId      String?
+  configVersion        Int?
+
+  createdByAdminUserId String?
+  cancelledAt          DateTime?
+  seatedAt             DateTime?
+  completedAt          DateTime?
+  noShowAt             DateTime?
+
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime     @updatedAt
+
+  assignments          ReservationTableAssignment[]
+  audits               ReservationAuditLog[]
+
+  @@index([locationId, reservedFrom])
+  @@index([locationId, status, reservedFrom])
+  @@index([customerEmail])
+  @@index([customerPhone])
+}
+
+model ReservationTableAssignment {
+  id            String      @id @default(cuid())
+  reservationId String
+  reservation   Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+
+  locationId    String
+  tableId       String
+  tableName     String?
+  areaId        String?
+  comboId       String?
+
+  reservedFrom  DateTime
+  reservedUntil DateTime
+  active        Boolean     @default(true)
+  releasedAt    DateTime?
+
+  createdAt     DateTime    @default(now())
+
+  @@index([locationId, tableId, reservedFrom])
+  @@index([reservationId])
+}
+
+model ReservationBlock {
+  id                   String               @id @default(cuid())
+  locationId           String
+  scope                ReservationBlockScope
+  areaId               String?
+  tableId              String?
+
+  startsAt             DateTime
+  endsAt               DateTime
+  reason               String?
+  active               Boolean              @default(true)
+
+  createdByAdminUserId String?
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
+
+  @@index([locationId, startsAt, endsAt])
+  @@index([locationId, tableId, startsAt])
+}
+
+model ReservationAuditLog {
+  id            String                 @id @default(cuid())
+  reservationId String
+  reservation   Reservation            @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+
+  action        ReservationAuditAction
+  actorType     String
+  actorId       String?
+  note          String?
+  before        Json?
+  after         Json?
+
+  createdAt     DateTime               @default(now())
+
+  @@index([reservationId, createdAt])
+}

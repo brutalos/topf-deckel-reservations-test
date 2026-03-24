@@ -1,0 +1,6 @@
+interface:
+  display_name: "Reservation System Implementation"
+  short_description: "Retrofit public + admin restaurant reservations into an existing Next.js + Prisma app"
+  default_prompt: "Review the codebase first, ask only missing scoping questions, then implement the reservation system end to end inside the repo."
+policy:
+  allow_implicit_invocation: true
