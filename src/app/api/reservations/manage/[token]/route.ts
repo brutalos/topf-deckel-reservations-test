@@ -42,6 +42,14 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ token:
                  await ReservationService.updateStatus(reservation.id, 'CANCELLED', 'Cancelled by guest');
                  return NextResponse.json({ success: true });
              }
+             if (body.action === 'RESCHEDULE') {
+                 const { newDate, newTime } = body;
+                 if (!newDate || !newTime) {
+                     return NextResponse.json({ error: 'MISSING_FIELDS' }, { status: 400 });
+                 }
+                 const updated = await ReservationService.rescheduleReservation(reservation.id, newDate, newTime);
+                 return NextResponse.json(updated);
+             }
         } else {
             return NextResponse.json({ error: 'TOO_LATE_TO_MODIFY' }, { status: 403 });
         }

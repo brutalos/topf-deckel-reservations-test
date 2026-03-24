@@ -218,6 +218,88 @@ export class ReservationService {
     }
 
     /**
+     * Reschedules an existing reservation.
+     */
+    static async rescheduleReservation(reservationId: string, newDate: string, newTime: string) {
+        if (!prisma) throw new Error('Database client not initialized');
+
+        const reservation = await (prisma as any).reservation.findUnique({
+            where: { id: reservationId },
+        });
+
+        if (!reservation) throw new Error('RESERVATION_NOT_FOUND');
+
+        const tableIds = await this.findAvailableTable(
+            reservation.storeId,
+            reservation.partySize,
+            newDate,
+            newTime
+        );
+
+        if (!tableIds) {
+            throw new Error('SLOT_NO_LONGER_AVAILABLE');
+        }
+
+        const config = RESERVATION_CONFIG[reservation.storeId];
+        const duration = config.defaultDurationMinutes;
+        const slotsNeeded = duration / 15;
+        const now = new Date().toISOString();
+
+        return await prisma.$transaction(async (tx) => {
+            // 1. Remove old assignments
+            await (tx as any).reservationTableAssignment.deleteMany({
+                where: { reservationId }
+            });
+
+            // 2. Update reservation
+            const updated = await (tx as any).reservation.update({
+                where: { id: reservationId },
+                data: {
+                    reservationDate: newDate,
+                    startTime: newTime,
+                    updatedAt: now,
+                }
+            });
+
+            // 3. Create new assignments
+            const assignments = [];
+            let currentDT = parseISO(`${newDate}T${newTime}:00`);
+            
+            for (let i = 0; i < slotsNeeded; i++) {
+                const slotStr = format(currentDT, "yyyy-MM-dd'T'HH:mm:ss");
+                for (const tableId of tableIds) {
+                    assignments.push({
+                        id: randomUUID(),
+                        reservationId,
+                        tableId,
+                        slotDateTime: slotStr
+                    });
+                }
+                currentDT = addMinutes(currentDT, 15);
+            }
+
+            await (tx as any).reservationTableAssignment.createMany({
+                data: assignments
+            });
+
+            // 4. Audit Log
+            await (tx as any).reservationAuditLog.create({
+                data: {
+                    id: randomUUID(),
+                    reservationId,
+                    action: 'EDITED',
+                    details: `Rescheduled from ${reservation.reservationDate} ${reservation.startTime} to ${newDate} ${newTime}. Tables: ${tableIds.join(', ')}`,
+                    timestamp: now
+                }
+            });
+
+            emitReservationEvent({ type: 'reservation.updated', reservationId, payload: { tableIds } });
+
+            return { ...updated, tableIds };
+        });
+    }
+
+    /**
      * Updates reservation status.
      */
     static async updateStatus(reservationId: string, status: ReservationStatus, details?: string) {

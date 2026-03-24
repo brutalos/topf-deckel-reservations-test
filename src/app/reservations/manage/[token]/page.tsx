@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Calendar, Clock, Users, MapPin, XCircle, ChevronLeft, Loader2, AlertCircle } from 'lucide-react';
 import { format, isBefore, subHours, parseISO } from 'date-fns';
@@ -17,6 +19,12 @@ export default function GuestManagementPage() {
     const [reservation, setReservation] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [cancelling, setCancelling] = useState(false);
+    const [rescheduling, setRescheduling] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [newDate, setNewDate] = useState('');
+    const [newTime, setNewTime] = useState('');
+    const [availableSlots, setAvailableSlots] = useState<string[]>([]);
+    const [loadingSlots, setLoadingSlots] = useState(false);
 
     const fetchReservation = async () => {
         try {
@@ -24,6 +32,8 @@ export default function GuestManagementPage() {
             const data = await res.json();
             if (res.ok) {
                 setReservation(data);
+                setNewDate(data.reservationDate);
+                setNewTime(data.startTime);
             } else {
                 toast.error('Reservierung nicht gefunden');
                 router.push('/reservations');
@@ -32,6 +42,60 @@ export default function GuestManagementPage() {
             toast.error('Fehler beim Laden');
         } finally {
             setLoading(false);
+        }
+    };
+
+    const fetchSlots = async (date: string) => {
+        if (!reservation) return;
+        setLoadingSlots(true);
+        try {
+            const res = await fetch('/api/reservations/availability', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    storeId: reservation.storeId,
+                    partySize: reservation.partySize,
+                    reservationDate: date
+                })
+            });
+            const data = await res.json();
+            if (res.ok && data.availableSlots) {
+                setAvailableSlots(data.availableSlots);
+            }
+        } catch (error) {
+            toast.error('Verfügbarkeit konnte nicht geladen werden');
+        } finally {
+            setLoadingSlots(false);
+        }
+    };
+
+    useEffect(() => {
+        if (isEditing && newDate) {
+            fetchSlots(newDate);
+        }
+    }, [isEditing, newDate]);
+
+    const handleReschedule = async () => {
+        if (!newDate || !newTime) return;
+        setRescheduling(true);
+        try {
+            const res = await fetch(`/api/reservations/manage/${token}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'RESCHEDULE', newDate, newTime })
+            });
+            if (res.ok) {
+                toast.success('Reservierung erfolgreich verschoben');
+                setIsEditing(false);
+                fetchReservation();
+            } else {
+                const data = await res.json();
+                toast.error(data.error === 'SLOT_NO_LONGER_AVAILABLE' ? 'Zeitpunkt leider nicht mehr verfügbar' : 'Fehler beim Verschieben');
+            }
+        } catch (error) {
+            toast.error('Serverfehler');
+        } finally {
+            setRescheduling(false);
         }
     };
 
@@ -112,54 +176,129 @@ export default function GuestManagementPage() {
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-2 gap-6">
-                                <div className="flex items-start gap-4">
-                                    <div className="p-3 bg-red-50 rounded-xl">
-                                        <Calendar className="w-6 h-6 text-[#E51B24]" />
+                            {!isEditing ? (
+                                <>
+                                    <div className="grid grid-cols-2 gap-6">
+                                        <div className="flex items-start gap-4">
+                                            <div className="p-3 bg-red-50 rounded-xl">
+                                                <Calendar className="w-6 h-6 text-[#E51B24]" />
+                                            </div>
+                                            <div>
+                                                <div className="font-bold text-zinc-900">{format(new Date(reservation.reservationDate), 'dd.MM.yyyy')}</div>
+                                                <div className="text-sm text-zinc-500">Datum</div>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-start gap-4">
+                                            <div className="p-3 bg-red-50 rounded-xl">
+                                                <Clock className="w-6 h-6 text-[#E51B24]" />
+                                            </div>
+                                            <div>
+                                                <div className="font-bold text-zinc-900">{reservation.startTime} Uhr</div>
+                                                <div className="text-sm text-zinc-500">Zeit</div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <div className="font-bold text-zinc-900">{format(new Date(reservation.reservationDate), 'dd.MM.yyyy')}</div>
-                                        <div className="text-sm text-zinc-500">Datum</div>
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-4">
-                                    <div className="p-3 bg-red-50 rounded-xl">
-                                        <Clock className="w-6 h-6 text-[#E51B24]" />
-                                    </div>
-                                    <div>
-                                        <div className="font-bold text-zinc-900">{reservation.startTime} Uhr</div>
-                                        <div className="text-sm text-zinc-500">Zeit</div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div className="flex items-start gap-4">
-                                <div className="p-3 bg-red-50 rounded-xl">
-                                    <Users className="w-6 h-6 text-[#E51B24]" />
+                                    <div className="flex items-start gap-4">
+                                        <div className="p-3 bg-red-50 rounded-xl">
+                                            <Users className="w-6 h-6 text-[#E51B24]" />
+                                        </div>
+                                        <div>
+                                            <div className="font-bold text-zinc-900">{reservation.partySize} Personen</div>
+                                            <div className="text-sm text-zinc-500">Gästeanzahl</div>
+                                        </div>
+                                    </div>
+                                </>
+                            ) : (
+                                <div className="space-y-6 p-6 bg-zinc-50 rounded-2xl border border-zinc-200 animate-in fade-in slide-in-from-top-4">
+                                    <div className="space-y-2">
+                                        <Label className="text-zinc-700 font-bold">Neues Datum</Label>
+                                        <Input 
+                                            type="date"
+                                            min={format(new Date(), 'yyyy-MM-dd')}
+                                            value={newDate}
+                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                                setNewDate(e.target.value);
+                                                setNewTime('');
+                                            }}
+                                            className="bg-white border-zinc-200 text-zinc-900"
+                                        />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label className="text-zinc-700 font-bold">Neue Uhrzeit</Label>
+                                        {loadingSlots ? (
+                                            <div className="flex items-center gap-2 text-zinc-500 text-sm py-2">
+                                                <Loader2 className="w-4 h-4 animate-spin" /> Verfügbarkeit wird geprüft...
+                                            </div>
+                                        ) : availableSlots.length > 0 ? (
+                                            <div className="grid grid-cols-4 gap-2">
+                                                {availableSlots.map(time => (
+                                                    <Button
+                                                        key={time}
+                                                        variant={newTime === time ? 'default' : 'outline'}
+                                                        size="sm"
+                                                        onClick={() => setNewTime(time)}
+                                                        className={`h-9 ${newTime === time ? 'bg-[#E51B24] text-white' : 'text-zinc-900 border-zinc-200'}`}
+                                                    >
+                                                        {time}
+                                                    </Button>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <div className="text-xs text-red-500 bg-red-50 p-3 rounded-lg border border-red-100">
+                                                Keine freien Plätze für dieses Datum verfügbar.
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div className="flex gap-2 pt-2">
+                                        <Button 
+                                            className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold"
+                                            disabled={!newTime || rescheduling}
+                                            onClick={handleReschedule}
+                                        >
+                                            {rescheduling ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : 'Änderung Speichern'}
+                                        </Button>
+                                        <Button 
+                                            variant="ghost" 
+                                            className="text-zinc-500 hover:bg-zinc-200"
+                                            onClick={() => setIsEditing(false)}
+                                        >
+                                            Abbrechen
+                                        </Button>
+                                    </div>
                                 </div>
-                                <div>
-                                    <div className="font-bold text-zinc-900">{reservation.partySize} Personen</div>
-                                    <div className="text-sm text-zinc-500">Gästeanzahl</div>
-                                </div>
-                            </div>
+                            )}
                         </div>
 
                         {!isCancelled && (
-                            <div className="pt-8 border-t border-zinc-100 space-y-4">
+                            <div className="pt-8 border-t border-zinc-100 flex flex-col gap-3">
                                 {canModify ? (
-                                    <Button 
-                                        variant="outline" 
-                                        onClick={handleCancel}
-                                        disabled={cancelling}
-                                        className="w-full border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700 h-12 rounded-xl font-bold"
-                                    >
-                                        {cancelling ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <XCircle className="w-4 h-4 mr-2" />}
-                                        Reservierung stornieren
-                                    </Button>
+                                    <>
+                                        {!isEditing && (
+                                            <Button 
+                                                variant="default"
+                                                onClick={() => setIsEditing(true)}
+                                                className="w-full bg-[#E51B24] text-white hover:bg-[#C4161D] h-12 rounded-xl font-bold"
+                                            >
+                                                Termin verschieben
+                                            </Button>
+                                        )}
+                                        <Button 
+                                            variant="outline" 
+                                            onClick={handleCancel}
+                                            disabled={cancelling || isEditing}
+                                            className="w-full border-zinc-200 text-zinc-500 hover:bg-red-50 hover:text-red-700 hover:border-red-200 h-12 rounded-xl font-bold"
+                                        >
+                                            {cancelling ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <XCircle className="w-4 h-4 mr-2" />}
+                                            Reservierung stornieren
+                                        </Button>
+                                    </>
                                 ) : (
                                     <div className="flex items-center gap-2 p-4 bg-zinc-50 rounded-xl text-zinc-500 text-sm">
                                         <AlertCircle className="w-5 h-5" />
-                                        Stornierungen sind online nur bis zu 2 Stunden vor Beginn möglich. Bitte kontaktieren Sie uns telefonisch.
+                                        Änderungen sind online nur bis zu 2 Stunden vor Beginn möglich. Bitte kontaktieren Sie uns telefonisch.
                                     </div>
                                 )}
                             </div>
