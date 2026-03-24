@@ -149,22 +149,30 @@ export default function StorefrontPage({ storeId, menuData }: { storeId: string,
                 <div className="space-y-12">
                     {komboItems.length > 0 && (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {komboItems.map((item) => (
-                                <div key={item.id} className="kombo-card border border-[#c4d1ca]">
+                            {komboItems.map((item, komboIdx) => {
+                                const savingsPct = komboIdx === 0 ? 25 : 20;
+                                return (
+                                <div key={item.id} className="kombo-card">
                                     <div className="kombo-header">
                                         <span className="kombo-title">{item.name.toUpperCase()}</span>
-                                        <span className="kombo-price">€ {item.prices?.S?.toFixed(2).replace('.', ',')}</span>
+                                        <span className="kombo-price">€{item.prices?.S?.toFixed(2).replace('.', ',')}</span>
                                     </div>
                                     <div className="kombo-options-box">
                                         {item.komboOptions.map((opt: any, idx: number) => (
-                                            <div key={idx} className="kombo-option">+ {opt.label}</div>
+                                            <div key={idx} className="kombo-option">{opt.label}</div>
                                         ))}
+                                        <div className="kombo-badge">
+                                            <span>SPARE</span>
+                                            <span>BIS ZU</span>
+                                            <strong>{savingsPct}%</strong>
+                                        </div>
                                     </div>
                                     <button className="kombo-add-btn" onClick={() => setKomboModalItem(item)}>
                                         Kombo zusammenstellen
                                     </button>
                                 </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     )}
 

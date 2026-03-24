@@ -64,6 +64,17 @@ export default function SuccessPage({ params, searchParams }: {
 
     useEffect(() => { setMounted(true); }, []);
 
+    // On mount: call the confirm endpoint as a fallback to create the order
+    // even if the Stripe webhook hasn't been received yet.
+    useEffect(() => {
+        if (!payment_intent) return;
+        fetch('/api/checkout/confirm', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ paymentIntentId: payment_intent }),
+        }).catch(() => { /* silent — webhook may handle it instead */ });
+    }, [payment_intent]);
+
     // Poll order status every 3 seconds
     useEffect(() => {
         if (!payment_intent) { setLoading(false); return; }

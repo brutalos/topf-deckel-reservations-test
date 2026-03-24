@@ -72,9 +72,13 @@ export default function AdminDashboard({ storeId, menuData, adminKey }: { storeI
         };
     }, []);
 
-    // Today's menu items only (no kombos, no other days)
+    // Today's menu items only (no kombos, no other days).
+    // IMPORTANT: gated behind `mounted` to avoid SSR/client hydration mismatch.
+    // The server runs in UTC; the client uses local timezone. If these differ at
+    // midnight they produce a different todayISO → different number of Switch
+    // components → base-ui internal IDs mismatch → React hydration error.
     const todayISO = new Date().toISOString().split('T')[0];
-    const uniqueMenuNames = Array.from(
+    const uniqueMenuNames = mounted ? Array.from(
         new Set(
             (menuData as any[])
                 .filter(m => {
@@ -84,7 +88,7 @@ export default function AdminDashboard({ storeId, menuData, adminKey }: { storeI
                 })
                 .map(m => m.name)
         )
-    );
+    ) : [];
 
     // Load sold-out state from API on mount
     useEffect(() => {
@@ -173,16 +177,7 @@ export default function AdminDashboard({ storeId, menuData, adminKey }: { storeI
             const res = await fetch('/api/wolt/delivery', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminKey}` },
-                body: JSON.stringify({
-                    orderId: order.id,
-                    storeId,
-                    customerName: order.customerName,
-                    customerPhone: order.customerPhone,
-                    customerAddress: order.customerAddress,
-                    promiseId: order.promiseId,
-                    orderDetails: order.orderDetails,
-                    scheduledDropoffTime: (order as any).scheduledDropoffTime || null,
-                }),
+                body: JSON.stringify({ orderId: order.id }),
             });
             const data = await res.json();
             if (!res.ok) throw new Error(data.error);
@@ -195,6 +190,7 @@ export default function AdminDashboard({ storeId, menuData, adminKey }: { storeI
         }
         setIsDispatching(null);
     };
+
 
     const handleCancelOrder = async (order: Order) => {
         if (!confirm(`Bestellung #${order.order_number} wirklich stornieren?`)) return;
@@ -422,13 +418,17 @@ export default function AdminDashboard({ storeId, menuData, adminKey }: { storeI
 
                                                     {isNew && (
                                                         <div className="flex flex-col gap-2 w-full">
+                                                            <div className="bg-amber-50 border border-amber-200 rounded-xl px-3 py-2 text-center mb-1">
+                                                                <p className="text-xs text-amber-600 font-bold">⚠️ Auto-Dispatch fehlgeschlagen</p>
+                                                                <p className="text-xs text-amber-500">Wolt Kurier manuell senden</p>
+                                                            </div>
                                                             <button
                                                                 disabled={isDispatching === order.id}
                                                                 onClick={() => handleDispatchWolt(order)}
                                                                 className="w-full flex items-center justify-center gap-1.5 bg-[#6CB78E] hover:bg-[#5aa87e] disabled:opacity-60 text-white text-sm font-bold px-4 py-2.5 rounded-xl transition-colors duration-150 cursor-pointer shadow-sm"
                                                             >
-                                                                <Truck className="w-4 h-4" />
-                                                                {isDispatching === order.id ? 'Bestätigen...' : 'Bestellung bestätigen'}
+                                                                <RefreshCw className="w-4 h-4" />
+                                                                {isDispatching === order.id ? 'Sende...' : 'Erneut senden'}
                                                             </button>
                                                             {order.canCancel !== false && (
                                                                 <button
@@ -440,6 +440,7 @@ export default function AdminDashboard({ storeId, menuData, adminKey }: { storeI
                                                             )}
                                                         </div>
                                                     )}
+
 
                                                     {order.status === 'wolt_dispatched' || order.status === 'order.pickup_started' ? (
                                                         <div className="text-center w-full">

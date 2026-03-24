@@ -9,8 +9,8 @@
  */
 
 const STRIPE_SECRET_KEY = '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';
-const RETURN_URL  = 'https://topfdeckel.at/admin/stripe/return';
-const REFRESH_URL = 'https://topfdeckel.at/admin/stripe/refresh';
+const RETURN_URL  = 'https://topfdeckel.at';
+const REFRESH_URL = 'https://topfdeckel.at';
 
 // Parse args: node script.mjs [--account acct_xxx] [email]
 const args = process.argv.slice(2);

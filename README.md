@@ -65,12 +65,54 @@ npm run dev           # http://localhost:3000
 
 ### Test Stripe Webhooks Locally
 
-Run alongside `npm run dev`:
+> **Important:** `stripe listen` must use the **same Stripe account** that your `.env` keys belong to.
+> The `.env` uses a **restricted key** (`rk_test_...`) which the CLI cannot authenticate with.
+> You need the **full secret key** (`sk_test_...`) from the Stripe Dashboard for the CLI.
+
+#### Step-by-step
+
+**1. Get your full test secret key**
+
+Stripe Dashboard → **Developers → API Keys → Secret key** (test mode)  
+→ Click **Reveal test key** and copy the `sk_test_51TBWyS...` value
+
+**2. Start the webhook forwarder** (run alongside `npm run dev`)
 
 ```bash
-stripe listen --forward-to localhost:3000/api/webhooks/stripe
+stripe listen \
+  --api-key sk_test_51TBWySRRO3IXlvQ8YOUR_FULL_KEY \
+  --forward-to localhost:3000/api/webhooks/stripe
 ```
-Copy the printed `whsec_...` to `STRIPE_WEBHOOK_SECRET` in `.env`.
+
+**3. Update the signing secret in `.env`**
+
+Copy the `whsec_...` printed by the CLI and set:
+```env
+STRIPE_WEBHOOK_SECRET=whsec_xxxxxxxxxxxxxxxxxxxx
+```
+> ⚠️ This secret changes every time you restart `stripe listen`. Update `.env` each time.  
+> ⚠️ Restart `npm run dev` after changing `.env` so Next.js picks up the new value.
+
+**4. Place a test order**
+
+Use Stripe test card `4242 4242 4242 4242`, any future expiry, any CVC.
+
+**Expected server logs on success:**
+```
+[Stripe Webhook] 🔔 POST Request received at /api/webhooks/stripe
+[Stripe Webhook] ✅ Signature verified
+[Stripe Webhook] Event type: payment_intent.succeeded
+✅ Order saved [WOLT-XXXXXXXX] #1001 → store: wipplingerstrasse
+[Stripe Webhook] 🚀 Auto-dispatching Wolt for WOLT-XXXXXXXX...
+```
+
+#### Fallback: webhook-free operation
+
+Even without `stripe listen`, orders are still created.  
+The success page (`/[storeId]/success`) calls `POST /api/checkout/confirm` on load,
+which verifies the PaymentIntent directly with Stripe and creates the order if the webhook hasn't.
+Both paths use the same deduplication logic — no duplicate orders are ever created.
+
 
 ### Test Wolt API Locally
 

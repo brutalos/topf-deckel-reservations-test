@@ -36,8 +36,6 @@ yarn-error.log*
 # vercel
 .vercel
 
-# cloudflare / opennext build output
-.open-next
 
 # typescript
 *.tsbuildinfo
@@ -50,10 +48,7 @@ next-env.d.ts
 *.db-shm
 *.db-wal
 node_modules/
-.open-next/
 !.gitignore
 
 photos/
 
-# wrangler cache
-.wrangler/

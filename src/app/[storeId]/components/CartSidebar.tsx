@@ -120,6 +120,7 @@ export function CartSidebar({ cart, setCart, store, isOpen, onClose }: { cart: a
 
     // Wolt & Validation States
     const [addressError, setAddressError] = useState('');
+    const [phoneError, setPhoneError] = useState('');
     const [deliveryFee, setDeliveryFee] = useState(0); // in cents
     const [deliveryEta, setDeliveryEta] = useState('');
     const [promiseId, setPromiseId] = useState('');
@@ -159,6 +160,26 @@ export function CartSidebar({ cart, setCart, store, isOpen, onClose }: { cart: a
         const dt = new Date(value); // datetime-local is local time
         const result = isValidPreorderSlot(dt, new Date());
         setPreorderError(result.valid ? '' : (result.error ?? ''));
+    };
+
+    /**
+     * Accepts:
+     *   +43 660 1234567  (Austrian with country code)
+     *   +43660123456     (compact)
+     *   0660 1234567     (local Austrian)
+     *   0660123456
+     *   +49 123 456789   (other E.164 format)
+     * Rules: starts with + or 0, digits/spaces/dashes only, 7–15 digits total.
+     */
+    const validatePhone = (value: string): string => {
+        const stripped = value.replace(/[\s\-()]/g, '');
+        if (!stripped) return 'Telefonnummer ist erforderlich';
+        if (!/^[+0]/.test(stripped)) return 'Bitte mit +43 oder 0 beginnen (z.B. +43 660 1234567)';
+        const digits = stripped.replace(/^\+/, '');
+        if (!/^\d+$/.test(digits)) return 'Nur Ziffern, Leerzeichen und Bindestriche erlaubt';
+        if (digits.length < 7) return 'Telefonnummer zu kurz (mind. 7 Ziffern)';
+        if (digits.length > 15) return 'Telefonnummer zu lang (max. 15 Ziffern)';
+        return '';
     };
 
     const validateAddressFields = () => {
@@ -225,6 +246,12 @@ export function CartSidebar({ cart, setCart, store, isOpen, onClose }: { cart: a
     const handleInitiateCheckout = async () => {
         if (!name || !phone || (deliveryMode === 'delivery' && (!street || !zip || !city))) {
             alert("Bitte fülle alle markierten Pflichtfelder aus (*)");
+            return;
+        }
+
+        const phoneValidationError = validatePhone(phone);
+        if (phoneValidationError) {
+            setPhoneError(phoneValidationError);
             return;
         }
 
@@ -416,9 +443,14 @@ export function CartSidebar({ cart, setCart, store, isOpen, onClose }: { cart: a
                                                 type="tel"
                                                 placeholder="+43 660 1234567"
                                                 value={phone}
-                                                onChange={e => setPhone(e.target.value)}
-                                                className="w-full p-3 bg-secondary/50 border border-border rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all"
+                                                onChange={e => {
+                                                    setPhone(e.target.value);
+                                                    if (phoneError) setPhoneError('');
+                                                }}
+                                                onBlur={() => setPhoneError(validatePhone(phone))}
+                                                className={`w-full p-3 bg-secondary/50 border rounded-xl focus:ring-2 outline-none transition-all ${phoneError ? 'border-destructive focus:ring-destructive/50' : 'border-border focus:ring-primary'}`}
                                             />
+                                            {phoneError && <p className="text-xs text-destructive font-bold">{phoneError}</p>}
                                         </div>
                                     </div>
 

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
 import { addOrder, nextOrderNumber, findOrderById } from '@/lib/orderStore';
+import { autoDispatchOrder } from '@/lib/autoDispatch';
 
 export async function POST(req: Request) {
     console.log(`\n[Stripe Webhook] 🔔 POST Request received at /api/webhooks/stripe`);
@@ -41,7 +42,9 @@ export async function POST(req: Request) {
 
         console.log(`[Stripe Webhook] Event type: ${event.type}`);
 
-        if (event.type === 'payment_intent.amount_capturable_updated' || event.type === 'payment_intent.succeeded') {
+        // payment_intent.succeeded fires when capture_method is 'automatic' (the new flow).
+        // payment_intent.amount_capturable_updated fired for the old 'manual' hold flow.
+        if (event.type === 'payment_intent.succeeded' || event.type === 'payment_intent.amount_capturable_updated') {
             const pi = event.data.object as any;
 
             const existingOrder = await findOrderById(pi.id);
@@ -90,6 +93,21 @@ export async function POST(req: Request) {
             });
 
             console.log(`✅ Order saved [${merchantOrderId}] #${orderNumber} → store: ${meta.storeId}`);
+
+            // ── Auto-dispatch Wolt courier (only for delivery orders) ──────────
+            if (meta.customerAddress) {
+                try {
+                    console.log(`[Stripe Webhook] 🚀 Auto-dispatching Wolt for ${merchantOrderId}...`);
+                    const { woltDeliveryId, trackingUrl } = await autoDispatchOrder(merchantOrderId);
+                    console.log(`[Stripe Webhook] ✅ Wolt auto-dispatch complete | DeliveryID: ${woltDeliveryId} | Tracking: ${trackingUrl}`);
+                } catch (dispatchErr: any) {
+                    // Non-fatal: order is already saved as 'received'.
+                    // Admin can manually retry dispatch from the kitchen dashboard.
+                    console.error(`[Stripe Webhook] ⚠️  Auto-dispatch failed for ${merchantOrderId}: ${dispatchErr.message}`);
+                }
+            } else {
+                console.log(`[Stripe Webhook] ℹ️  No delivery address — skipping Wolt auto-dispatch (pickup order?)`);
+            }
         }
 
         return NextResponse.json({ received: true });
