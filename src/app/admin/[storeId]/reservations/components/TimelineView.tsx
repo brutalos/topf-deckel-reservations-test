@@ -25,7 +25,8 @@ import {
     MessageSquare,
     ExternalLink,
     Utensils,
-    Calendar
+    Calendar,
+    RefreshCw
 } from 'lucide-react';
 
 interface TimelineViewProps {
@@ -277,21 +278,31 @@ export default function TimelineView({ storeId, date, adminKey }: TimelineViewPr
                             )}
 
                             <div className="space-y-2 pt-4 border-t">
-                                <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Aktionen</p>
+                                <div className="flex justify-between items-center mb-1">
+                                    <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">
+                                        Aktionen <span className="ml-1 opacity-50 font-mono">({selectedReservation.status})</span>
+                                    </p>
+                                    <button 
+                                        onClick={fetchTimeline}
+                                        className="text-[9px] text-blue-600 hover:underline font-bold flex items-center gap-1"
+                                    >
+                                        <RefreshCw className="w-2.5 h-2.5" /> Aktualisieren
+                                    </button>
+                                </div>
                                 <div className="grid grid-cols-1 gap-2">
-                                    {selectedReservation.status === 'CONFIRMED' && (
+                                    {(selectedReservation.status === 'CONFIRMED' || selectedReservation.status === 'PENDING') && (
                                         <Button 
-                                            className="w-full bg-green-600 hover:bg-green-700 text-white font-bold h-10"
+                                            className="w-full bg-green-600 hover:bg-green-700 text-white font-bold h-10 shadow-sm"
                                             disabled={isUpdating}
                                             onClick={() => handleStatusUpdate(selectedReservation.id, 'SEATED')}
                                         >
                                             {isUpdating ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Utensils className="w-4 h-4 mr-2" />}
-                                            Gast platzieren
+                                            Gast jetzt platzieren
                                         </Button>
                                     )}
                                     {selectedReservation.status === 'SEATED' && (
                                         <Button 
-                                            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold h-10"
+                                            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold h-10 shadow-sm"
                                             disabled={isUpdating}
                                             onClick={() => handleStatusUpdate(selectedReservation.id, 'COMPLETED')}
                                         >
@@ -299,16 +310,45 @@ export default function TimelineView({ storeId, date, adminKey }: TimelineViewPr
                                             Besuch abschließen
                                         </Button>
                                     )}
-                                    {selectedReservation.status !== 'CANCELLED' && selectedReservation.status !== 'COMPLETED' && (
+                                    {selectedReservation.status === 'PENDING' && (
                                         <Button 
-                                            variant="outline" 
-                                            className="w-full border-red-100 text-red-600 hover:bg-red-50 font-bold h-10"
+                                            className="w-full bg-zinc-900 hover:bg-black text-white font-bold h-10 shadow-sm"
                                             disabled={isUpdating}
-                                            onClick={() => handleStatusUpdate(selectedReservation.id, 'CANCELLED')}
+                                            onClick={() => handleStatusUpdate(selectedReservation.id, 'CONFIRMED')}
                                         >
-                                            <XCircle className="w-4 h-4 mr-2" /> Stornieren / No-Show
+                                            {isUpdating ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <CheckCircle2 className="w-4 h-4 mr-2" />}
+                                            Bestätigen
                                         </Button>
                                     )}
+                                    
+                                    <div className="grid grid-cols-2 gap-2 mt-2">
+                                        {(selectedReservation.status !== 'CANCELLED' && selectedReservation.status !== 'COMPLETED') ? (
+                                            <Button 
+                                                variant="outline" 
+                                                className="border-red-100 text-red-600 hover:bg-red-50 font-bold h-9 text-xs"
+                                                disabled={isUpdating}
+                                                onClick={() => handleStatusUpdate(selectedReservation.id, 'CANCELLED')}
+                                            >
+                                                <XCircle className="w-3.5 h-3.5 mr-1.5" /> Stornieren
+                                            </Button>
+                                        ) : (
+                                            <Button 
+                                                variant="outline" 
+                                                className="border-zinc-200 text-zinc-500 hover:bg-zinc-50 font-bold h-9 text-xs"
+                                                disabled={isUpdating}
+                                                onClick={() => handleStatusUpdate(selectedReservation.id, 'CONFIRMED')}
+                                            >
+                                                Reaktivieren
+                                            </Button>
+                                        )}
+                                        <Button 
+                                            variant="outline" 
+                                            className="border-zinc-200 text-zinc-600 hover:bg-zinc-50 font-bold h-9 text-xs"
+                                            onClick={() => window.open(`/reservations/manage/${selectedReservation.editToken}`, '_blank')}
+                                        >
+                                            <ExternalLink className="w-3.5 h-3.5 mr-1.5" /> Edit Link
+                                        </Button>
+                                    </div>
                                 </div>
                             </div>
                         </CardContent>
