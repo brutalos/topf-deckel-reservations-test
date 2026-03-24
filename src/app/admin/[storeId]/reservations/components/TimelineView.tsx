@@ -21,9 +21,10 @@ import { Loader2, Users, Clock, AlertCircle, CheckCircle2 } from 'lucide-react';
 interface TimelineViewProps {
     storeId: string;
     date: string;
+    adminKey: string;
 }
 
-export default function TimelineView({ storeId, date }: TimelineViewProps) {
+export default function TimelineView({ storeId, date, adminKey }: TimelineViewProps) {
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState<{ assignments: any[], blocks: any[] }>({ assignments: [], blocks: [] });
     const config = RESERVATION_CONFIG[storeId];
@@ -31,7 +32,9 @@ export default function TimelineView({ storeId, date }: TimelineViewProps) {
     const fetchTimeline = async () => {
         setLoading(true);
         try {
-            const res = await fetch(`/api/admin/${storeId}/reservations/timeline?date=${date}`);
+            const res = await fetch(`/api/admin/${storeId}/reservations/timeline?date=${date}`, {
+                headers: { 'Authorization': `Bearer ${adminKey}` }
+            });
             const json = await res.json();
             if (res.ok) {
                 setData(json);
@@ -45,14 +48,16 @@ export default function TimelineView({ storeId, date }: TimelineViewProps) {
 
     useEffect(() => {
         fetchTimeline();
-    }, [storeId, date]);
+    }, [storeId, date, adminKey]);
 
     if (!config) return null;
 
     // Generate slots: 11:00 to 15:00
+    // Use the passed date instead of new Date() for consistency
+    const dayBase = parseISO(`${date}T00:00:00`);
     const slots: string[] = [];
-    let current = setMinutes(setHours(startOfDay(new Date()), 11), 0);
-    const end = setMinutes(setHours(startOfDay(new Date()), 15), 0);
+    let current = setMinutes(setHours(dayBase, 11), 0);
+    const end = setMinutes(setHours(dayBase, 15), 0);
 
     while (current < end) {
         slots.push(format(current, 'HH:mm'));
@@ -74,7 +79,10 @@ export default function TimelineView({ storeId, date }: TimelineViewProps) {
         try {
             const res = await fetch(`/api/admin/reservations/${reservationId}`, {
                 method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${adminKey}`
+                },
                 body: JSON.stringify({ status })
             });
             if (res.ok) {

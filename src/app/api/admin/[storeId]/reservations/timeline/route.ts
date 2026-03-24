@@ -16,6 +16,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ storeId:
     }
 
     try {
+        console.log(`[Timeline API] Fetching for Store=${storeId}, Date=${date}`);
         const assignments = await (prisma as any).reservationTableAssignment.findMany({
             where: {
                 reservation: { storeId },
@@ -23,6 +24,8 @@ export async function GET(req: Request, { params }: { params: Promise<{ storeId:
             },
             include: { reservation: true }
         });
+
+        console.log(`[Timeline API] Found ${assignments.length} assignments`);
 
         const blocks = await (prisma as any).reservationBlock.findMany({
             where: {
