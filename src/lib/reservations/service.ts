@@ -13,19 +13,17 @@ import {
 } from 'date-fns';
 import { randomUUID } from 'crypto';
 
-console.log('[ReservationService] Prisma instance exists:', !!prisma);
-
 /**
  * Reservation Domain Service
  * Handles business logic for bookings, availability, and status management.
  */
 export class ReservationService {
+
     /**
      * Finds available time slots for a store on a given date and party size.
      */
     static async checkAvailability(storeId: string, partySize: number, reservationDate: string) {
         if (!prisma) {
-            console.error('[ReservationService] PRISMA IS UNDEFINED in checkAvailability');
             throw new Error('Database client not initialized');
         }
 
