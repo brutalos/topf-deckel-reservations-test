@@ -1,28 +1,13 @@
 import { NextResponse } from 'next/server';
-import { getCloudflareContext } from '@opennextjs/cloudflare';
 
-// KV key format: "{YYYY-MM-DD}:{storeId}:{itemName}" — sold-out status scoped to day + store.
-// 36-hour TTL ensures day-old entries auto-expire without manual cleanup.
-const TTL = 129_600; // 36 hours
+// Sold-out status is scoped to today + store using an in-memory Set.
+// Keys: "{YYYY-MM-DD}:{storeId}:{itemName}"
+// This resets on server restart — acceptable since sold-out is a daily manual toggle.
 
 function todayPrefix(): string {
     return new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
 }
 
-async function getKV(): Promise<any | null> {
-    // Force in-memory fallback for local dev to prevent SQLite errors from the local Cloudflare emulator
-    if (process.env.NODE_ENV === 'development') {
-        return null;
-    }
-    try {
-        const { env } = await getCloudflareContext({ async: true });
-        return (env as any).STOCK_KV ?? null;
-    } catch {
-        return null; // local dev — use in-memory fallback
-    }
-}
-
-// In-memory fallback for local dev
 const g = globalThis as typeof globalThis & { __soldOut?: Set<string> };
 if (!g.__soldOut) g.__soldOut = new Set<string>();
 
@@ -32,17 +17,10 @@ export async function GET(req: Request) {
     const storeId = searchParams.get('storeId') || 'default';
     const prefix = `${todayPrefix()}:${storeId}:`;
 
-    const kv = await getKV();
-    if (kv) {
-        const { keys } = await kv.list({ prefix, limit: 200 });
-        const soldOut = (keys as { name: string }[]).map(k => k.name.slice(prefix.length));
-        return NextResponse.json({ soldOut });
-    }
-
-    // In-memory fallback
     const soldOut = Array.from(g.__soldOut!)
         .filter(k => k.startsWith(prefix))
         .map(k => k.slice(prefix.length));
+
     return NextResponse.json({ soldOut });
 }
 
@@ -57,32 +35,22 @@ export async function PUT(req: Request) {
     const key = `${today}:${storeId}:${name}`;
     const prefix = `${today}:${storeId}:`;
 
-    const kv = await getKV();
-    if (kv) {
-        if (sold) {
-            await kv.put(key, '1', { expirationTtl: TTL });
-        } else {
-            await kv.delete(key);
-        }
-        const { keys } = await kv.list({ prefix, limit: 200 });
-        const soldOut = (keys as { name: string }[]).map(k => k.name.slice(prefix.length));
-        console.log(`🥘 Stock [${today}][${storeId}]: "${name}" → ${sold ? '❌ AUSVERKAUFT' : '✅ Verfügbar'}`);
-        return NextResponse.json({ soldOut });
-    }
-
-    // In-memory fallback
     if (sold) {
         g.__soldOut!.add(key);
     } else {
         g.__soldOut!.delete(key);
     }
-    // Purge past-day entries
+
+    // Purge past-day entries to avoid unbounded growth
     for (const k of Array.from(g.__soldOut!)) {
         if (!k.startsWith(today)) g.__soldOut!.delete(k);
     }
+
     console.log(`🥘 Stock [${today}][${storeId}]: "${name}" → ${sold ? '❌ AUSVERKAUFT' : '✅ Verfügbar'}`);
+
     const todayStoreItems = Array.from(g.__soldOut!)
         .filter(k => k.startsWith(prefix))
         .map(k => k.slice(prefix.length));
+
     return NextResponse.json({ soldOut: todayStoreItems });
 }
