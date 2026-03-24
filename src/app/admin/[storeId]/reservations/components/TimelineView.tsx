@@ -118,48 +118,76 @@ export default function TimelineView({ storeId, date, adminKey }: TimelineViewPr
                         </tr>
                     </thead>
                     <tbody>
-                        {config.tables.map(table => (
-                            <tr key={table.id} className="border-b hover:bg-zinc-50/50 transition-colors">
-                                <td className="p-3 border-r font-medium text-zinc-700 sticky left-0 bg-white z-10">
-                                    <div className="flex items-center justify-between">
-                                        <span>{table.id}</span>
-                                        <Badge variant="outline" className="text-[10px] px-1 h-4">{table.capacity}P</Badge>
-                                    </div>
-                                </td>
-                                {slots.map(slot => {
-                                    const occupant = getOccupant(table.id, slot);
-                                    return (
-                                        <td key={slot} className="p-1 border-r h-14">
-                                            {occupant?.type === 'RESERVATION' && (
-                                                <div 
-                                                    className={`h-full rounded-md p-1 text-[10px] overflow-hidden flex flex-col justify-between cursor-pointer border ${
-                                                        occupant.data.status === 'SEATED' ? 'bg-green-100 border-green-200 text-green-800' :
-                                                        occupant.data.status === 'CANCELLED' ? 'bg-zinc-100 border-zinc-200 text-zinc-400' :
-                                                        'bg-red-50 border-red-100 text-[#E51B24]'
-                                                    }`}
-                                                    onClick={() => {
-                                                        const action = occupant.data.status === 'CONFIRMED' ? 'SEATED' : 
-                                                                       occupant.data.status === 'SEATED' ? 'COMPLETED' : null;
-                                                        if (action) handleStatusUpdate(occupant.data.id, action);
-                                                    }}
-                                                >
-                                                    <div className="font-bold truncate">{occupant.data.guestName}</div>
-                                                    <div className="flex justify-between items-center opacity-80">
-                                                        <span>{occupant.data.partySize}P</span>
-                                                        {occupant.data.status === 'SEATED' ? <CheckCircle2 className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
+                        {config.tables.map(table => {
+                            let skipCount = 0;
+                            return (
+                                <tr key={table.id} className="border-b hover:bg-zinc-50/50 transition-colors">
+                                    <td className="p-3 border-r font-medium text-zinc-700 sticky left-0 bg-white z-10">
+                                        <div className="flex items-center justify-between">
+                                            <span>{table.id}</span>
+                                            <Badge variant="outline" className="text-[10px] px-1 h-4">{table.capacity}P</Badge>
+                                        </div>
+                                    </td>
+                                    {slots.map((slot, index) => {
+                                        // Handle skipped slots for spanning cells
+                                        if (skipCount > 0) {
+                                            skipCount--;
+                                            return null;
+                                        }
+
+                                        const occupant = getOccupant(table.id, slot);
+                                        
+                                        if (occupant?.type === 'RESERVATION') {
+                                            // Only render if this is the START of the reservation
+                                            if (occupant.data.startTime === slot) {
+                                                const span = occupant.data.durationMinutes / 15;
+                                                skipCount = span - 1;
+                                                
+                                                return (
+                                                    <td key={slot} colSpan={span} className="p-1 border-r h-14">
+                                                        <div 
+                                                            className={`h-full rounded-md p-2 text-[10px] overflow-hidden flex flex-col justify-between cursor-pointer border shadow-sm transition-all hover:scale-[1.02] ${
+                                                                occupant.data.status === 'SEATED' ? 'bg-green-100 border-green-200 text-green-800' :
+                                                                occupant.data.status === 'CANCELLED' ? 'bg-zinc-100 border-zinc-200 text-zinc-400' :
+                                                                'bg-red-50 border-red-100 text-[#E51B24]'
+                                                            }`}
+                                                            onClick={() => {
+                                                                const action = occupant.data.status === 'CONFIRMED' ? 'SEATED' : 
+                                                                               occupant.data.status === 'SEATED' ? 'COMPLETED' : null;
+                                                                if (action) handleStatusUpdate(occupant.data.id, action);
+                                                            }}
+                                                        >
+                                                            <div className="flex justify-between items-start">
+                                                                <div className="font-bold truncate text-xs">{occupant.data.guestName}</div>
+                                                                <Badge variant="outline" className="text-[9px] px-1 h-3.5 bg-white/50">{occupant.data.partySize}P</Badge>
+                                                            </div>
+                                                            <div className="flex justify-between items-center opacity-80 mt-1">
+                                                                <span className="font-medium">{occupant.data.startTime} - {format(addMinutes(parseISO(`${date}T${occupant.data.startTime}:00`), occupant.data.durationMinutes), 'HH:mm')}</span>
+                                                                {occupant.data.status === 'SEATED' ? <CheckCircle2 className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                );
+                                            } else {
+                                                return <td key={slot} className="p-1 border-r h-14 bg-zinc-50/30" />;
+                                            }
+                                        }
+
+                                        if (occupant?.type === 'BLOCK') {
+                                            return (
+                                                <td key={slot} className="p-1 border-r h-14">
+                                                    <div className="h-full bg-zinc-200 rounded-md p-1 flex items-center justify-center opacity-50">
+                                                        <AlertCircle className="w-4 h-4 text-zinc-500" />
                                                     </div>
-                                                </div>
-                                            )}
-                                            {occupant?.type === 'BLOCK' && (
-                                                <div className="h-full bg-zinc-200 rounded-md p-1 flex items-center justify-center opacity-50">
-                                                    <AlertCircle className="w-4 h-4 text-zinc-500" />
-                                                </div>
-                                            )}
-                                        </td>
-                                    );
-                                })}
-                            </tr>
-                        ))}
+                                                </td>
+                                            );
+                                        }
+
+                                        return <td key={slot} className="p-1 border-r h-14" />;
+                                    })}
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             </div>
