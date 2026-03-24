@@ -149,8 +149,8 @@ export default function SuccessPage({ params, searchParams }: {
                 {/* Logo */}
                 <img
                     src="/images/squarespace/dc8d1fa4-c438-415b-9193-ec3ecbfcd796_topf-deckel-stadtkantine.png"
-                    height={60}
                     alt="Topf & Deckel"
+                    className="h-[80px] md:h-[168px] w-auto mx-auto object-contain"
                     style={{ marginBottom: '2rem' }}
                 />
 

@@ -21,78 +21,93 @@ export default function JobsPage() {
       </section>
 
       {/* Mission / Values Grid */}
-      <section className="bg-[#7aba94] py-24">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-8">
-          <h2 className="text-4xl md:text-5xl font-sans font-bold text-center text-white mb-20">
+      <section className="bg-[#7aba94] py-24 w-full">
+        {/* Heading constrained to 665px like the live site — forces 2-line wrap */}
+        <div className="max-w-[665px] mx-auto px-4 mb-16">
+          <h2 className="font-heading font-bold text-center text-white" style={{ fontSize: '47px', lineHeight: '1.39em' }}>
             Unsere Mission – in drei schnellen Bissen
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Row 1 */}
-            <div className="bg-white p-12 md:p-20 flex flex-col justify-center rounded-sm">
-              <h3 className="text-3xl font-bold mb-6 font-sans text-[#13141C]">Nährwert statt Nonsens</h3>
-              <p className="text-xl text-[#13141C] leading-relaxed">
+        </div>
+        {/* Grid constrained to ~900px so each column ≈ 435px wide, matching live site */}
+        <div className="max-w-[900px] mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Row 1: Text card + Image */}
+            <div className="bg-white p-[26px] flex flex-col justify-center overflow-hidden" style={{ height: '294px' }}>
+              <p className="font-sans font-bold mb-4 text-[#13141C]" style={{ fontSize: '22.912px', lineHeight: '34px' }}>
+                <strong>Nährwert statt Nonsens</strong>
+              </p>
+              <p className="font-sans text-[#13141C]" style={{ fontSize: '22.912px', lineHeight: '34px' }}>
                 Wir kochen bunt, ausgewogen und frisch – für Mittagspausen, die schmecken und gut tun.
               </p>
             </div>
-            <img src="/images/squarespace/88fdf423-e06b-4cfe-9bf0-293f9d851f13_281A7108.jpg" className="w-full h-[400px] md:h-full object-cover rounded-sm" alt="Nährwert statt Nonsens" />
+            <img src="/images/squarespace/88fdf423-e06b-4cfe-9bf0-293f9d851f13_281A7108.jpg" className="w-full object-cover" style={{ height: '294px' }} alt="Nährwert statt Nonsens" />
 
-            {/* Row 2 - Image Left, Text Right */}
-            <img src="/images/squarespace/a1298426-223d-4ae6-a52e-2227a1e0fa69_281A7118.jpg" className="w-full h-[400px] md:h-full object-cover md:order-none order-last rounded-sm" alt="Menschen zuerst" />
-            <div className="bg-white p-12 md:p-20 flex flex-col justify-center rounded-sm">
-              <h3 className="text-3xl font-bold mb-6 font-sans text-[#13141C]">Menschen zuerst</h3>
-              <p className="text-xl text-[#13141C] leading-relaxed">
+            {/* Row 2: Image + Text card */}
+            <img src="/images/squarespace/a1298426-223d-4ae6-a52e-2227a1e0fa69_281A7118.jpg" className="w-full object-cover md:order-none order-last" style={{ height: '294px' }} alt="Menschen zuerst" />
+            <div className="bg-white p-[26px] flex flex-col justify-center overflow-hidden" style={{ height: '294px' }}>
+              <p className="font-sans font-bold mb-4 text-[#13141C]" style={{ fontSize: '22.912px', lineHeight: '34px' }}>
+                <strong>Menschen zuerst</strong>
+              </p>
+              <p className="font-sans text-[#13141C]" style={{ fontSize: '22.912px', lineHeight: '34px' }}>
                 Ob Gast, Kolleg:in oder Lieferant: Wir arbeiten mit Respekt, Fairness und einem echten Lächeln.
               </p>
             </div>
 
-            {/* Row 3 - Text Left, Image Right */}
-            <div className="bg-white p-12 md:p-20 flex flex-col justify-center rounded-sm">
-              <h3 className="text-3xl font-bold mb-6 font-sans text-[#13141C]">Planet vor Profit</h3>
-              <p className="text-xl text-[#13141C] leading-relaxed">
+            {/* Row 3: Text card + Image */}
+            <div className="bg-white p-[26px] flex flex-col justify-center overflow-hidden" style={{ height: '294px' }}>
+              <p className="font-sans font-bold mb-4 text-[#13141C]" style={{ fontSize: '22.912px', lineHeight: '34px' }}>
+                <strong>Planet vor Profit</strong>
+              </p>
+              <p className="font-sans text-[#13141C]" style={{ fontSize: '22.912px', lineHeight: '34px' }}>
                 Regionale Zutaten, wiederverwendbare Verpackung, kurze Wege. Wir denken an morgen.
               </p>
             </div>
-            <img src="/images/squarespace/f3cefe40-ce07-40b4-8d55-deaffd9a6c0f_281A7232.jpg" className="w-full h-[400px] md:h-full object-cover rounded-sm" alt="Planet vor Profit" />
+            <img src="/images/squarespace/f3cefe40-ce07-40b4-8d55-deaffd9a6c0f_281A7232.jpg" className="w-full object-cover" style={{ height: '294px' }} alt="Planet vor Profit" />
           </div>
         </div>
       </section>
 
       {/* Benefits */}
       <section className="bg-[#F2E9EA] py-24 text-center">
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-8">
-          <h2 className="text-4xl md:text-5xl font-sans font-bold mb-16 text-[#13141C]">
-            Warum du bei uns gut aufgehoben bist
-          </h2>
+        <div className="max-w-[1009px] mx-auto">
+          <div className="px-4">
+            <h2 className="font-heading font-bold text-center text-[#13141C] mb-12" style={{ fontSize: '47px', lineHeight: '1.39em' }}>
+              Warum du bei uns gut aufgehoben bist
+            </h2>
+          </div>
           <img
             src="/images/squarespace/b1929e91-14ad-4972-8e42-17e7ecc4a18d_281A7102-2.jpg"
             alt="Team"
-            className="w-full h-[450px] md:h-[650px] object-cover mb-20 rounded-sm shadow-sm"
+            className="w-full object-cover mb-12"
+            style={{ height: '344px' }}
           />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-x-12 gap-y-16 text-left">
+          <div className="px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 text-left" style={{ columnGap: '24px', rowGap: '16px' }}>
             <div>
-              <h3 className="text-2xl font-bold mb-4 font-sans text-[#13141C]">Menschen im Fokus</h3>
-              <p className="text-xl text-[#13141C] leading-relaxed">Gute Stimmung im Team = gute Stimmung bei den Gästen. Wir hören zu, helfen, feiern Erfolge gemeinsam.</p>
+              <p className="font-sans text-[#13141C]" style={{ fontSize: '22.912px', lineHeight: '34.368px', marginBottom: '0' }}><strong>Menschen im Fokus</strong></p>
+              <p className="font-sans text-[#13141C]" style={{ fontSize: '22.912px', lineHeight: '34.368px', marginBottom: '0' }}>Gute Stimmung im Team = gute Stimmung bei den Gästen. Wir hören zu, helfen, feiern Erfolge gemeinsam.</p>
             </div>
             <div>
-              <h3 className="text-2xl font-bold mb-4 font-sans text-[#13141C]">Geregelte Arbeitszeiten</h3>
-              <p className="text-xl text-[#13141C] leading-relaxed">Unsere Schichten passen zu Bürozeiten. Keine Nachtschichten. Kein Chaos.</p>
+              <p className="font-sans text-[#13141C]" style={{ fontSize: '22.912px', lineHeight: '34.368px', marginBottom: '0' }}><strong>Geregelte Arbeitszeiten</strong></p>
+              <p className="font-sans text-[#13141C]" style={{ fontSize: '22.912px', lineHeight: '34.368px', marginBottom: '0' }}>Unsere Schichten passen zu Bürozeiten. Keine Nachtschichten. Kein Chaos.</p>
             </div>
             <div>
-              <h3 className="text-2xl font-bold mb-4 font-sans text-[#13141C]">Perspektive statt Stillstand</h3>
-              <p className="text-xl text-[#13141C] leading-relaxed">Vom Newbie zur Leitung – bei uns geht’s weiter. Mit Trainings und klaren Entwicklungspfaden.</p>
+              <p className="font-sans text-[#13141C]" style={{ fontSize: '22.912px', lineHeight: '34.368px', marginBottom: '0' }}><strong>Perspektive statt Stillstand</strong></p>
+              <p className="font-sans text-[#13141C]" style={{ fontSize: '22.912px', lineHeight: '34.368px', marginBottom: '0' }}>Vom Newbie zur Leitung – bei uns geht's weiter. Mit Trainings und klaren Entwicklungspfaden.</p>
             </div>
             <div>
-              <h3 className="text-2xl font-bold mb-4 font-sans text-[#13141C]">Freies Essen & Mitarbeiterrabatt</h3>
-              <p className="text-xl text-[#13141C] leading-relaxed">Ein warmes Mittagessen pro Schicht ist fix. Für dich und Rabatte auch für Family & Friends.</p>
+              <p className="font-sans text-[#13141C]" style={{ fontSize: '22.912px', lineHeight: '34.368px', marginBottom: '0' }}><strong>Freies Essen &amp; Mitarbeiterrabatt</strong></p>
+              <p className="font-sans text-[#13141C]" style={{ fontSize: '22.912px', lineHeight: '34.368px', marginBottom: '0' }}>Ein warmes Mittagessen pro Schicht ist fix. Für dich und Rabatte auch für Family &amp; Friends.</p>
             </div>
             <div>
-              <h3 className="text-2xl font-bold mb-4 font-sans text-[#13141C]">Faire Bezahlung</h3>
-              <p className="text-xl text-[#13141C] leading-relaxed">Wir starten über dem lokalen Fair-Pay-Benchmark – damit dein Lohn mit dem Leben mithält.</p>
+              <p className="font-sans text-[#13141C]" style={{ fontSize: '22.912px', lineHeight: '34.368px', marginBottom: '0' }}><strong>Faire Bezahlung</strong></p>
+              <p className="font-sans text-[#13141C]" style={{ fontSize: '22.912px', lineHeight: '34.368px', marginBottom: '0' }}>Wir starten über dem lokalen Fair-Pay-Benchmark – damit dein Lohn mit dem Leben mithält.</p>
             </div>
             <div>
-              <h3 className="text-2xl font-bold mb-4 font-sans text-[#13141C]">Dein Job hat Wirkung</h3>
-              <p className="text-xl text-[#13141C] leading-relaxed">Du versorgst Studenten, Angestellte und Stadtmenschen mit Energie – täglich.</p>
+              <p className="font-sans text-[#13141C]" style={{ fontSize: '22.912px', lineHeight: '34.368px', marginBottom: '0' }}><strong>Dein Job hat Wirkung</strong></p>
+              <p className="font-sans text-[#13141C]" style={{ fontSize: '22.912px', lineHeight: '34.368px', marginBottom: '0' }}>Du versorgst Studenten, Angestellte und Stadtmenschen mit Energie – täglich.</p>
             </div>
+          </div>
           </div>
         </div>
       </section>

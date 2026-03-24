@@ -91,11 +91,11 @@ export default function KontaktPage() {
       <section className="bg-[#eef7f2] w-full pt-20 pb-16 flex flex-col items-center">
         {/* Social Feed Text */}
         <div className="text-center mb-12 px-4 max-w-3xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 font-sans text-[#13141c] leading-tight">
-            Von der Küche direkt in deinen Feed.
+          <h2 className="font-heading text-[33.28px] font-bold mb-6 text-[#13141c] leading-[47.9232px] normal-case">
+            Von der Küche direkt in deinen<br />Feed.
           </h2>
-          <p className="text-lg md:text-xl text-[#13141c]">
-            Eindrücke aus unserem Alltag – Gerichte, Lieblingsmomente und alles, was gesundes Essen besonders macht.
+          <p className="font-sans text-[22.912px] font-normal text-[#13141c] leading-[34.368px]">
+            Eindrücke aus unserem Alltag – Gerichte, Lieblingsmomente und<br />alles, was gesundes Essen besonders macht.
           </p>
         </div>
 

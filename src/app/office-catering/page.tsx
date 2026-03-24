@@ -87,21 +87,21 @@ export default function OfficeCateringPage() {
       </section>
 
       {/* ═══ INTRO ═══ */}
-      <section className="py-20 px-4">
+      <section className="pt-20 pb-6 px-4">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl md:text-[40px] font-sans font-bold text-[#6CB78E] mb-6 leading-tight">
+          <h2 className="text-[2.8rem] font-sans font-bold text-[#6CB78E] mb-6 leading-[1.5em]">
             Gutes Essen für bessere Arbeitstage.
           </h2>
-          <p className="text-lg md:text-xl text-[#2C2C2C] leading-relaxed">
+          <p className="text-[1.43rem] text-[#2C2C2C] leading-[1.5em]">
             Dein Team verdient mehr als Snacks und Schnelllösungen. Wir liefern täglich frisch gekochte Mahlzeiten direkt ins Büro – voll Geschmack, ohne Kompromisse.
           </p>
         </div>
       </section>
 
       {/* ═══ PAIN POINTS ═══ */}
-      <section className="py-16 px-4 bg-[#f0f4f2]">
+      <section className="pt-6 pb-16 px-4 bg-white">
         <div className="max-w-5xl mx-auto">
-          <h3 className="text-2xl md:text-3xl font-sans font-bold text-center text-[#2C2C2C] mb-12">
+          <h3 className="text-[2rem] font-sans font-bold text-center text-[#6CB78E] mb-12 leading-[1.5em]">
             Was ohne uns schiefläuft?
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
@@ -110,14 +110,16 @@ export default function OfficeCateringPage() {
               { title: 'Schlechte Ernährung', text: 'Fast Food macht müde. Unsere Gerichte machen wach.' },
               { title: 'Wenig Motivation', text: 'Essen verbindet – schlechte Optionen frustrieren.' },
             ].map((item, i) => (
-              <div key={i} className="flex flex-col items-center text-center">
-                <img
-                  src="/images/squarespace/0a909979-4f07-4ca8-9e9a-ef68e03148a9_cross_coloured.png"
-                  className="w-12 h-12 mb-5"
-                  alt="X"
-                />
-                <h4 className="text-xl font-sans font-bold text-[#2C2C2C] mb-3">{item.title}</h4>
-                <p className="text-[#555] text-base leading-relaxed">{item.text}</p>
+              <div key={i} className="flex flex-col">
+                <div className="flex items-start gap-3 mb-3">
+                  <img
+                    src="/images/squarespace/0a909979-4f07-4ca8-9e9a-ef68e03148a9_cross_coloured.png"
+                    className="w-[29px] h-[29px] flex-shrink-0"
+                    alt="X"
+                  />
+                  <h4 className="text-[1.4rem] font-sans font-bold text-black leading-[1.5em]">{item.title}</h4>
+                </div>
+                <p className="text-[1.43rem] text-[#131318] leading-[1.5em]">{item.text}</p>
               </div>
             ))}
           </div>
@@ -125,74 +127,103 @@ export default function OfficeCateringPage() {
       </section>
 
       {/* ═══ SOLUTIONS ═══ */}
-      <section className="py-20 px-4 bg-[#e4ede8]">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl md:text-[40px] font-sans font-bold text-center text-[#2C2C2C] mb-14 leading-tight">
+      <section className="pt-16 pb-[95px] bg-[#e4f1ea] overflow-hidden">
+        {/* Content + image share the same 78.1% wide centred column */}
+        <div className="w-[78.1%] mx-auto">
+          <h2 className="font-sans font-bold text-center text-black mb-12 leading-[1.5em]">
             Wir lösen euer Mittagsproblem
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-x-12 gap-y-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-x-10 gap-y-8 mb-14">
             {solutions.map((item, i) => (
               <div key={i}>
-                <h4 className="text-lg font-sans font-bold text-[#2C2C2C] mb-2">{item.title}</h4>
-                <p className="text-[#555] text-base leading-relaxed">{item.desc}</p>
+                <p className="text-[1.43rem] font-bold text-black leading-[1.5em] mb-0">{item.title}</p>
+                <p className="text-[1.43rem] text-black leading-[1.5em] font-normal">{item.desc}</p>
               </div>
             ))}
           </div>
         </div>
+        {/* Promo image — same 78.1% width as text, flush at section bottom */}
+        <div className="w-[78.1%] mx-auto block leading-[0]">
+          <img
+            src="/images/squarespace/2c488c18-fbeb-4a0a-a625-8bc30d25b955_Topf--Deckel-29.-30.7.2025-c-Nadja-Hudovernik_1-42.jpg"
+            className="w-full object-cover block"
+            style={{ height: 'clamp(180px, 24.9vw, 420px)' }}
+            alt="Office Lunch"
+          />
+        </div>
       </section>
 
-      {/* ═══ PROMO IMAGE ═══ */}
-      <section className="w-full">
-        <img
-          src="/images/squarespace/2c488c18-fbeb-4a0a-a625-8bc30d25b955_Topf--Deckel-29.-30.7.2025-c-Nadja-Hudovernik_1-42.jpg"
-          className="w-full h-[500px] object-cover"
-          alt="Office Lunch"
-        />
-      </section>
 
       {/* ═══ ACCORDION: SO EINFACH FUNKTIONIERT'S ═══ */}
-      <section className="py-20 px-4">
+      <section className="pt-14 pb-20 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-[40px] font-sans font-bold text-center text-[#2C2C2C] mb-14 leading-tight">
-            So einfach funktioniert&apos;s
-          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-            {/* Accordion */}
-            <div className="space-y-0">
-              {accordionSteps.map((step, i) => (
-                <div key={i} className="border-b border-[#2C2C2C]">
-                  <button
-                    onClick={() => setOpenAccordion(openAccordion === i ? -1 : i)}
-                    className="w-full flex items-center justify-between py-5 text-left group"
-                  >
-                    <span className="text-lg font-sans font-bold text-[#2C2C2C]">
-                      {step.title}
-                    </span>
-                    <span className="text-2xl text-[#2C2C2C] font-light leading-none">
-                      {openAccordion === i ? '−' : '+'}
-                    </span>
-                  </button>
-                  <div
-                    className={`overflow-hidden transition-all duration-300 ${openAccordion === i ? 'max-h-40 pb-5' : 'max-h-0'}`}
-                  >
-                    <p className="text-[#555] text-base leading-relaxed">
-                      {step.content}
-                    </p>
+            {/* Left: Heading + Accordion */}
+            <div>
+              {/* H3 left-aligned, 33.28px = ~2.08rem */}
+              <h3 className="font-sans font-bold text-left text-[#131318] mb-10 leading-[1.5em]"
+                style={{ fontSize: '2.08rem' }}>
+                So einfach funktioniert&apos;s
+              </h3>
+              <div>
+                {accordionSteps.map((step, i) => (
+                  <div key={i} className="border-t border-[#131318]">
+                    <button
+                      onClick={() => setOpenAccordion(openAccordion === i ? -1 : i)}
+                      className="w-full flex items-center justify-between py-4 text-left"
+                    >
+                      {/* H4 title: 22.912px = 1.43rem */}
+                      <h4 className="font-sans font-bold text-[#131318] leading-[1.5em] mb-0"
+                        style={{ fontSize: '1.43rem' }}>
+                        {step.title}
+                      </h4>
+                      <span className="text-2xl text-[#131318] font-light leading-none flex-shrink-0 ml-4">
+                        {openAccordion === i ? '−' : '+'}
+                      </span>
+                    </button>
+                    <div
+                      className={`overflow-hidden transition-all duration-300 ${openAccordion === i ? 'max-h-48 pb-6' : 'max-h-0'}`}
+                    >
+                      {/* Description: 22.912px = 1.43rem, indented */}
+                      <p className="text-[#131318] leading-[1.5em] pl-8"
+                        style={{ fontSize: '1.43rem' }}>
+                        {step.content}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+                {/* closing border line at bottom */}
+                <div className="border-t border-[#131318]" />
+              </div>
             </div>
-            {/* Two stacked images on the right */}
-            <div className="hidden md:flex gap-4 items-start">
-              <img
-                src="/images/squarespace/89c50f2f-e5c2-4e68-839a-ce0ca819380f_Topf--Deckel-29.-30.7.2025-c-Nadja-Hudovernik_1-137.jpg"
-                alt="Frisch gekochte Speisen"
-                className="w-[65%] h-[450px] object-cover rounded-sm"
-              />
+
+            {/* Right: Two overlapping images + green accent */}
+            {/* Live: lunchboxen top-right (behind), food bowls lower-left (in front) */}
+            <div className="hidden md:block relative" style={{ height: '560px' }}>
+              {/* Lunchboxen — top-right, BEHIND food bowls */}
               <img
                 src="/images/squarespace/7858925c-641b-4da3-af58-24d1da5fec0e_Topf--Deckel-29.-30.7.2025-c-Nadja-Hudovernik_1-155-2.jpg"
                 alt="Lunchboxen"
-                className="w-[35%] h-[200px] object-cover rounded-sm"
+                className="absolute object-cover"
+                style={{ right: '0px', top: '0px', width: '55%', height: '358px', zIndex: 1 }}
+              />
+              {/* Green L-bracket — between the two images at the junction */}
+              <div className="absolute"
+                style={{
+                  left: '38%',
+                  top: '150px',
+                  width: '130px',
+                  height: '220px',
+                  borderTop: '15px solid rgb(108, 183, 142)',
+                  borderRight: '15px solid rgb(108, 183, 142)',
+                  zIndex: 2,
+                }} />
+              {/* Food bowls — lower-left, IN FRONT of lunchboxen */}
+              <img
+                src="/images/squarespace/89c50f2f-e5c2-4e68-839a-ce0ca819380f_Topf--Deckel-29.-30.7.2025-c-Nadja-Hudovernik_1-137.jpg"
+                alt="Frisch gekochte Speisen"
+                className="absolute object-cover"
+                style={{ left: '0px', top: '165px', width: '55%', height: '397px', zIndex: 3 }}
               />
             </div>
           </div>
@@ -333,16 +364,15 @@ export default function OfficeCateringPage() {
       </section>
 
       {/* ═══ INSTAGRAM GRID ═══ */}
-      <section className="w-full">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+      <section className="bg-white py-8 px-4 sm:px-8">
+        <div className="flex gap-2 sm:gap-3 h-[200px] sm:h-[240px] overflow-hidden">
           {instagramImages.map((src, i) => (
-            <div key={i} className="aspect-square overflow-hidden">
-              <img
-                src={src}
-                alt={`Food ${i + 1}`}
-                className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
-              />
-            </div>
+            <img
+              key={i}
+              src={src}
+              alt={`Food ${i + 1}`}
+              className="flex-1 min-w-0 h-full object-cover"
+            />
           ))}
         </div>
       </section>

@@ -74,9 +74,9 @@ export default function FranchisePage() {
               <img
                 src="/images/squarespace/2edb3aa7-7d36-4ac8-8388-8b2b532a0f50_dish_02.jpg"
                 alt="Immer frisch & saisonal"
-                className="w-[280px] h-[280px] lg:w-full lg:h-auto aspect-square object-cover rounded-full mb-6"
+                className="w-[280px] h-[280px] lg:w-full lg:h-auto aspect-square object-cover rounded-none mb-6"
               />
-              <p className="text-white font-bold text-xl leading-snug">
+              <p className="text-white font-bold leading-snug" style={{ fontSize: '1.6rem' }}>
                 Immer frisch &amp;<br />saisonal.
               </p>
             </div>
@@ -85,9 +85,9 @@ export default function FranchisePage() {
               <img
                 src="/images/squarespace/f11870eb-6638-42d9-8c9d-31fc75bcc0b3_qualitat-ohne-kompromisse.jpg"
                 alt="Höchste Qualität"
-                className="w-[280px] h-[280px] lg:w-full lg:h-auto aspect-square object-cover rounded-full mb-6"
+                className="w-[280px] h-[280px] lg:w-full lg:h-auto aspect-square object-cover rounded-none mb-6"
               />
-              <p className="text-white font-bold text-xl leading-snug">
+              <p className="text-white font-bold leading-snug" style={{ fontSize: '1.6rem' }}>
                 Höchste Qualität –<br />ohne Schnickschnack.
               </p>
             </div>
@@ -96,9 +96,9 @@ export default function FranchisePage() {
               <img
                 src="/images/squarespace/7e315319-267c-46ab-a1a4-b9bb74a4afbf_dish_03.jpg"
                 alt="Hausgemachte Rezepte"
-                className="w-[280px] h-[280px] lg:w-full lg:h-auto aspect-square object-cover rounded-full mb-6"
+                className="w-[280px] h-[280px] lg:w-full lg:h-auto aspect-square object-cover rounded-none mb-6"
               />
-              <p className="text-white font-bold text-xl leading-snug">
+              <p className="text-white font-bold leading-snug" style={{ fontSize: '1.6rem' }}>
                 Hausgemachte Rezepte<br />mit echten Zutaten.
               </p>
             </div>
@@ -107,9 +107,9 @@ export default function FranchisePage() {
               <img
                 src="/images/squarespace/9490696f-f6f9-4286-981d-3ecaa4d6559f_01-zutaten-die-richtig-wohl-tun.jpg"
                 alt="Geschmack, der ankommt"
-                className="w-[280px] h-[280px] lg:w-full lg:h-auto aspect-square object-cover rounded-full mb-6"
+                className="w-[280px] h-[280px] lg:w-full lg:h-auto aspect-square object-cover rounded-none mb-6"
               />
-              <p className="text-white font-bold text-xl leading-snug">
+              <p className="text-white font-bold leading-snug" style={{ fontSize: '1.6rem' }}>
                 Geschmack, der ankommt –<br />Tag für Tag.
               </p>
             </div>

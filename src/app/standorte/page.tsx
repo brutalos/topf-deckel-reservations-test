@@ -20,7 +20,7 @@ export default function StandortePage() {
       </section>
 
       <div className="w-full bg-[#E2F0E9] py-8 mb-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap justify-center gap-4 md:gap-8 text-sm font-bold tracking-wide text-[#1C1C1C]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap justify-center gap-4 md:gap-8 text-base font-bold tracking-wide text-[#5AAC7F]">
           <a href="#gumpendorfer" className="hover:opacity-70 transition-opacity">Gumpendorfer Straße</a>
           <a href="#schottengasse" className="hover:opacity-70 transition-opacity">Schottengasse</a>
           <a href="#judengasse" className="hover:opacity-70 transition-opacity">Judengasse</a>
@@ -236,13 +236,15 @@ export default function StandortePage() {
       </section>
 
       {/* Bottom Image Gallery */}
-      <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 h-[250px] sm:h-[300px] lg:h-[350px]">
-        <img src="/images/squarespace/1751884087701-9KFPIDPSNVOQ05ZEE6MN_pexels-navada-ra-628779-1703272.jpg" className="w-full h-full object-cover" alt="Gallery" />
-        <img src="/images/squarespace/1751884087708-X9WIAAOKBTKVZOOEXOKK_pexels-solliefoto-299352.jpg" className="w-full h-full object-cover" alt="Gallery" />
-        <img src="/images/squarespace/1751884087726-VPVNL3WAMN1YXOS4FCUL_pexels-alesiakozik-6544378.jpg" className="w-full h-full object-cover" alt="Gallery" />
-        <img src="/images/squarespace/1751884087715-KHU7ZK85CQPFQU1IG8OS_pexels-ella-olsson-572949-3026801.jpg" className="w-full h-full object-cover" alt="Gallery" />
-        <img src="/images/squarespace/1751884087734-072GVEEK8BPOGL7TTV58_pexels-sydney-troxell-223521-718742.jpg" className="w-full h-full object-cover" alt="Gallery" />
-        <img src="/images/squarespace/1751884087745-APVORYP654LERPIE2MA8_pexels-roman-odintsov-5150558.jpg" className="w-full h-full object-cover" alt="Gallery" />
+      <section className="bg-white py-8 px-4 sm:px-8">
+        <div className="flex gap-2 sm:gap-3 h-[200px] sm:h-[240px] overflow-hidden">
+          <img src="/images/squarespace/1751884087701-9KFPIDPSNVOQ05ZEE6MN_pexels-navada-ra-628779-1703272.jpg" className="flex-1 min-w-0 h-full object-cover" alt="Gallery" />
+          <img src="/images/squarespace/1751884087708-X9WIAAOKBTKVZOOEXOKK_pexels-solliefoto-299352.jpg" className="flex-1 min-w-0 h-full object-cover" alt="Gallery" />
+          <img src="/images/squarespace/1751884087726-VPVNL3WAMN1YXOS4FCUL_pexels-alesiakozik-6544378.jpg" className="flex-1 min-w-0 h-full object-cover" alt="Gallery" />
+          <img src="/images/squarespace/1751884087715-KHU7ZK85CQPFQU1IG8OS_pexels-ella-olsson-572949-3026801.jpg" className="flex-1 min-w-0 h-full object-cover" alt="Gallery" />
+          <img src="/images/squarespace/1751884087734-072GVEEK8BPOGL7TTV58_pexels-sydney-troxell-223521-718742.jpg" className="flex-1 min-w-0 h-full object-cover" alt="Gallery" />
+          <img src="/images/squarespace/1751884087745-APVORYP654LERPIE2MA8_pexels-roman-odintsov-5150558.jpg" className="flex-1 min-w-0 h-full object-cover" alt="Gallery" />
+        </div>
       </section>
     </main>
   );

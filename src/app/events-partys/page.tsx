@@ -64,13 +64,13 @@ export default function EventsPartysPage() {
     <main className="min-h-screen bg-white font-body">
 
       {/* ═══ HERO ═══ */}
-      <section className="relative h-[45vh] min-h-[280px] w-full flex flex-col items-center justify-center">
+      <section className="relative min-h-[66vh] w-full flex flex-col items-center justify-center">
         <div className="absolute inset-0 z-0">
           <video src="/video/catering-events.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-black/40"></div>
         </div>
-        <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 max-w-4xl mx-auto">
-          <h1 className="text-white text-4xl sm:text-5xl md:text-[56px] font-sans font-extrabold tracking-tight drop-shadow-md leading-[1.15]">
+        <div className="relative z-10 flex flex-col items-center justify-center text-center px-8 w-full max-w-[785px] mx-auto">
+          <h1 className="text-white font-sans font-bold drop-shadow-md leading-[1.32]" style={{ fontSize: '4.24rem' }}>
             Catering, das Eindruck hinterlässt. Und schmeckt.
           </h1>
         </div>
@@ -78,51 +78,81 @@ export default function EventsPartysPage() {
 
       {/* ═══ INTRO ═══ */}
       <section className="py-20 px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl md:text-[40px] font-sans font-bold text-[#6CB78E] mb-6 leading-tight">
+        <div className="max-w-[680px] mx-auto text-center">
+          <h2 className="font-sans font-bold mb-6 leading-[1.39]" style={{ fontSize: '2.944rem', color: '#6CB78E' }}>
             Individuelles Event-Catering – frisch, flexibel, besonders.
           </h2>
-          <p className="text-lg md:text-xl text-[#2C2C2C] leading-relaxed">
+          <p className="leading-[1.5em]" style={{ fontSize: '1.432rem', color: '#131318' }}>
             Von bunten Bowls bis zu vollwertigen Hauptgerichten: Unser Catering bringt Geschmack, Freude und Leichtigkeit in jedes Event.
           </p>
         </div>
       </section>
 
       {/* ═══ 3-COLUMN ACCORDION ═══ */}
-      <section className="py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {accordionItems.map((item, i) => (
-              <div key={i} className="flex flex-col">
-                <div className="relative overflow-hidden rounded-sm mb-4" style={{ height: '400px' }}>
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="border-t border-b border-[#2C2C2C]">
-                  <button
-                    onClick={() => setOpenAccordion(openAccordion === i ? -1 : i)}
-                    className="w-full flex items-center justify-between py-4 text-left"
-                  >
-                    <span className="text-lg font-sans font-bold text-[#2C2C2C]">
-                      {item.title}
-                    </span>
-                    <span className="text-2xl text-[#2C2C2C] font-light leading-none">
-                      {openAccordion === i ? '−' : '+'}
-                    </span>
-                  </button>
-                  <div
-                    className={`overflow-hidden transition-all duration-300 ${openAccordion === i ? 'max-h-40 pb-4' : 'max-h-0'}`}
-                  >
-                    <p className="text-[#555] text-base leading-relaxed">
-                      {item.content}
-                    </p>
+      {/*
+        Live layout: 3 columns, center card elevated ~46px higher.
+        Each card = colored rect (peeking top-right behind photo) + portrait photo + accordion.
+        Left/Right: pink rect rgb(241,229,232). Center: green rect rgb(108,183,142).
+        Rect size: ~206×255px; offset: top-right of photo, shifted right ~64px & up ~46px.
+        Photo: portrait ~320×438px (left/right), center starts 46px higher.
+      */}
+      <section className="pb-16 px-4">
+        <div className="max-w-[1100px] mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+            {accordionItems.map((item, i) => {
+              const isCenter = i === 1;
+              const accentColor = isCenter ? 'rgb(108, 183, 142)' : 'rgb(241, 229, 232)';
+              return (
+                <div key={i} className="flex flex-col" style={{ marginTop: isCenter ? '0px' : '46px' }}>
+                  {/* Photo card with colored accent rect peeking top-right */}
+                  <div className="relative mb-4" style={{ height: '438px' }}>
+                    {/* Accent color rectangle:
+                       – left card (i===0): peeks top-LEFT corner
+                       – center & right: peeks top-RIGHT corner */}
+                    <div
+                      className="absolute"
+                      style={{
+                        backgroundColor: accentColor,
+                        width: '64%',
+                        height: '58%',
+                        top: '-16px',
+                        ...(i === 0 ? { left: '-16px' } : { right: '-16px' }),
+                        zIndex: 0,
+                      }}
+                    />
+                    {/* Photo — full card width, in front of accent rect */}
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="absolute inset-0 w-full h-full object-cover"
+                      style={{ zIndex: 1 }}
+                    />
                   </div>
+                  {/* Accordion */}
+                  <div className="border-t border-[#131318]">
+                    <button
+                      onClick={() => setOpenAccordion(openAccordion === i ? -1 : i)}
+                      className="w-full flex items-center justify-between py-3 text-left"
+                    >
+                      <span className="font-sans font-bold text-[#131318] leading-[1.5em]" style={{ fontSize: '1.432rem' }}>
+                        {item.title}
+                      </span>
+                      <span className="text-2xl text-[#131318] font-light leading-none flex-shrink-0 ml-4">
+                        {openAccordion === i ? '−' : '+'}
+                      </span>
+                    </button>
+                    <div
+                      className={`overflow-hidden transition-all duration-300 ${openAccordion === i ? 'max-h-40 pb-4' : 'max-h-0'}`}
+                    >
+                      <p className="text-[#131318] leading-[1.5em]" style={{ fontSize: '1.432rem' }}>
+                        {item.content}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="border-t border-[#131318]" />
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -289,16 +319,15 @@ export default function EventsPartysPage() {
       </section>
 
       {/* ═══ INSTAGRAM GRID ═══ */}
-      <section className="w-full">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+      <section className="bg-white py-8 px-4 sm:px-8">
+        <div className="flex gap-2 sm:gap-3 h-[200px] sm:h-[240px] overflow-hidden">
           {galleryImages.map((src, i) => (
-            <div key={i} className="aspect-square overflow-hidden">
-              <img
-                src={src}
-                alt={`Food ${i + 1}`}
-                className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
-              />
-            </div>
+            <img
+              key={i}
+              src={src}
+              alt={`Food ${i + 1}`}
+              className="flex-1 min-w-0 h-full object-cover"
+            />
           ))}
         </div>
       </section>

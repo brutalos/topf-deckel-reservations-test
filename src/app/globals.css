@@ -6,37 +6,36 @@
 
 @theme {
   /* Brand Typography */
-  --font-sans: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-body: var(--font-cabin), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-cabin), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-heading: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
   --font-accent: var(--font-epilogue), ui-sans-serif, system-ui, sans-serif;
 
-  /* Map to native Tailwind variables */
-  --color-border: hsl(var(--border));
-  --color-input: hsl(var(--input));
-  --color-ring: hsl(var(--ring));
-  --color-background: hsl(var(--background));
-  --color-foreground: hsl(var(--foreground));
+  /* Map exact Squarespace Color Palette */
+  --color-background: #FFFFFF;
+  --color-foreground: #131318;
+  --color-primary: #6CB78E;
+  --color-primary-foreground: #FFFFFF;
+  --color-secondary: #E4F1EA;
+  --color-secondary-foreground: #131318;
+  --color-accent: #6CB78E;
+  --color-accent-foreground: #FFFFFF;
+  --color-muted: #F1E5E8;
+  --color-muted-foreground: #131318;
 
-  --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
+  /* Additional UI elements derived from palette */
+  --color-border: #E0E0E0;
+  --color-input: #E0E0E0;
+  --color-ring: #6CB78E;
+  --color-destructive: #EF4444;
+  --color-destructive-foreground: #FFFFFF;
+  --color-popover: #FFFFFF;
+  --color-popover-foreground: #131318;
+  --color-card: #FFFFFF;
+  --color-card-foreground: #131318;
 
-  --color-secondary: hsl(var(--secondary));
-  --color-secondary-foreground: hsl(var(--secondary-foreground));
-
-  --color-accent: hsl(var(--accent));
-  --color-accent-foreground: hsla(var(--accent-foreground));
-
-  --color-destructive: hsl(var(--destructive));
-  --color-destructive-foreground: hsl(var(--destructive-foreground));
-
-  --color-muted: hsl(var(--muted));
-  --color-muted-foreground: hsl(var(--muted-foreground));
-
-  --color-popover: hsl(var(--popover));
-  --color-popover-foreground: hsl(var(--popover-foreground));
-
-  --color-card: hsl(var(--card));
-  --color-card-foreground: hsl(var(--card-foreground));
+  /* Explicitly required by topf-deckel build rules */
+  --color-light: #F1E5E8;
+  --color-dark: #131318;
 
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
@@ -120,6 +119,35 @@
   }
 }
 
+@layer utilities {
+  .font-cabin {
+    font-family: var(--font-cabin), ui-sans-serif, system-ui, sans-serif;
+  }
+
+  .btn-sqs {
+    font-family: var(--font-cabin), ui-sans-serif, system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: normal;
+    text-transform: uppercase;
+    padding: 12px 20.8px;
+    background-color: var(--color-secondary);
+    color: var(--color-secondary-foreground);
+    border-radius: 4px;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .btn-sqs:hover {
+    opacity: 0.9;
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -128,7 +156,64 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* ── Squarespace Typography System ──────────────────────────────────────
+     Font: Public Sans
+     Style: Normal | Weight: 700 | Line Height: 1.5em | Letter Spacing: 0em
+     Sizes: H1=4rem  H2=2.8rem  H3=2rem  H4=1.4rem
+  ─────────────────────────────────────────────────────────────────────── */
+
+  h1 {
+    font-family: var(--font-heading);
+    font-size: 4rem;        /* Squarespace Heading 1 */
+    font-weight: 700;
+    line-height: 1.5em;
+    letter-spacing: 0em;
+    text-transform: none;
+    margin-bottom: 0px;
+  }
+
+  h2 {
+    font-family: var(--font-heading);
+    font-size: 2.8rem;      /* Squarespace Heading 2 */
+    font-weight: 700;
+    line-height: 1.5em;
+    letter-spacing: 0em;
+    text-transform: none;
+    margin-bottom: 0px;
+  }
+
+  h3 {
+    font-family: var(--font-heading);
+    font-size: 2rem;        /* Squarespace Heading 3 */
+    font-weight: 700;
+    line-height: 1.5em;
+    letter-spacing: 0em;
+    text-transform: none;
+    margin-bottom: 0px;
+  }
+
+  h4 {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;      /* Squarespace Heading 4 */
+    font-weight: 700;
+    line-height: 1.5em;
+    letter-spacing: 0em;
+    text-transform: none;
+    margin-bottom: 0px;
+  }
+
+  p {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5em;
+    letter-spacing: normal;
+    text-transform: none;
+    margin-bottom: 16px;
+  }
 }
+
 
 /* ── Kombo Cards ────────────────────────────────────────────────────────────── */
 .kombo-card {

@@ -370,6 +370,24 @@ export default function CheckoutPage() {
 }
 ```
 
+### 4.5 Auth & Capture (Manual Capture)
+
+Best for: Scenarios where you need to hold/authorize funds on a card but delay the actual charge (e.g., waiting for a kitchen to confirm an order, or waiting for physical goods to ship).
+
+```typescript
+// Create PaymentIntent with manual capture
+const paymentIntent = await stripe.paymentIntents.create({
+  amount: Math.round(amount * 100),
+  currency: 'eur',
+  capture_method: 'manual', // <--- CRITICAL
+  automatic_payment_methods: { enabled: true },
+});
+```
+
+**CRITICAL WEBHOOK DIFFERENCE:**
+When using `capture_method: 'manual'`, Stripe does **NOT** fire `payment_intent.succeeded` when the customer completes checkout on the frontend! Instead, it fires `payment_intent.amount_capturable_updated`. 
+Your webhook handler *must* listen for `payment_intent.amount_capturable_updated` to know the checkout was successful so you can create the order in your database. Later, when you actually capture the funds using `stripe.paymentIntents.capture(intentId)`, Stripe will *then* fire `payment_intent.succeeded`.
+
 ---
 
 ## 5. Stripe Connect (Marketplaces & Split Payments)
@@ -470,10 +488,19 @@ export async function POST(req: NextRequest) {
       break;
     }
 
-    case 'payment_intent.succeeded': {
+    case 'payment_intent.amount_capturable_updated': {
+      // Triggered when a customer completes checkout using capture_method: 'manual'
       const intent = event.data.object as Stripe.PaymentIntent;
-      console.log('Payment succeeded:', intent.id);
-      // Update order, send confirmation email, etc.
+      console.log('Funds authorized and ready for capture:', intent.id);
+      // Best practice: Create the order in your database here!
+      break;
+    }
+
+    case 'payment_intent.succeeded': {
+      // Triggered immediately for standard checkouts, or delayed until manual capture
+      const intent = event.data.object as Stripe.PaymentIntent;
+      console.log('Payment succeeded or captured:', intent.id);
+      // Update order status, send confirmation email, etc.
       break;
     }
 
@@ -532,3 +559,43 @@ Use any future expiry date (e.g. 12/34) and any 3-digit CVC.
 5. **Handle errors gracefully** — show user-friendly messages, log details server-side
 6. **SCA ready** — `automatic_payment_methods: { enabled: true }` handles 3D Secure automatically
 7. **Idempotency** — webhook events may be delivered multiple times, handle them idempotently
+
+---
+
+## 10. Stripe Connect — Vendor Onboarding Script
+
+A standalone Node.js script lives in this skill folder for generating production Stripe Connect onboarding links **without** needing the dev server running.
+
+**File:** `.agents/skills/stripe-integration/stripe-onboarding.mjs`
+
+### When to use
+- Onboarding a new vendor/franchisee to your production Stripe Connect platform.
+- The script creates a fresh **Express** connected account (country AT, card payments + transfers) and generates a one-time Account Link URL valid for ~5 minutes.
+
+### Usage
+
+```bash
+# No email pre-fill — prompts vendor to enter their own
+node .agents/skills/stripe-integration/stripe-onboarding.mjs
+
+# Pre-fill the vendor's email
+node .agents/skills/stripe-integration/stripe-onboarding.mjs vendor@example.com
+```
+
+### Example output
+
+```
+Creating production Connect account for vendor@example.com...
+✅ Account created: acct_1ABCxyz...
+
+🔗 Onboarding URL (valid ~5 minutes):
+https://connect.stripe.com/setup/e/acct_1ABCxyz.../...
+
+Account ID (save this for future use): acct_1ABCxyz...
+Expires at: 2026-03-24T10:55:00.000Z
+```
+
+### Notes
+- **Save the `account_id`** from the output — you'll need it to generate a new link later if the vendor doesn't complete onboarding in time.
+- To generate a fresh link for an **existing** account, edit the script's `accountParams` creation block and pass the existing `accountId` directly to `stripePost('/account_links', ...)` skipping the account creation step.
+- The script validates that `STRIPE_SECRET_KEY` starts with `sk_live_` — it will refuse to run with test keys, preventing accidental test-mode onboarding.

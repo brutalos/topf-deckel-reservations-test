@@ -3,40 +3,68 @@
 export default function UnsereGeschichtePage() {
   return (
     <main className="min-h-screen pt-12 font-body">
-      {/* Hero Video Section — DO NOT MODIFY */}
-      <section className="relative h-[70vh] min-h-[500px] w-full flex flex-col items-center justify-center">
+      {/* Hero Video Section */}
+      <section className="relative w-full flex items-center justify-center" style={{ minHeight: '66vh' }}>
         <div className="absolute inset-0 z-0">
           <video src="/video/our-story.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-black/60"></div>
+          <div className="absolute inset-0 bg-black/40"></div>
         </div>
-        <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 max-w-4xl mx-auto">
-          <h1 className="text-white text-4xl sm:text-5xl md:text-[56px] font-sans font-extrabold mb-6 tracking-tight drop-shadow-md leading-[1.15]">
+        {/* Text: center aligned, matching live site */}
+        <div className="relative z-10 text-center px-4" style={{ maxWidth: '785px' }}>
+          <h1
+            className="font-sans font-bold mb-4"
+            style={{
+              fontSize: '4.24rem',
+              lineHeight: '1.32',
+              color: 'rgb(228, 241, 234)',
+              fontWeight: 700,
+            }}
+          >
             Wofür wir stehen – und warum wir&apos;s tun.
           </h1>
-          <p className="text-white/90 text-xl md:text-2xl font-sans font-medium drop-shadow">Vom ersten Topf bis heute.</p>
+          <p
+            className="font-sans"
+            style={{ fontSize: '1.432rem', color: 'rgb(228, 241, 234)', fontWeight: 400 }}
+          >
+            Vom ersten Topf bis heute.
+          </p>
         </div>
       </section>
-
       {/* ── Section 1: Bei uns schmeckt jeder Tag anders ── */}
-      <section style={{ backgroundColor: '#d9e8df' }} className="py-20 px-4">
-        <div className="max-w-[1100px] mx-auto text-center">
-          <h2 className="text-3xl md:text-[40px] font-sans font-bold text-foreground mb-4 leading-tight">
+      <section style={{ backgroundColor: '#d9e8df' }} className="py-[70px] px-4">
+        <div className="max-w-[1100px] mx-auto">
+          {/* H2 — centered */}
+          <h2
+            className="font-sans font-bold text-center mb-6"
+            style={{ fontSize: '2.944rem', lineHeight: '1.39', color: '#000000' }}
+          >
             Bei uns schmeckt jeder Tag anders.
           </h2>
-          <p className="text-lg md:text-xl text-foreground/80 font-semibold mb-4">
+          {/* Subtitle — centered */}
+          <p
+            className="text-center mb-6"
+            style={{ fontSize: '1.432rem', lineHeight: '1.5', color: '#000000', fontWeight: 400 }}
+          >
             Das war von Anfang an unser Versprechen.
           </p>
-          <p className="text-base md:text-lg text-foreground/70 max-w-3xl mx-auto mb-3 leading-relaxed">
-            Topf &amp; Deckel wurde geboren aus einem einfachen Gedanken: Gutes, ehrliches Mittagessen sollte keine Ausnahme sein – sondern Teil eines gesunden Alltags. Inmitten von Wiener Bürohäusern, Termindruck und Kantinenroutine haben wir gesehen, wie viele ihre Pause mit Snacks und Schnelllösungen verbringen.
+          {/* Body paragraphs — LEFT aligned */}
+          <p
+            className="mb-3 text-left"
+            style={{ fontSize: '1.432rem', lineHeight: '1.5', color: '#000000', fontWeight: 400 }}
+          >
+            Topf & Deckel wurde geboren aus einem einfachen Gedanken: Gutes, ehrliches Mittagessen sollte keine Ausnahme sein – sondern Teil eines gesunden Alltags. Inmitten von Wiener Bürohäusern, Termindruck und Kantinenroutine haben wir gesehen, wie viele ihre Pause mit Snacks und Schnelllösungen verbringen.
           </p>
-          <p className="text-lg md:text-xl text-foreground font-bold mb-12">
+          <p
+            className="mb-12 text-left"
+            style={{ fontSize: '1.432rem', lineHeight: '1.5', color: '#000000', fontWeight: 400 }}
+          >
             Wir wollten zeigen: Es geht besser.
           </p>
 
           {/* Image grid: 1 tall left + 2 stacked right */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {/* Left: tall image */}
-            <div className="h-[500px] md:h-[600px] overflow-hidden rounded-xl">
+            {/* Left: tall portrait (founder) */}
+            <div className="overflow-hidden rounded-xl" style={{ height: '719px' }}>
               <img
                 src="/images/squarespace/72573d92-c6f3-491f-960a-8e55e42e8055_281A7200-2.jpg"
                 alt="Gründer Topf & Deckel"
@@ -44,15 +72,15 @@ export default function UnsereGeschichtePage() {
               />
             </div>
             {/* Right: 2 stacked evenly */}
-            <div className="flex flex-col gap-5 h-auto md:h-[600px]">
-              <div className="flex-1 min-h-[280px] overflow-hidden rounded-xl">
+            <div className="flex flex-col gap-5" style={{ height: '719px' }}>
+              <div className="flex-1 overflow-hidden rounded-xl">
                 <img
                   src="/images/squarespace/069fada0-fd34-4837-aa79-29c78d7cfa9d_281A6858.jpg"
-                  alt="Team bei der Arbeit"
+                  alt="Bowls mit frischen Zutaten"
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="flex-1 min-h-[280px] overflow-hidden rounded-xl">
+              <div className="flex-1 overflow-hidden rounded-xl">
                 <img
                   src="/images/squarespace/bf1c4354-0a91-4ff5-9c09-61c950a3d303_events-and-parties_01.jpg"
                   alt="Events Catering"
@@ -65,55 +93,86 @@ export default function UnsereGeschichtePage() {
       </section>
 
       {/* ── Section 2: Wie alles begann ── */}
-      <section className="py-20 px-4 bg-white">
-        <div className="max-w-[1100px] mx-auto">
-          <h2 className="text-3xl md:text-[40px] font-sans font-bold text-center mb-12 leading-tight" style={{ color: '#6eb68c' }}>
+      <section className="bg-white" style={{ paddingTop: '80px', paddingBottom: '80px' }}>
+        <div className="max-w-[1100px] mx-auto px-4">
+          {/* H2 — 47.104px, green, centered */}
+          <h2
+            className="font-sans font-bold text-center"
+            style={{ fontSize: '2.944rem', lineHeight: '1.39', color: 'rgb(108, 183, 142)', marginBottom: '60px' }}
+          >
             Wie alles begann
           </h2>
 
-          {/* 2×2 masonry grid */}
+          {/* 2×2 grid — exact cell sizes matching live site */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {/* Top-left: text card */}
-            <div className="rounded-xl p-8 md:p-10 flex items-center" style={{ backgroundColor: '#d9e8df' }}>
-              <p className="text-base md:text-lg text-foreground/80 leading-relaxed">
-                Also haben wir begonnen zu kochen – täglich frisch, saisonal, mit Zutaten, die wir selbst essen würden. Ohne Schnickschnack, aber mit richtig viel Geschmack.
+            {/* Top-left: text card — mint bg, 30px padding, no border-radius */}
+            <div
+              style={{
+                backgroundColor: 'rgb(228, 241, 234)',
+                padding: '30px',
+                height: '295px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+              }}
+            >
+              <p style={{ fontSize: '1.432rem', lineHeight: '1.5', color: '#000000', fontWeight: 400, textAlign: 'left' }}>
+                Also haben wir begonnen zu kochen – täglich frisch, saisonal, mit Zutaten, die wir selbst essen würden.
+              </p>
+              <p style={{ fontSize: '1.432rem', lineHeight: '1.5', color: '#000000', fontWeight: 400, textAlign: 'left', marginTop: '12px' }}>
+                Ohne Schnickschnack, aber mit richtig viel Geschmack.
               </p>
             </div>
-            {/* Top-right: image */}
-            <div className="h-[300px] md:h-auto md:min-h-[350px] overflow-hidden rounded-xl">
+            {/* Top-right: image — 295px tall */}
+            <div className="overflow-hidden" style={{ height: '295px' }}>
               <img
                 src="/images/squarespace/b6cc1437-9bf2-4791-b42a-5b09987a0bfb_281A6305.jpg"
                 alt="Mitarbeiterin serviert Essen"
                 className="w-full h-full object-cover"
               />
             </div>
-            {/* Bottom-left: image */}
-            <div className="h-[300px] md:h-auto overflow-hidden rounded-xl">
+            {/* Bottom-left: image — 342px tall */}
+            <div className="overflow-hidden" style={{ height: '342px' }}>
               <img
                 src="/images/squarespace/be390e9c-1b86-4647-a79c-68d0a13e063a_281A6448.jpg"
                 alt="Topf & Deckel Tasche"
                 className="w-full h-full object-cover"
               />
             </div>
-            {/* Bottom-right: text card */}
-            <div className="rounded-xl p-8 md:p-10 flex items-center" style={{ backgroundColor: '#d9e8df' }}>
-              <p className="text-base md:text-lg text-foreground/80 leading-relaxed">
-                Was als kleine Take-away-Idee begann, ist heute ein Team aus Küchenmenschen und Gastgeber:innen mit mehreren Standorten in Wien. Unser Ziel: Gerichte, die nicht nur satt machen – sondern richtig gut tun.
+            {/* Bottom-right: text card — mint bg, 30px padding, 342px tall */}
+            <div
+              style={{
+                backgroundColor: 'rgb(228, 241, 234)',
+                padding: '30px',
+                height: '342px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+              }}
+            >
+              <p style={{ fontSize: '1.432rem', lineHeight: '1.5', color: '#000000', fontWeight: 400, textAlign: 'left' }}>
+                Was als kleine Take-away-Idee begann, ist heute ein Team aus Küchenmenschen und Gastgeber:innen mit mehreren Standorten in Wien.
+              </p>
+              <p style={{ fontSize: '1.432rem', lineHeight: '1.5', color: '#000000', fontWeight: 400, textAlign: 'left', marginTop: '12px' }}>
+                Unser Ziel: Gerichte, die nicht nur satt machen – sondern richtig gut tun.
               </p>
             </div>
           </div>
         </div>
       </section>
-
       {/* ── Section 3: Was uns wichtig ist ── */}
-      <section className="py-20 px-4 bg-white">
-        <div className="max-w-[1100px] mx-auto">
-          <h2 className="text-3xl md:text-[40px] font-sans font-bold text-center mb-12 leading-tight" style={{ color: '#6eb68c' }}>
+      <section className="bg-white" style={{ paddingTop: '80px', paddingBottom: '80px' }}>
+        <div className="max-w-[1100px] mx-auto px-4">
+          {/* H2 — 47.104px green centered */}
+          <h2
+            className="font-sans font-bold text-center"
+            style={{ fontSize: '2.944rem', lineHeight: '1.39', color: 'rgb(108, 183, 142)', marginBottom: '60px' }}
+          >
             Was uns wichtig ist
           </h2>
 
-          {/* Hero image */}
-          <div className="w-full h-[350px] md:h-[500px] overflow-hidden rounded-xl mb-12">
+          {/* Image — 780px wide × 295px tall (not full-width), centered */}
+          <div className="mx-auto overflow-hidden mb-8" style={{ maxWidth: '780px', height: '295px' }}>
             <img
               src="/images/squarespace/cc25cb29-5695-4c0c-8460-5f296a36e4da_Topf--Deckel-29.-30.7.2025-c-Nadja-Hudovernik_1-115.jpg"
               alt="Topf & Deckel storefront"
@@ -121,19 +180,19 @@ export default function UnsereGeschichtePage() {
             />
           </div>
 
-          {/* Text block */}
-          <div className="max-w-3xl mx-auto text-center space-y-5">
-            <p className="text-lg md:text-xl text-foreground/80 font-semibold leading-relaxed">
+          {/* Text block — 780px wide, LEFT aligned, 22.912px black */}
+          <div className="mx-auto" style={{ maxWidth: '780px' }}>
+            <p style={{ fontSize: '1.432rem', lineHeight: '1.5', color: 'rgb(19, 19, 24)', fontWeight: 400, textAlign: 'left', marginBottom: '16px' }}>
               Es geht um Miteinander, Verantwortung, Gesundheit – und Teamgeist.
             </p>
-            <p className="text-base md:text-lg text-foreground/70 leading-relaxed">
+            <p style={{ fontSize: '1.432rem', lineHeight: '1.5', color: 'rgb(19, 19, 24)', fontWeight: 400, textAlign: 'left', marginBottom: '16px' }}>
               Wir glauben, dass ein gutes Mittagessen nicht nur satt macht, sondern auch stärkt: den Körper, die Stimmung, die Verbindung zu anderen.
             </p>
-            <p className="text-base md:text-lg text-foreground/70 leading-relaxed">
+            <p style={{ fontSize: '1.432rem', lineHeight: '1.5', color: 'rgb(19, 19, 24)', fontWeight: 400, textAlign: 'left', marginBottom: '16px' }}>
               Deshalb arbeiten wir mit Herz, mit echter Hands-on-Mentalität und einem Team, auf das wir stolz sind.
             </p>
-            <p className="text-lg md:text-xl text-foreground font-bold leading-relaxed">
-              Wir sind Topf &amp; Deckel. Und wir kochen, wie man füreinander sorgt.
+            <p style={{ fontSize: '1.432rem', lineHeight: '1.5', color: 'rgb(19, 19, 24)', fontWeight: 400, textAlign: 'left' }}>
+              Wir sind Topf & Deckel. Und wir kochen, wie man füreinander sorgt.
             </p>
           </div>
         </div>

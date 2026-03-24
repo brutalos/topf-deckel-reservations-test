@@ -6,7 +6,9 @@ import './globals.css';
 
 const publicSans = Public_Sans({
   variable: '--font-public-sans',
-  subsets: ['latin'],
+  subsets: ['latin', 'latin-ext'],
+  weight: ['400', '700', '800'],
+  style: ['normal', 'italic'],
 });
 
 const cabin = Cabin({

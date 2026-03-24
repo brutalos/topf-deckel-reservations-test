@@ -68,7 +68,7 @@ export default function Navbar() {
               <img
                 src="/images/squarespace/dc8d1fa4-c438-415b-9193-ec3ecbfcd796_topf-deckel-stadtkantine.png"
                 alt="Topf & Deckel Logo"
-                className="h-[220px] w-auto object-contain"
+                className="h-[168px] w-auto object-contain"
               />
             </Link>
 
@@ -83,29 +83,29 @@ export default function Navbar() {
                 onMouseEnter={() => setIsMenuOpen(true)}
                 onMouseLeave={() => setIsMenuOpen(false)}
               >
-                <button className={`flex items-center hover:text-gray-600 font-sans text-[18px] font-semibold tracking-wide transition-colors py-2 ${isMenuActive ? 'text-black underline underline-offset-[6px] decoration-2' : 'text-black'}`}>
-                  Menü <ChevronDown className={`ml-1 h-5 w-5 transition-transform ${isMenuOpen ? 'rotate-180' : ''}`} />
+                <button className={`flex items-center hover:text-gray-600 font-cabin text-[1.1rem] tracking-wide transition-colors py-1 mb-1 ${isMenuActive ? 'text-black border-b-[1.5px] border-black' : 'text-black'}`}>
+                  Menü <ChevronDown strokeWidth={3} className={`ml-[0.5em] h-[0.8em] w-[0.8em] transition-transform ${isMenuOpen ? 'rotate-180' : ''}`} />
                 </button>
 
                 {isMenuOpen && (
                   <div className="absolute top-full left-1/2 -translate-x-1/2 w-48 bg-white shadow-xl py-2 flex flex-col z-50">
-                    <Link href="/#tageskarte" className={`px-6 py-3 text-[15px] xl:text-sm hover:text-gray-500 transition-colors font-sans font-medium text-center ${pathname === '/' ? 'text-black underline underline-offset-4 decoration-2' : 'text-black'}`}>
+                    <Link href="/#tageskarte" className={`px-6 py-3 text-[15px] xl:text-sm hover:text-gray-500 transition-colors font-cabin font-medium text-center ${pathname === '/' ? 'text-black underline underline-offset-4 decoration-2' : 'text-black'}`}>
                       Tageskarte
                     </Link>
-                    <Link href="/wochenmenu" className={`px-6 py-3 text-sm hover:text-gray-500 transition-colors font-sans font-medium text-center ${pathname.startsWith('/wochenmenu') ? 'text-black underline underline-offset-4 decoration-2' : 'text-black'}`}>
+                    <Link href="/wochenmenu" className={`px-6 py-3 text-sm hover:text-gray-500 transition-colors font-cabin font-medium text-center ${pathname.startsWith('/wochenmenu') ? 'text-black underline underline-offset-4 decoration-2' : 'text-black'}`}>
                       Wochenmenü
                     </Link>
                   </div>
                 )}
               </div>
 
-              <Link href="/standorte" className={`hover:text-gray-600 font-sans text-[18px] font-semibold tracking-wide transition-colors py-2 ${isStandorteActive ? 'text-black underline underline-offset-[6px] decoration-2' : 'text-black'}`}>
+              <Link href="/standorte" className={`hover:text-gray-600 font-cabin text-[1.1rem] tracking-wide transition-colors py-1 mb-1 ${isStandorteActive ? 'text-black border-b-[1.5px] border-black' : 'text-black'}`}>
                 Standorte
               </Link>
-              <Link href="/office-catering" className={`hover:text-gray-600 font-sans text-[18px] font-semibold tracking-wide transition-colors py-2 ${isOfficeActive ? 'text-black underline underline-offset-[6px] decoration-2' : 'text-black'}`}>
+              <Link href="/office-catering" className={`hover:text-gray-600 font-cabin text-[1.1rem] tracking-wide transition-colors py-1 mb-1 ${isOfficeActive ? 'text-black border-b-[1.5px] border-black' : 'text-black'}`}>
                 Office Catering
               </Link>
-              <Link href="/events-partys" className={`hover:text-gray-600 font-sans text-[18px] font-semibold tracking-wide transition-colors py-2 ${isEventsActive ? 'text-black underline underline-offset-[6px] decoration-2' : 'text-black'}`}>
+              <Link href="/events-partys" className={`hover:text-gray-600 font-cabin text-[1.1rem] tracking-wide transition-colors py-1 mb-1 ${isEventsActive ? 'text-black border-b-[1.5px] border-black' : 'text-black'}`}>
                 Events & Partys
               </Link>
 
@@ -115,22 +115,22 @@ export default function Navbar() {
                 onMouseEnter={() => setIsMehrOpen(true)}
                 onMouseLeave={() => setIsMehrOpen(false)}
               >
-                <button className={`flex items-center hover:text-gray-600 font-sans text-[18px] font-semibold tracking-wide transition-colors py-2 ${isMehrActive ? 'text-black underline underline-offset-[6px] decoration-2' : 'text-black'}`}>
-                  Mehr <ChevronDown className={`ml-1 h-5 w-5 transition-transform ${isMehrOpen ? 'rotate-180' : ''}`} />
+                <button className={`flex items-center hover:text-gray-600 font-cabin text-[1.1rem] tracking-wide transition-colors py-1 mb-1 ${isMehrActive ? 'text-black border-b-[1.5px] border-black' : 'text-black'}`}>
+                  Mehr <ChevronDown strokeWidth={3} className={`ml-[0.5em] h-[0.8em] w-[0.8em] transition-transform ${isMehrOpen ? 'rotate-180' : ''}`} />
                 </button>
 
                 {isMehrOpen && (
                   <div className="absolute top-full left-1/2 -translate-x-1/2 w-48 bg-white shadow-xl py-2 flex flex-col z-50">
-                    <Link href="/unsere-geschichte" className={`px-6 py-3 text-sm hover:text-gray-500 transition-colors font-sans font-medium text-center ${pathname.startsWith('/unsere-geschichte') ? 'text-black underline underline-offset-4 decoration-2' : 'text-black'}`}>
+                    <Link href="/unsere-geschichte" className={`px-6 py-3 text-sm hover:text-gray-500 transition-colors font-cabin font-medium text-center ${pathname.startsWith('/unsere-geschichte') ? 'text-black underline underline-offset-4 decoration-2' : 'text-black'}`}>
                       Unsere Geschichte
                     </Link>
-                    <Link href="/franchise" className={`px-6 py-3 text-sm hover:text-gray-500 transition-colors font-sans font-medium text-center ${pathname.startsWith('/franchise') ? 'text-black underline underline-offset-4 decoration-2' : 'text-black'}`}>
+                    <Link href="/franchise" className={`px-6 py-3 text-sm hover:text-gray-500 transition-colors font-cabin font-medium text-center ${pathname.startsWith('/franchise') ? 'text-black underline underline-offset-4 decoration-2' : 'text-black'}`}>
                       Franchise
                     </Link>
-                    <Link href="/jobs" className={`px-6 py-3 text-sm hover:text-gray-500 transition-colors font-sans font-medium text-center ${pathname.startsWith('/jobs') ? 'text-black underline underline-offset-4 decoration-2' : 'text-black'}`}>
+                    <Link href="/jobs" className={`px-6 py-3 text-sm hover:text-gray-500 transition-colors font-cabin font-medium text-center ${pathname.startsWith('/jobs') ? 'text-black underline underline-offset-4 decoration-2' : 'text-black'}`}>
                       Jobs
                     </Link>
-                    <Link href="/kontakt" className={`px-6 py-3 text-sm hover:text-gray-500 transition-colors font-sans font-medium text-center ${pathname.startsWith('/kontakt') ? 'text-black underline underline-offset-4 decoration-2' : 'text-black'}`}>
+                    <Link href="/kontakt" className={`px-6 py-3 text-sm hover:text-gray-500 transition-colors font-cabin font-medium text-center ${pathname.startsWith('/kontakt') ? 'text-black underline underline-offset-4 decoration-2' : 'text-black'}`}>
                       Kontakt
                     </Link>
                   </div>
@@ -158,38 +158,38 @@ export default function Navbar() {
             <div className="flex flex-col border-b border-gray-50">
               <button
                 onClick={() => setIsMobileMenuExpanded(!isMobileMenuExpanded)}
-                className={`flex items-center justify-between px-6 py-4 text-base font-sans font-medium hover:text-[#6CB78E] ${isMenuActive ? 'text-black underline underline-offset-4 decoration-2' : 'text-black'}`}
+                className={`flex items-center justify-between px-6 py-4 text-base font-cabin font-medium hover:text-[#6CB78E] ${isMenuActive ? 'text-black underline underline-offset-4 decoration-2' : 'text-black'}`}
               >
                 Menü
-                <ChevronDown className={`h-5 w-5 transition-transform ${isMobileMenuExpanded ? 'rotate-180' : ''}`} />
+                <ChevronDown strokeWidth={3} className={`h-[0.8em] w-[0.8em] transition-transform ${isMobileMenuExpanded ? 'rotate-180' : ''}`} />
               </button>
               {isMobileMenuExpanded && (
                 <div className="flex flex-col bg-gray-50 py-2">
-                  <Link href="/#tageskarte" className={`px-10 py-3 text-base font-sans hover:text-[#6CB78E] ${pathname === '/' ? 'text-black underline underline-offset-4 decoration-2' : 'text-gray-700'}`} onClick={() => setIsMobileMenuOpen(false)}>Tageskarte</Link>
-                  <Link href="/wochenmenu" className={`px-10 py-3 text-base font-sans hover:text-[#6CB78E] ${pathname.startsWith('/wochenmenu') ? 'text-black underline underline-offset-4 decoration-2' : 'text-gray-700'}`} onClick={() => setIsMobileMenuOpen(false)}>Wochenmenü</Link>
+                  <Link href="/#tageskarte" className={`px-10 py-3 text-base font-cabin hover:text-[#6CB78E] ${pathname === '/' ? 'text-black underline underline-offset-4 decoration-2' : 'text-gray-700'}`} onClick={() => setIsMobileMenuOpen(false)}>Tageskarte</Link>
+                  <Link href="/wochenmenu" className={`px-10 py-3 text-base font-cabin hover:text-[#6CB78E] ${pathname.startsWith('/wochenmenu') ? 'text-black underline underline-offset-4 decoration-2' : 'text-gray-700'}`} onClick={() => setIsMobileMenuOpen(false)}>Wochenmenü</Link>
                 </div>
               )}
             </div>
 
-            <Link href="/standorte" className={`px-6 py-4 border-b border-gray-50 text-base font-sans font-medium hover:text-[#6CB78E] ${isStandorteActive ? 'text-black underline underline-offset-4 decoration-2' : 'text-black'}`} onClick={() => setIsMobileMenuOpen(false)}>Standorte</Link>
-            <Link href="/office-catering" className={`px-6 py-4 border-b border-gray-50 text-base font-sans font-medium hover:text-[#6CB78E] ${isOfficeActive ? 'text-black underline underline-offset-4 decoration-2' : 'text-black'}`} onClick={() => setIsMobileMenuOpen(false)}>Office Catering</Link>
-            <Link href="/events-partys" className={`px-6 py-4 border-b border-gray-50 text-base font-sans font-medium hover:text-[#6CB78E] ${isEventsActive ? 'text-black underline underline-offset-4 decoration-2' : 'text-black'}`} onClick={() => setIsMobileMenuOpen(false)}>Events & Partys</Link>
+            <Link href="/standorte" className={`px-6 py-4 border-b border-gray-50 text-base font-cabin font-medium hover:text-[#6CB78E] ${isStandorteActive ? 'text-black underline underline-offset-4 decoration-2' : 'text-black'}`} onClick={() => setIsMobileMenuOpen(false)}>Standorte</Link>
+            <Link href="/office-catering" className={`px-6 py-4 border-b border-gray-50 text-base font-cabin font-medium hover:text-[#6CB78E] ${isOfficeActive ? 'text-black underline underline-offset-4 decoration-2' : 'text-black'}`} onClick={() => setIsMobileMenuOpen(false)}>Office Catering</Link>
+            <Link href="/events-partys" className={`px-6 py-4 border-b border-gray-50 text-base font-cabin font-medium hover:text-[#6CB78E] ${isEventsActive ? 'text-black underline underline-offset-4 decoration-2' : 'text-black'}`} onClick={() => setIsMobileMenuOpen(false)}>Events & Partys</Link>
 
             {/* Mehr Accordion */}
             <div className="flex flex-col border-b border-gray-50">
               <button
                 onClick={() => setIsMobileMehrExpanded(!isMobileMehrExpanded)}
-                className={`flex items-center justify-between px-6 py-4 text-base font-sans font-medium hover:text-[#6CB78E] ${isMehrActive ? 'text-black underline underline-offset-4 decoration-2' : 'text-black'}`}
+                className={`flex items-center justify-between px-6 py-4 text-base font-cabin font-medium hover:text-[#6CB78E] ${isMehrActive ? 'text-black underline underline-offset-4 decoration-2' : 'text-black'}`}
               >
                 Mehr
-                <ChevronDown className={`h-5 w-5 transition-transform ${isMobileMehrExpanded ? 'rotate-180' : ''}`} />
+                <ChevronDown strokeWidth={3} className={`h-[0.8em] w-[0.8em] transition-transform ${isMobileMehrExpanded ? 'rotate-180' : ''}`} />
               </button>
               {isMobileMehrExpanded && (
                 <div className="flex flex-col bg-gray-50 py-2">
-                  <Link href="/unsere-geschichte" className={`px-10 py-3 text-base font-sans hover:text-[#6CB78E] ${pathname.startsWith('/unsere-geschichte') ? 'text-black underline underline-offset-4 decoration-2' : 'text-gray-700'}`} onClick={() => setIsMobileMenuOpen(false)}>Unsere Geschichte</Link>
-                  <Link href="/franchise" className={`px-10 py-3 text-base font-sans hover:text-[#6CB78E] ${pathname.startsWith('/franchise') ? 'text-black underline underline-offset-4 decoration-2' : 'text-gray-700'}`} onClick={() => setIsMobileMenuOpen(false)}>Franchise</Link>
-                  <Link href="/jobs" className={`px-10 py-3 text-base font-sans hover:text-[#6CB78E] ${pathname.startsWith('/jobs') ? 'text-black underline underline-offset-4 decoration-2' : 'text-gray-700'}`} onClick={() => setIsMobileMenuOpen(false)}>Jobs</Link>
-                  <Link href="/kontakt" className={`px-10 py-3 text-base font-sans hover:text-[#6CB78E] ${pathname.startsWith('/kontakt') ? 'text-black underline underline-offset-4 decoration-2' : 'text-gray-700'}`} onClick={() => setIsMobileMenuOpen(false)}>Kontakt</Link>
+                  <Link href="/unsere-geschichte" className={`px-10 py-3 text-base font-cabin hover:text-[#6CB78E] ${pathname.startsWith('/unsere-geschichte') ? 'text-black underline underline-offset-4 decoration-2' : 'text-gray-700'}`} onClick={() => setIsMobileMenuOpen(false)}>Unsere Geschichte</Link>
+                  <Link href="/franchise" className={`px-10 py-3 text-base font-cabin hover:text-[#6CB78E] ${pathname.startsWith('/franchise') ? 'text-black underline underline-offset-4 decoration-2' : 'text-gray-700'}`} onClick={() => setIsMobileMenuOpen(false)}>Franchise</Link>
+                  <Link href="/jobs" className={`px-10 py-3 text-base font-cabin hover:text-[#6CB78E] ${pathname.startsWith('/jobs') ? 'text-black underline underline-offset-4 decoration-2' : 'text-gray-700'}`} onClick={() => setIsMobileMenuOpen(false)}>Jobs</Link>
+                  <Link href="/kontakt" className={`px-10 py-3 text-base font-cabin hover:text-[#6CB78E] ${pathname.startsWith('/kontakt') ? 'text-black underline underline-offset-4 decoration-2' : 'text-gray-700'}`} onClick={() => setIsMobileMenuOpen(false)}>Kontakt</Link>
                 </div>
               )}
             </div>
