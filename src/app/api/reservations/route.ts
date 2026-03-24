@@ -22,6 +22,10 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'SLOT_NO_LONGER_AVAILABLE' }, { status: 409 });
         }
         console.error('[Booking API Error]:', error);
-        return NextResponse.json({ error: 'SERVER_ERROR' }, { status: 500 });
+        return NextResponse.json({ 
+            error: 'SERVER_ERROR',
+            message: error.message,
+            stack: error.stack
+        }, { status: 500 });
     }
 }
