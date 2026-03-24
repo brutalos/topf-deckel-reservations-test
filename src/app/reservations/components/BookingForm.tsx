@@ -44,6 +44,7 @@ export default function BookingForm() {
 
     const fetchSlots = async () => {
         setLoading(true);
+        setAvailableSlots([]); // Clear previous slots
         try {
             const res = await fetch('/api/reservations/availability', {
                 method: 'POST',
@@ -55,8 +56,10 @@ export default function BookingForm() {
                 })
             });
             const data = await res.json();
-            if (data.availableSlots) {
+            if (res.ok && data.availableSlots) {
                 setAvailableSlots(data.availableSlots);
+            } else {
+                toast.error(data.error || 'Fehler beim Laden der Verfügbarkeit');
             }
         } catch (error) {
             toast.error('Fehler beim Laden der Verfügbarkeit');

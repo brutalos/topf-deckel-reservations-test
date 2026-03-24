@@ -22,6 +22,9 @@ export class ReservationService {
     /**
      * Finds available time slots for a store on a given date and party size.
      */
+    /**
+     * Finds available time slots for a store on a given date and party size.
+     */
     static async checkAvailability(storeId: string, partySize: number, reservationDate: string) {
         const store = stores.find(s => s.id === storeId);
         const config = RESERVATION_CONFIG[storeId];
@@ -32,16 +35,26 @@ export class ReservationService {
         const closeTime = store.closeTime; // e.g., 15
 
         // Generate all possible 15-minute slots between open and close
-        // (Closing time is 3:00 PM, meaning last slot could be 2:00 PM for a 60-min stay)
         const dayStart = parse(reservationDate, 'yyyy-MM-dd', new Date());
         let currentSlot = addHours(dayStart, openTime);
         const endOfBookableDay = addHours(dayStart, closeTime - (config.defaultDurationMinutes / 60));
 
+        // Lead time check (minAdvanceBookingHours)
+        const now = new Date();
+        const minLeadTime = addHours(now, config.minAdvanceBookingHours);
+
         while (isBefore(currentSlot, endOfBookableDay) || currentSlot.getTime() === endOfBookableDay.getTime()) {
             const timeStr = format(currentSlot, 'HH:mm');
-            const availableTable = await this.findAvailableTable(storeId, partySize, reservationDate, timeStr);
             
-            if (availableTable) {
+            // Skip slots in the past or within lead time
+            if (isBefore(currentSlot, minLeadTime)) {
+                currentSlot = addMinutes(currentSlot, config.slotIntervalMinutes);
+                continue;
+            }
+
+            const availableTables = await this.findAvailableTable(storeId, partySize, reservationDate, timeStr);
+            
+            if (availableTables) {
                 slots.push(timeStr);
             }
             currentSlot = addMinutes(currentSlot, config.slotIntervalMinutes);
@@ -67,13 +80,15 @@ export class ReservationService {
             dt = addMinutes(dt, 15);
         }
 
-        // Get all occupied tables for these slots
+        // Get all occupied tables for these slots in this specific store
         const occupied = await (prisma as any).reservationTableAssignment.findMany({
             where: {
+                reservation: { storeId },
                 slotDateTime: { in: slotStrings }
             },
             select: { tableId: true }
         });
+        
         const occupiedBlocks = await (prisma as any).reservationBlock.findMany({
             where: {
                 storeId,
@@ -82,24 +97,34 @@ export class ReservationService {
             select: { tableId: true }
         });
 
+        if (occupiedBlocks.some((b: any) => !b.tableId)) {
+            return null; // Entire store is blocked
+        }
+
         const occupiedSet = new Set([
             ...occupied.map((o: any) => o.tableId),
             ...occupiedBlocks.filter((b: any) => b.tableId).map((b: any) => b.tableId!)
         ]);
 
-        // 1. Try to find a single table that fits exactly or is slightly larger
-        const candidates = config.tables
-            .filter(t => !occupiedSet.has(t.id) && t.capacity >= partySize)
-            .sort((a, b) => a.capacity - b.capacity); // Use smallest available first
+        const availableTables = config.tables
+            .filter(t => !occupiedSet.has(t.id))
+            .sort((a, b) => a.capacity - b.capacity);
 
-        if (candidates.length > 0) return [candidates[0].id];
+        // 1. Try to find a single table
+        const singleTable = availableTables.find(t => t.capacity >= partySize);
+        if (singleTable) return [singleTable.id];
 
-        // 2. If partySize > 4, try to join one 4-seater and one 2-seater
-        if (partySize > 4 && partySize <= 6) {
-            const free2s = config.tables.filter(t => !occupiedSet.has(t.id) && t.capacity === 2);
-            const free4s = config.tables.filter(t => !occupiedSet.has(t.id) && t.capacity === 4);
-            if (free2s.length > 0 && free4s.length > 0) {
-                return [free4s[0].id, free2s[0].id];
+        // 2. Try to join tables
+        let combinedCapacity = 0;
+        const assignedTables: string[] = [];
+        
+        // Greedily pick largest available tables until partySize is covered
+        const sortedAvailable = [...availableTables].sort((a, b) => b.capacity - a.capacity);
+        for (const table of sortedAvailable) {
+            assignedTables.push(table.id);
+            combinedCapacity += table.capacity;
+            if (combinedCapacity >= partySize) {
+                return assignedTables;
             }
         }
 
