@@ -15,6 +15,8 @@ export default function StorefrontPage({ storeId, menuData }: { storeId: string,
 
     // State
     const [cart, setCart] = useState<any[]>([]);
+    const [cartCategory, setCartCategory] = useState<string | null>(null); // date-lock
+    const [pendingAdd, setPendingAdd] = useState<{ item: any; size: string } | null>(null); // for conflict dialog
     const [activeCategory, setActiveCategory] = useState<string>('Tageskarte');
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [soldOutNames, setSoldOutNames] = useState<Set<string>>(new Set());
@@ -84,7 +86,14 @@ export default function StorefrontPage({ storeId, menuData }: { storeId: string,
         (!m.komboOptions || m.komboOptions.length === 0)
     );
 
-    const onAdd = (item: any, size: string) => {
+    /** Normalise a category to a date key so Tageskarte == today's pre-order category */
+    const normCategory = (cat: string): string => {
+        if (cat === 'Tageskarte' || cat.toLowerCase().includes('tageskarte')) return todayStr;
+        const m = cat.match(/\((.*?)\)/);
+        return m ? `(${m[1]})` : cat;
+    };
+
+    const doAdd = (item: any, size: string) => {
         setCart((prevCart) => {
             const existingIndex = prevCart.findIndex(cartItem => cartItem.id === item.id && cartItem.selectedSize === size);
             if (existingIndex >= 0) {
@@ -94,6 +103,21 @@ export default function StorefrontPage({ storeId, menuData }: { storeId: string,
             }
             return [...prevCart, { ...item, selectedSize: size, cartId: Date.now(), qty: 1 }];
         });
+    };
+
+    const onAdd = (item: any, size: string) => {
+        const itemDateKey = normCategory(item.category ?? activeCategory);
+        if (cart.length === 0 || cartCategory === null) {
+            // First item — lock the cart to this date
+            setCartCategory(itemDateKey);
+            doAdd(item, size);
+        } else if (normCategory(cartCategory) === itemDateKey) {
+            // Same date — just add
+            doAdd(item, size);
+        } else {
+            // Different date — ask the user
+            setPendingAdd({ item, size });
+        }
     };
 
     const komboItems = itemsToShow.filter(item => item.komboOptions && item.komboOptions.length > 0);
@@ -238,8 +262,61 @@ export default function StorefrontPage({ storeId, menuData }: { storeId: string,
                 </div>
             </main>
 
-            <CartSidebar cart={cart} setCart={setCart} store={store} isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+            <CartSidebar
+                cart={cart}
+                setCart={(updater: any) => {
+                    setCart((prev: any[]) => {
+                        const next = typeof updater === 'function' ? updater(prev) : updater;
+                        if (next.length === 0) setCartCategory(null);
+                        return next;
+                    });
+                }}
+                store={store}
+                isOpen={isCartOpen}
+                onClose={() => setIsCartOpen(false)}
+            />
             {komboModalItem && <KomboModal item={komboModalItem} todayItems={todayItems} soldOutNames={soldOutForDisplay} isOpen={true} onClose={() => setKomboModalItem(null)} onAdd={onAdd} />}
+
+            {/* Date-conflict dialog */}
+            {pendingAdd && (
+                <>
+                    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60]" onClick={() => setPendingAdd(null)} />
+                    <div className="fixed z-[70] inset-x-4 top-1/2 -translate-y-1/2 md:inset-x-auto md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-md bg-card rounded-3xl shadow-2xl p-6 animate-in zoom-in-95 duration-200">
+                        <div className="flex items-start gap-3 mb-4">
+                            <span className="text-2xl">⚠️</span>
+                            <div>
+                                <h3 className="font-sans font-bold text-lg text-foreground leading-tight">Anderer Liefertag</h3>
+                                <p className="text-sm text-muted-foreground mt-1">
+                                    Dein Warenkorb enthält bereits Artikel für einen anderen Tag. Du kannst keine Artikel aus verschiedenen Tagen mischen.
+                                </p>
+                            </div>
+                        </div>
+                        <div className="flex flex-col gap-2 mt-6">
+                            <button
+                                onClick={() => {
+                                    if (pendingAdd) {
+                                        const { item, size } = pendingAdd;
+                                        const newKey = normCategory(item.category ?? activeCategory);
+                                        setCart([]);
+                                        setCartCategory(newKey);
+                                        setTimeout(() => doAdd(item, size), 0);
+                                    }
+                                    setPendingAdd(null);
+                                }}
+                                className="w-full py-3 rounded-xl bg-primary text-white font-bold text-sm hover:bg-primary/90 transition-colors"
+                            >
+                                Warenkorb leeren & neu starten
+                            </button>
+                            <button
+                                onClick={() => setPendingAdd(null)}
+                                className="w-full py-3 rounded-xl border border-border text-foreground font-bold text-sm hover:bg-secondary transition-colors"
+                            >
+                                Abbrechen
+                            </button>
+                        </div>
+                    </div>
+                </>
+            )}
         </div>
     );
 }

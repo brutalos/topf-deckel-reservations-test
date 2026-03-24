@@ -145,14 +145,19 @@ export function CartSidebar({ cart, setCart, store, isOpen, onClose }: { cart: a
         return () => clearInterval(id);
     }, []);
 
-    // Auto-enable pre-order when ASAP is blocked and delivery mode is active
+    // Is the cart locked to a future date (pre-order category)?
+    const cartMenuDate = menuDateForCart(cart);
+    const todayViennaStr = new Date().toLocaleString('sv', { timeZone: 'Europe/Vienna' }).split(' ')[0];
+    const isFutureCart = !!cartMenuDate && cartMenuDate > todayViennaStr;
+
+    // Auto-enable pre-order when ASAP is blocked (time-based) OR cart is for a future date
     useEffect(() => {
-        if (deliveryMode === 'delivery' && asapReason && !isPreorder) {
+        if (deliveryMode === 'delivery' && (asapReason || isFutureCart) && !isPreorder) {
             setIsPreorder(true);
         }
-    }, [deliveryMode, asapReason]);
+    }, [deliveryMode, asapReason, isFutureCart]);
 
-    const preorderConstraints = getPreorderConstraints(new Date(), menuDateForCart(cart));
+    const preorderConstraints = getPreorderConstraints(new Date(), cartMenuDate);
 
     const handleScheduledTimeChange = (value: string) => {
         setScheduledTime(value);
@@ -502,15 +507,22 @@ export function CartSidebar({ cart, setCart, store, isOpen, onClose }: { cart: a
 
                                             {/* ASAP status banner */}
                                             {deliveryMode === 'delivery' && (
-                                                <div className={`flex items-start gap-2.5 p-3 rounded-xl text-sm border ${asapReason
-                                                    ? 'bg-amber-50 border-amber-200 text-amber-800'
-                                                    : 'bg-green-50 border-green-200 text-green-800'
+                                                <div className={`flex items-start gap-2.5 p-3 rounded-xl text-sm border ${
+                                                    isFutureCart
+                                                        ? 'bg-blue-50 border-blue-200 text-blue-800'
+                                                        : asapReason
+                                                            ? 'bg-amber-50 border-amber-200 text-amber-800'
+                                                            : 'bg-green-50 border-green-200 text-green-800'
                                                     }`}>
-                                                    {asapReason
+                                                    {isFutureCart
                                                         ? <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
-                                                        : <CheckCircle className="w-4 h-4 shrink-0 mt-0.5" />}
+                                                        : asapReason
+                                                            ? <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
+                                                            : <CheckCircle className="w-4 h-4 shrink-0 mt-0.5" />}
                                                     <span className="font-medium">
-                                                        {asapReason ?? 'ASAP-Lieferung jetzt verfügbar'}
+                                                        {isFutureCart
+                                                            ? `Vorbestellung für ${cartMenuDate} — nur geplante Lieferzeit möglich`
+                                                            : asapReason ?? 'ASAP-Lieferung jetzt verfügbar'}
                                                     </span>
                                                 </div>
                                             )}
@@ -520,13 +532,13 @@ export function CartSidebar({ cart, setCart, store, isOpen, onClose }: { cart: a
                                                     type="checkbox"
                                                     id="preorderToggle"
                                                     checked={isPreorder}
-                                                    disabled={!!asapReason}  // force pre-order when ASAP blocked
+                                                    disabled={!!asapReason || isFutureCart}  // force pre-order when ASAP blocked or future date
                                                     onChange={e => setIsPreorder(e.target.checked)}
                                                     className="w-4 h-4 rounded border-border text-primary focus:ring-primary cursor-pointer mt-0.5"
                                                 />
                                                 <label htmlFor="preorderToggle" className="text-sm text-[#444] cursor-pointer inline-flex items-center">
                                                     Vorbestellen (geplante Lieferzeit)
-                                                    {asapReason && <span className="ml-1.5 text-xs text-amber-600 font-bold">(erforderlich)</span>}
+                                                    {(asapReason || isFutureCart) && <span className="ml-1.5 text-xs text-amber-600 font-bold">(erforderlich)</span>}
                                                 </label>
                                             </div>
 
