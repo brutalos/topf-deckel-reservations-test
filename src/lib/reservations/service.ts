@@ -141,7 +141,6 @@ export class ReservationService {
         startTime: string;
         notes?: string;
     }) {
-        console.log('[ReservationService] Creating reservation:', data);
         if (!prisma) throw new Error('Database client not initialized');
 
         const config = RESERVATION_CONFIG[data.storeId];
@@ -153,7 +152,6 @@ export class ReservationService {
         );
 
         if (!tableIds) {
-            console.log('[ReservationService] No tables available for createReservation');
             throw new Error('SLOT_NO_LONGER_AVAILABLE');
         }
 
@@ -163,73 +161,60 @@ export class ReservationService {
         const duration = config.defaultDurationMinutes;
         const slotsNeeded = duration / 15;
 
-        console.log('[ReservationService] Transaction starting...', { id, tableIds });
-
-        try {
-            return await prisma.$transaction(async (tx) => {
-                console.log('[ReservationService] Inside transaction, creating reservation...');
-                const reservation = await (tx as any).reservation.create({
-                    data: {
-                        id,
-                        storeId: data.storeId,
-                        guestName: data.guestName,
-                        guestEmail: data.guestEmail,
-                        guestPhone: data.guestPhone,
-                        partySize: data.partySize,
-                        reservationDate: data.reservationDate,
-                        startTime: data.startTime,
-                        status: 'CONFIRMED',
-                        notes: data.notes,
-                        editToken,
-                        createdAt: now,
-                        updatedAt: now,
-                    }
-                });
-
-                console.log('[ReservationService] Reservation created, assigning tables...', tableIds);
-
-                // Create 15-minute slot records for each assigned table
-                const assignments = [];
-                let currentDT = parseISO(`${data.reservationDate}T${data.startTime}:00`);
-                
-                for (let i = 0; i < slotsNeeded; i++) {
-                    const slotStr = format(currentDT, "yyyy-MM-dd'T'HH:mm:ss");
-                    for (const tableId of tableIds) {
-                        assignments.push({
-                            id: randomUUID(),
-                            reservationId: id,
-                            tableId,
-                            slotDateTime: slotStr
-                        });
-                    }
-                    currentDT = addMinutes(currentDT, 15);
+        return await prisma.$transaction(async (tx) => {
+            const reservation = await (tx as any).reservation.create({
+                data: {
+                    id,
+                    storeId: data.storeId,
+                    guestName: data.guestName,
+                    guestEmail: data.guestEmail,
+                    guestPhone: data.guestPhone,
+                    partySize: data.partySize,
+                    reservationDate: data.reservationDate,
+                    startTime: data.startTime,
+                    status: 'CONFIRMED',
+                    notes: data.notes,
+                    editToken,
+                    createdAt: now,
+                    updatedAt: now,
                 }
+            });
 
-                console.log('[ReservationService] Creating assignments...', assignments.length);
-                await (tx as any).reservationTableAssignment.createMany({
-                    data: assignments
-                });
-
-                console.log('[ReservationService] Assignments created, logging audit...');
-                await (tx as any).reservationAuditLog.create({
-                    data: {
+            // Create 15-minute slot records for each assigned table
+            const assignments = [];
+            let currentDT = parseISO(`${data.reservationDate}T${data.startTime}:00`);
+            
+            for (let i = 0; i < slotsNeeded; i++) {
+                const slotStr = format(currentDT, "yyyy-MM-dd'T'HH:mm:ss");
+                for (const tableId of tableIds) {
+                    assignments.push({
                         id: randomUUID(),
                         reservationId: id,
-                        action: 'CREATED',
-                        details: `Created reservation for party of ${data.partySize}. Tables: ${tableIds.join(', ')}`,
-                        timestamp: now
-                    }
-                });
+                        tableId,
+                        slotDateTime: slotStr
+                    });
+                }
+                currentDT = addMinutes(currentDT, 15);
+            }
 
-                console.log('[ReservationService] Transaction complete!');
-                emitReservationEvent({ type: 'reservation.created', reservationId: id, payload: { tableIds } });
-
-                return { ...reservation, tableIds };
+            await (tx as any).reservationTableAssignment.createMany({
+                data: assignments
             });
-        } catch (txError: any) {
-            console.error('[ReservationService] Transaction failed:', txError);
-            throw txError;
-        }
+
+            await (tx as any).reservationAuditLog.create({
+                data: {
+                    id: randomUUID(),
+                    reservationId: id,
+                    action: 'CREATED',
+                    details: `Created reservation for party of ${data.partySize}. Tables: ${tableIds.join(', ')}`,
+                    timestamp: now
+                }
+            });
+
+            emitReservationEvent({ type: 'reservation.created', reservationId: id, payload: { tableIds } });
+
+            return { ...reservation, tableIds };
+        });
     }
 
     /**
