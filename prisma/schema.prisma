@@ -39,3 +39,54 @@ model Meta {
   id    String @id @default("singleton")
   count Int    @default(999)
 }
+
+model Reservation {
+  id              String  @id
+  storeId         String
+  guestName       String
+  guestEmail      String
+  guestPhone      String
+  partySize       Int
+  reservationDate String  // ISO date
+  startTime       String  // ISO time
+  durationMinutes Int     @default(60)
+  status          String  // PENDING, CONFIRMED, SEATED, COMPLETED, NO_SHOW, CANCELLED
+  notes           String?
+  editToken       String  @unique
+  createdAt       String  // ISO string
+  updatedAt       String  // ISO string
+
+  assignments     ReservationTableAssignment[]
+  auditLogs       ReservationAuditLog[]
+}
+
+model ReservationTableAssignment {
+  id            String      @id
+  reservationId String
+  tableId       String
+  slotDateTime  String      // ISO date-time for each 15-minute block
+  
+  reservation   Reservation @relation(fields: [reservationId], references: [id])
+
+  @@unique([tableId, slotDateTime])
+}
+
+model ReservationBlock {
+  id           String  @id
+  storeId      String
+  tableId      String? // Optional: block specific table or entire store
+  slotDateTime String  // ISO date-time
+  reason       String?
+
+  @@unique([tableId, slotDateTime])
+}
+
+model ReservationAuditLog {
+  id            String      @id
+  reservationId String
+  action        String      // STATUS_CHANGE, EDITED, CANCELLED
+  details       String
+  timestamp     String      // ISO string
+  
+  reservation   Reservation @relation(fields: [reservationId], references: [id])
+}
