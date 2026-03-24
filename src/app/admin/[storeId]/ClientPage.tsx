@@ -7,8 +7,9 @@ import { stores } from '@/config/stores';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Bell, Truck, XCircle, CheckCircle, AlertTriangle, Package, RefreshCw } from 'lucide-react';
+import { Bell, Truck, XCircle, CheckCircle, AlertTriangle, Package, RefreshCw, CalendarDays } from 'lucide-react';
 import { toast } from 'sonner';
+import Link from 'next/link';
 type OrderStatus = 'received' | 'wolt_dispatched' | 'order.pickup_started' | 'order.delivered' | 'cancelled' | string;
 
 interface OrderItem {
@@ -259,6 +260,13 @@ export default function AdminDashboard({ storeId, menuData, adminKey }: { storeI
                             <RefreshCw className="w-3 h-3" />
                             {mounted ? lastRefresh.toLocaleTimeString('de-AT', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : '--:--:--'}
                         </span>
+                        <Link
+                            href={`/admin/${storeId}/reservations`}
+                            className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 text-[#E51B24] transition-colors duration-150 cursor-pointer mr-2 shadow-sm"
+                        >
+                            <CalendarDays className="w-3.5 h-3.5" />
+                            Reservierungen
+                        </Link>
                         <button
                             onClick={playNotificationSound}
                             className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg transition-colors duration-150 cursor-pointer ${soundEnabled
