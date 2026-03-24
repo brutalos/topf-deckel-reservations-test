@@ -1,6 +1,6 @@
 import { prisma } from '../prisma';
-import { RESERVATION_CONFIG, TableConfig } from '../../config/reservations';
-import { stores } from '../../config/stores';
+import { RESERVATION_CONFIG, TableConfig } from '@/config/reservations';
+import { stores } from '@/config/stores';
 import { ReservationStatus, ReservationAction } from './types';
 import { emitReservationEvent } from './events';
 import { 
@@ -13,19 +13,22 @@ import {
 } from 'date-fns';
 import { randomUUID } from 'crypto';
 
+console.log('[ReservationService] Prisma instance exists:', !!prisma);
+
 /**
  * Reservation Domain Service
  * Handles business logic for bookings, availability, and status management.
  */
-
 export class ReservationService {
     /**
      * Finds available time slots for a store on a given date and party size.
      */
-    /**
-     * Finds available time slots for a store on a given date and party size.
-     */
     static async checkAvailability(storeId: string, partySize: number, reservationDate: string) {
+        if (!prisma) {
+            console.error('[ReservationService] PRISMA IS UNDEFINED in checkAvailability');
+            throw new Error('Database client not initialized');
+        }
+
         const store = stores.find(s => s.id === storeId);
         const config = RESERVATION_CONFIG[storeId];
         if (!store || !config) return [];
@@ -34,19 +37,16 @@ export class ReservationService {
         const openTime = store.openTime; // e.g., 11
         const closeTime = store.closeTime; // e.g., 15
 
-        // Generate all possible 15-minute slots between open and close
         const dayStart = parse(reservationDate, 'yyyy-MM-dd', new Date());
         let currentSlot = addHours(dayStart, openTime);
         const endOfBookableDay = addHours(dayStart, closeTime - (config.defaultDurationMinutes / 60));
 
-        // Lead time check (minAdvanceBookingHours)
         const now = new Date();
         const minLeadTime = addHours(now, config.minAdvanceBookingHours);
 
         while (isBefore(currentSlot, endOfBookableDay) || currentSlot.getTime() === endOfBookableDay.getTime()) {
             const timeStr = format(currentSlot, 'HH:mm');
             
-            // Skip slots in the past or within lead time
             if (isBefore(currentSlot, minLeadTime)) {
                 currentSlot = addMinutes(currentSlot, config.slotIntervalMinutes);
                 continue;
@@ -67,11 +67,14 @@ export class ReservationService {
      * Internal helper to find a table or combination of tables for a slot.
      */
     private static async findAvailableTable(storeId: string, partySize: number, date: string, time: string) {
+        if (!prisma) {
+            throw new Error('Database client not initialized');
+        }
+
         const config = RESERVATION_CONFIG[storeId];
         const duration = config.defaultDurationMinutes;
         const slotsNeeded = duration / 15;
 
-        // Generate the 4 x 15-minute slotDateTime strings for this booking
         const startDT = `${date}T${time}:00`;
         const slotStrings: string[] = [];
         let dt = parseISO(startDT);
@@ -80,7 +83,6 @@ export class ReservationService {
             dt = addMinutes(dt, 15);
         }
 
-        // Get all occupied tables for these slots in this specific store
         const occupied = await (prisma as any).reservationTableAssignment.findMany({
             where: {
                 reservation: { storeId },
@@ -98,7 +100,7 @@ export class ReservationService {
         });
 
         if (occupiedBlocks.some((b: any) => !b.tableId)) {
-            return null; // Entire store is blocked
+            return null;
         }
 
         const occupiedSet = new Set([
@@ -110,16 +112,13 @@ export class ReservationService {
             .filter(t => !occupiedSet.has(t.id))
             .sort((a, b) => a.capacity - b.capacity);
 
-        // 1. Try to find a single table
         const singleTable = availableTables.find(t => t.capacity >= partySize);
         if (singleTable) return [singleTable.id];
 
-        // 2. Try to join tables
         let combinedCapacity = 0;
         const assignedTables: string[] = [];
-        
-        // Greedily pick largest available tables until partySize is covered
         const sortedAvailable = [...availableTables].sort((a, b) => b.capacity - a.capacity);
+        
         for (const table of sortedAvailable) {
             assignedTables.push(table.id);
             combinedCapacity += table.capacity;
@@ -144,6 +143,8 @@ export class ReservationService {
         startTime: string;
         notes?: string;
     }) {
+        if (!prisma) throw new Error('Database client not initialized');
+
         const config = RESERVATION_CONFIG[data.storeId];
         const tableIds = await this.findAvailableTable(
             data.storeId, 
@@ -163,7 +164,6 @@ export class ReservationService {
         const slotsNeeded = duration / 15;
 
         return await prisma.$transaction(async (tx) => {
-            // Re-check availability within transaction to prevent race conditions
             const reservation = await (tx as any).reservation.create({
                 data: {
                     id,
@@ -182,7 +182,6 @@ export class ReservationService {
                 }
             });
 
-            // Create 15-minute slot records for each assigned table
             const assignments = [];
             let currentDT = parseISO(`${data.reservationDate}T${data.startTime}:00`);
             
@@ -223,6 +222,8 @@ export class ReservationService {
      * Updates reservation status.
      */
     static async updateStatus(reservationId: string, status: ReservationStatus, details?: string) {
+        if (!prisma) throw new Error('Database client not initialized');
+
         const now = new Date().toISOString();
         const reservation = await (prisma as any).reservation.update({
             where: { id: reservationId },
